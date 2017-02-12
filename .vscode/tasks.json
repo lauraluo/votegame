@@ -1,16 +1,23 @@
 {
     "version": "0.1.0",
-    "command": "dotnet",
-    "isShellCommand": true,
-    "args": [],
-    "tasks": [
-        {
-            "taskName": "build",
-            "args": [
-                "${workspaceRoot}/project.json"
-            ],
-            "isBuildCommand": true,
-            "problemMatcher": "$msCompile"
-        }
-    ]
+    "tasks": [{
+        "taskName": "default",
+        "isBuildCommand": true,
+        "isTestCommand": true,
+        "showOutput": "always",
+        "command": "gulp",
+        "isShellCommand": true,
+        "args": [
+            "--no-color"
+        ]
+    }, {
+        "taskName": "build",
+        "args": [
+            "${workspaceRoot}/project.json"
+        ],
+        "isBuildCommand": true,
+        "problemMatcher": "$msCompile",
+        "command": "dotnet",
+        "isShellCommand": true,
+    }]
 }

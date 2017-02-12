@@ -15170,23 +15170,23 @@ exports.insert = function (css) {
 
 },{}],6:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\np[_v-138533b6] {\n  color: #42b983;\n  font-weight: 600;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\np[_v-138533b6] {\n    color: #42b983;\n    font-weight: 900;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.default = {
-  props: ['text']
+    props: ['text']
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<p _v-138533b6=\"\">{{ text }}</p>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\nhahahafadfad\n<p _v-138533b6=\"\">{{ text }}</p>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\np[_v-138533b6] {\n  color: #42b983;\n  font-weight: 600;\n}\n"] = false
+    __vueify_insert__.cache["\np[_v-138533b6] {\n    color: #42b983;\n    font-weight: 900;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -15207,16 +15207,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _vue2.default.component('txt', require('./components/text.vue'));
 
 var app = new _vue2.default({
-  delimiters: ['[', ']'],
-  el: '#app',
-  data: {
-    message: 'Hello Vuedddd!dfadfa'
-  },
-  methods: {
-    clickButton: function clickButton() {
-      this.message = 'page 1';
+    delimiters: ['[', ']'],
+    el: '#app',
+    data: {
+        message: 'Hello laura'
+    },
+    methods: {
+        clickButton: function clickButton() {
+            this.message = 'page 1';
+        }
     }
-  }
 });
 
 },{"./components/text.vue":6,"vue/dist/vue.js":3}]},{},[7])

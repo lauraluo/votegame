@@ -10,6 +10,29 @@ gulp.task('default', function () {
 })
 */
 
+// Read the launchSettings.json file into the launch variable.
+var launch = require('./Properties/launchSettings.json');
+
+// Holds information about the hosting environment.
+var environment = {
+    // The names of the different environments.
+    development: "Development",
+    staging: "Staging",
+    production: "Production",
+    // Gets the current hosting environment the application is running under.
+    current: function() {
+        return process.env.ASPNETCORE_ENVIRONMENT ||
+            (launch && launch.profiles['IIS Express'].environmentVariables.ASPNETCORE_ENVIRONMENT) ||
+            this.development;
+    },
+    // Are we running under the development environment.
+    isDevelopment: function() { return this.current() === this.development; },
+    // Are we running under the staging environment.
+    isStaging: function() { return this.current() === this.staging; },
+    // Are we running under the production environment.
+    isProduction: function() { return this.current() === this.production; }
+};
+
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
@@ -30,6 +53,7 @@ var gulp = require('gulp'),
 
 var distPath = "wwwroot/";
 
+console.log(environment.current());
 
 // // Sass
 gulp.task('sass', function() {
@@ -54,27 +78,27 @@ gulp.task('sprite', function() {
         imgName: 'sprite.png',
         cssName: '_sprite.scss',
         padding: 10,
-        exportOpts : { quality: 50 },
+        exportOpts: { quality: 50 },
         cssTemplate: function(data) {
             var output = '';
             var v = Math.random();
-            data.sprites.forEach(function(sprite){
+            data.sprites.forEach(function(sprite) {
                 output += [
-                    '.'+sprite.name+' {\n',
+                    '.' + sprite.name + ' {\n',
                     '  display: block;\n',
-                    '  background-image: url(../images/'+sprite.image+'?v='+ v+');\n',
-                    '  background-position: '+sprite.px.offset_x+' '+sprite.px.offset_y+';\n',
-                    '  width:'+sprite.px.width+';\n',
-                    '  height: '+sprite.px.height+';\n',
-                    '/*source-image:'+sprite.source_image+'*/\n',
+                    '  background-image: url(../images/' + sprite.image + '?v=' + v + ');\n',
+                    '  background-position: ' + sprite.px.offset_x + ' ' + sprite.px.offset_y + ';\n',
+                    '  width:' + sprite.px.width + ';\n',
+                    '  height: ' + sprite.px.height + ';\n',
+                    '/*source-image:' + sprite.source_image + '*/\n',
                     '}\n',
-                    '@mixin '+sprite.name+'() {\n',
+                    '@mixin ' + sprite.name + '() {\n',
                     '  display: block;\n',
-                    '  background-image: url(../images/'+sprite.image+'?v='+ v+');\n',
-                    '  background-position: '+sprite.px.offset_x+' '+sprite.px.offset_y+';\n',
-                    '  width:'+sprite.px.width+';\n',
-                    '  height: '+sprite.px.height+';\n',
-                    '/*source-image:'+sprite.source_image+'*/\n',
+                    '  background-image: url(../images/' + sprite.image + '?v=' + v + ');\n',
+                    '  background-position: ' + sprite.px.offset_x + ' ' + sprite.px.offset_y + ';\n',
+                    '  width:' + sprite.px.width + ';\n',
+                    '  height: ' + sprite.px.height + ';\n',
+                    '/*source-image:' + sprite.source_image + '*/\n',
                     '}\n'
                 ].join('')
             });
@@ -121,14 +145,14 @@ gulp.task('copyJS', function() {
 });
 */
 
-gulp.task('js', function () {
-  gulp.src('./src/*.js')
-    .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'] }))
-    .pipe(gulp.dest('./' + distPath+ 'js/'));
+gulp.task('js', function() {
+    gulp.src('./src/app.js')
+        .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'] }))
+        .pipe(gulp.dest('./' + distPath + 'js/'));
 })
 
 gulp.task('copyImg', function() {
-    gulp.src(['src/images/*','!src/images/sprite'])
+    gulp.src(['src/images/*', '!src/images/sprite'])
         .pipe(gulp.dest(distPath + 'images'));
 });
 
@@ -159,18 +183,13 @@ gulp.task('open', function() {
 gulp.task('watch', function() {
     gulp.watch(['src/*.jade'], ['jade']);
     gulp.watch('src/scss/**/**.scss', ['sass']);
-    gulp.watch(['src/*.js'], ['js']);
+    gulp.watch(['src/components/**/*.vue', 'src/app.js'], ['js']);
     gulp.watch(['src/images/*'], ['copyImg']);
     gulp.watch(['src/images/sprites/*'], ['sprite']);
 });
 
 //Build
-gulp.task('build', ['js','sprite','jade', 'sass', 'copyAll'], function() {});
+gulp.task('build', ['js', 'sprite', 'jade', 'sass', 'copyAll'], function() {});
 
 //Group Dev
-gulp.task('dev', ['build', 'connectDist', 'watch', 'open'], function() {});
-
-//Default  Task
-gulp.task('default', ['dev'], function() {});
-
-
+gulp.task('default', ['build', 'connectDist', 'watch', 'open'], function() {});

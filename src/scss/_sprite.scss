@@ -1,6 +1,6 @@
 .sprite__demo {
   display: block;
-  background-image: url(../images/sprite.png?v=0.08549994835630059);
+  background-image: url(../images/sprite.png?v=0.5953285794239491);
   background-position: 0px 0px;
   width:500px;
   height: 500px;
@@ -8,7 +8,7 @@
 }
 @mixin sprite__demo() {
   display: block;
-  background-image: url(../images/sprite.png?v=0.08549994835630059);
+  background-image: url(../images/sprite.png?v=0.5953285794239491);
   background-position: 0px 0px;
   width:500px;
   height: 500px;

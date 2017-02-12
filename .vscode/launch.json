@@ -1,11 +1,10 @@
 {
     "version": "0.2.0",
-    "configurations": [
-        {
+    "configurations": [{
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "",
             "program": "${workspaceRoot}/bin/Debug/netcoreapp1.1/voteGame.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
