@@ -1,6 +1,6 @@
 ﻿import Vue from 'vue'
 
-Vue.component('txt', require('./components/text.vue'))
+Vue.component('com1', require('./components/text.vue'))
 
 const app = new Vue({
     delimiters: ['[', ']'],
@@ -10,6 +10,7 @@ const app = new Vue({
     },
     methods: {
         clickButton() {
+            console.log("click");
             this.message = 'page 1'
         }
     }
