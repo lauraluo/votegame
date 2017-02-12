@@ -146,8 +146,8 @@ gulp.task('copyJS', function() {
 */
 
 gulp.task('js', function() {
-    gulp.src('./src/app.js')
-        .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'], debug: true }))
+    gulp.src('./src/app.js', {})
+        .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'], debug: false }))
         .pipe(gulp.dest('./' + distPath + 'js/'));
 })
 

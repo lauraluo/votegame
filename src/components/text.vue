@@ -1,11 +1,11 @@
 <template>
-  hahahafadfad
-  <p>{{ text }}</p>
+  hahahafadfaddsdsd
+  <p>{{ msg }}</p>
 </template>
 
 <script>
     export default {
-        props: ['text']
+        props: ['msg']
     }
 </script>
 
