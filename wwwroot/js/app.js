@@ -16267,10 +16267,10 @@ dbGame.on('value', function (snapshot) {
 });
 // dbGame.ref("/voters").push({})
 var app = new _vue2.default({
-    delimiters: ['[', ']'],
+    // delimiters: ['[', ']'],
     el: '#rootApp',
     data: {
-        msg: 'Hello laura',
+        msg: 'Hello lauraadfadf',
         vote: []
     },
     firebase: {

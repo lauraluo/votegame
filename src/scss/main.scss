@@ -23,18 +23,41 @@
 $tran:0.3s ease-in all;
 $boxShadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
 
-
-.index {
-    .l-vm {
-        height: 80vh;
-        width: 100%;
-        background: #d6d6d6;
-        text-align: center;
-    }
-    .l-vm__content {
-        background: red;
-        min-height: 200px;
-    }
-    @include respond-to(small-up) {}
+.hide-text {
+  overflow: hidden;
+  padding: 0; /* 1 */
+  text-indent: 101%;
+  white-space: nowrap;
 }
 
+.vote {
+    &__cover {
+        background: url(../images/vote_cover.jpg) no-repeat;
+        width: 1260px;
+        height: 633px;
+        position: relative;
+    }
+    &__share {
+        background-size: 100% 100%;
+        // background-color: red;
+        width: 80px;
+        height: 80px;
+        display: block;
+        position: absolute;
+        right: 11px;
+        top: 431px;
+    }
+    @include respond-to(small-up) {
+        //small 以上 不包含small
+    }
+    @include respond-to(small) {
+        &__cover {
+            background: url(../images/vote_cover-m.jpg);
+            width: 640px;
+            height: 900px;
+        }
+        &__share {
+            background: url(../images/fb.png) no-repeat;
+        }
+    }
+}

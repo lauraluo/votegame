@@ -7,28 +7,11 @@ html(itemscope,itemtype="http://schema.org/Article",ng-app="markup" debug="false
     //html head
     include _head.jade
     //html body
-    body(class="l-index")
-        #app
-            div(v-cloak='')
-                p [ message ]
-                txt(text='some text 1')
-                button(@click='clickButton') ok
-
-        div.l-wrap
-            //nav
-            include _nav.jade
-            div.l-fb
-                div.l-container
-                    div.fb-box
-                        .fb-like(data-href='#', data-layout='button_count', data-action='like', data-show-faces='false', data-share='true') 
-            div.l-main
-                //main view
-                block page_main
-        div.l-footer.footer
-            div.l-container
-                p footer
-        div.fb-root
-    script(src="../js/app.js")
+    body
+        div.l-container
+            ddafdf
+            block page_main
+    script(src="js/app.js")
 
     script(type='text/javascript').         
         (function(d, s, id) {

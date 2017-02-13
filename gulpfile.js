@@ -33,8 +33,13 @@ var environment = {
     isProduction: function() { return this.current() === this.production; }
 };
 
+//need require os
+// var browser = os.platform() === 'linux' ? 'google-chrome' : (
+//   os.platform() === 'darwin' ? 'google chrome' : (
+//   os.platform() === 'win32' ? 'chrome' : 'firefox'));
+
 var gulp = require('gulp'),
-    concat = require('gulp-concat'),
+    // concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     watch = require('gulp-watch'),
     sass = require('gulp-sass'),
@@ -130,7 +135,7 @@ gulp.task('html', function() {
 //Sever
 gulp.task('connectDist', function() {
     connect.server({
-        root: 'wwwroot',
+        root: ['wwwroot/','src/'],
         port: 3001,
         livereload: true
     });
@@ -148,7 +153,8 @@ gulp.task('copyJS', function() {
 gulp.task('js', function() {
     gulp.src('./src/app.js', {})
         .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'], debug: false }))
-        .pipe(gulp.dest('./' + distPath + 'js/'));
+        .pipe(gulp.dest('./' + distPath + 'js/'))
+        .pipe(connect.reload());
 })
 
 gulp.task('copyImg', function() {
@@ -175,21 +181,23 @@ gulp.task('open', function() {
     gulp.src(__filename)
         .pipe(open({
             uri: 'http://localhost:3001',
-            app: 'chrome'
+            app:  'google chrome'
         }));
 });
 
 // Watch
 gulp.task('watch', function() {
-    gulp.watch(['src/*.jade'], ['jade']);
+    gulp.watch(['src/**/*.jade'], ['jade']);
     gulp.watch('src/scss/**/**.scss', ['sass']);
     gulp.watch(['src/components/**/*.vue', 'src/app.js'], ['js']);
     gulp.watch(['src/images/*'], ['copyImg']);
     gulp.watch(['src/images/sprites/*'], ['sprite']);
+    gulp.watch([ distPath + '*.html'], ['html']);
 });
 
 //Build
 gulp.task('build', ['js', 'sprite', 'jade', 'sass', 'copyAll'], function() {});
 
-//Group Dev
-gulp.task('default', ['build', 'connectDist', 'watch', 'open'], function() {});
+//run
+gulp.task('default', ['build', 'watch', 'connectDist', 'open'], function() {});
+

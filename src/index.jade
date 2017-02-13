@@ -3,14 +3,13 @@ extends _layout.jade
 
 //page html
 block page_main
-    section.index
-        div.index__hd
-        div.index__bd
-            div.index__content
-                div.l-container
-                    div.l-vm
-                        div.l-vm__content
-                            p 灰色區塊vhghhghghg內asfaffasdf垂直置中
-                            div.sprite__demo
-        div.index__ft
+    section.vote#rootApp
+        div.vote__hd
+            div.vote__cover
+                h1.hide-text 蜜糖甜心就是你，尋找BUTY，品牌大使
+                a.vote__share.hide-text(href="https://www.facebook.com/sharer/sharer.php?u=http://www.butybaby.com/m/index.php" title="Buty Baby 蜜糖甜心" target="_blank") 
+        div.vote__bd
+            div.vote__content {{msg}}
+                    
+        div.vote__ft
 

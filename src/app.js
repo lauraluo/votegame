@@ -48,10 +48,10 @@ dbGame.on('value', function(snapshot) {
     })
     // dbGame.ref("/voters").push({})
 const app = new Vue({
-    delimiters: ['[', ']'],
+    // delimiters: ['[', ']'],
     el: '#rootApp',
     data: {
-        msg: 'Hello laura',
+        msg: 'Hello lauraadfadf',
         vote: []
     },
     firebase: {

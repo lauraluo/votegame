@@ -324,7 +324,7 @@ body {
 
 .l-container {
   margin: 0 auto;
-  width: 960px;
+  width: 1280px;
   position: relative;
   max-height: 100000px; }
   @media (max-width: 640px) and (min-width: 0) {
@@ -544,12 +544,32 @@ body {
         -webkit-transition: 0.1s;
         transition: 0.1s; }
 
-.index .l-vm {
-  height: 80vh;
-  width: 100%;
-  background: #d6d6d6;
-  text-align: center; }
+.hide-text {
+  overflow: hidden;
+  padding: 0;
+  /* 1 */
+  text-indent: 101%;
+  white-space: nowrap; }
 
-.index .l-vm__content {
-  background: red;
-  min-height: 200px; }
+.vote__cover {
+  background: url(../images/vote_cover.jpg) no-repeat;
+  width: 1260px;
+  height: 633px;
+  position: relative; }
+
+.vote__share {
+  background-size: 100% 100%;
+  width: 80px;
+  height: 80px;
+  display: block;
+  position: absolute;
+  right: 11px;
+  top: 431px; }
+
+@media (max-width: 640px) and (min-width: 0) {
+  .vote__cover {
+    background: url(../images/vote_cover-m.jpg);
+    width: 640px;
+    height: 900px; }
+  .vote__share {
+    background: url(../images/fb.png) no-repeat; } }
