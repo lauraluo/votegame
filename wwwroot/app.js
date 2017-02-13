@@ -16186,7 +16186,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    props: ['showModal'],
+    props: ['showModal', 'name'],
     watch: {
         'showModal': function showModal(newVal, oldVal) {
             // if(val){
@@ -16198,11 +16198,12 @@ exports.default = {
     },
     methods: {
         open: function open($event) {
-            // this.$emit('input', true);
-            this.$emit('open');
+            var _this = this;
+            eventCtrls.$emit('open', _this.name);
         },
-        close: function close($even) {
-            this.$emit('close');
+        close: function close($event) {
+            var _this = this;
+            this.$emit('close', _this.name);
         }
     }
 };
@@ -16217,9 +16218,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-af83d376", module.exports)
+    hotAPI.createRecord("_v-8d0b53e6", module.exports)
   } else {
-    hotAPI.update("_v-af83d376", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-8d0b53e6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],14:[function(require,module,exports){
@@ -16271,10 +16272,10 @@ var Firebase_game = _firebase2.default.initializeApp(initFBGame, 'Firebase_game'
 // vue init 
 //====================
 
+var eventCtrls = new _vue2.default();
+
 _vue2.default.use(_vuefire2.default);
-_vue2.default.component('lightbox', require('./components/Text.vue'));
-// Vue.component('abc', require('./components/Popup.vue'));
-// Vue.component('popup', require('./components/vDialog.vue'));
+_vue2.default.component('lightbox', require('./components/Lightbox.vue'));
 
 // fbGamersRef.on('value', function(snapshot) {
 //     // console.log(snapshot.val());
@@ -16301,7 +16302,8 @@ var app = new _vue2.default({
             snapshot.forEach(function (snap) {
                 console.log(snap.numChildren());
                 console.log(snap.key);
-                _this.counts[snap.key] = snap.numChildren();
+                // _this.counts[snap.key] = snap.numChildren();
+                _vue2.default.set(_this.counts, snap.key, snap.numChildren());
             });
             console.log(_this.counts);
         }.bind(this));
@@ -16320,7 +16322,22 @@ var app = new _vue2.default({
         gamers: [],
         results: [],
         shareUrl: "",
-        showModal: true,
+        modalConfig: {
+            alert: {
+                isShow: false,
+                title: '',
+                msg: '',
+                name: 'alert'
+            },
+            forms: {
+                isShow: false,
+                name: 'forms'
+            },
+            trems: {
+                isShow: false,
+                name: 'trems'
+            }
+        },
         // dialogConfig: {
         //     trems: true,
         //     forms: false,
@@ -16333,14 +16350,16 @@ var app = new _vue2.default({
         // results: Firebase_game.database().ref('statistics')
     },
     methods: {
-        open: function open($event) {
-            this.showModal = true;
+        open: function open(name) {
+            this.modalConfig[name].isShow = true;
         },
-        close: function close($even) {
-            // console.log('close');
-            this.showModal = false;
+        close: function close(name) {
+            this.modalConfig[name].isShow = false;
+        },
+        handleClickVoteBtn: function handleClickVoteBtn($event) {
+            this.open('trems');
         }
     }
 });
 
-},{"./components/Text.vue":13,"firebase":4,"vue/dist/vue.js":9,"vuefire":11}]},{},[14])
+},{"./components/Lightbox.vue":13,"firebase":4,"vue/dist/vue.js":9,"vuefire":11}]},{},[14])

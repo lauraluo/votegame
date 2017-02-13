@@ -15,7 +15,7 @@ html(itemscope,itemtype="http://schema.org/Article",ng-app="markup" debug="false
             //-     include _forms.jade
             //- voteDialog
             //-     include _alert.jade
-            lightbox(v-on:close="close",v-on:open="open", v-bind:show-modal="showModal")
+            lightbox(v-on:close="close",v-on:open="open", v-bind:show-modal="modalConfig.trems.isShow", v-bind:name="modalConfig.trems.name")
                 include _trems.jade
     script(src="app.js")
 

@@ -34,10 +34,10 @@ var Firebase_game = Firebase.initializeApp(initFBGame, 'Firebase_game');
 // vue init 
 //====================
 
+var eventCtrls = new Vue();
+
 Vue.use(VueFire);
-Vue.component('lightbox', require('./components/Text.vue'));
-// Vue.component('abc', require('./components/Popup.vue'));
-// Vue.component('popup', require('./components/vDialog.vue'));
+Vue.component('lightbox', require('./components/Lightbox.vue'));
 
 // fbGamersRef.on('value', function(snapshot) {
 //     // console.log(snapshot.val());
@@ -64,7 +64,8 @@ const app = new Vue({
             snapshot.forEach(function(snap) {
                 console.log(snap.numChildren());
                 console.log(snap.key);
-                _this.counts[snap.key] = snap.numChildren();
+                // _this.counts[snap.key] = snap.numChildren();
+                Vue.set(_this.counts, snap.key , snap.numChildren())
             });
             console.log(_this.counts);
         }.bind(this));
@@ -86,7 +87,22 @@ const app = new Vue({
         gamers: [],
         results: [],
         shareUrl: "",
-        showModal: true,
+        modalConfig: {
+            alert: {
+                isShow:false,
+                title:'',
+                msg: '',
+                name: 'alert'    
+            },
+            forms: {
+                isShow:false,
+                name: 'forms'    
+            },
+            trems:{
+                isShow:false,
+                name: 'trems'    
+            }
+        },
         // dialogConfig: {
         //     trems: true,
         //     forms: false,
@@ -99,12 +115,14 @@ const app = new Vue({
         // results: Firebase_game.database().ref('statistics')
     },
     methods: {
-        open: function($event) {
-            this.showModal = true;
+        open: function(name) {
+            this.modalConfig[name].isShow = true;
         },
-        close: function($even) {
-            // console.log('close');
-            this.showModal = false;
+        close: function(name) {            
+            this.modalConfig[name].isShow = false;
+        },
+        handleClickVoteBtn: function($event){
+            this.open('trems');
         }
     }
 })

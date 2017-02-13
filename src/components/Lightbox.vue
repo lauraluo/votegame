@@ -8,7 +8,7 @@
 
 <script>
     export default {
-        props:['showModal'],
+        props:['showModal','name'],
         watch: {
             'showModal':function(newVal, oldVal){
                 // if(val){
@@ -20,12 +20,13 @@
         },
         methods: {
             open: function ($event) {
-                // this.$emit('input', true);
-                this.$emit('open');
+                var _this = this;
+                eventCtrls.$emit('open', _this.name);
 
             },
-            close: function ($even) {
-                this.$emit('close');
+            close: function ($event) {
+                var _this = this;
+                this.$emit('close', _this.name);
             }  
         }
     }
