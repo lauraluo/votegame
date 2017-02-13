@@ -51,7 +51,7 @@ const app = new Vue({
     // delimiters: ['[', ']'],
     el: '#rootApp',
     data: {
-        msg: 'Hello lauraadfadf',
+        msg: 'Hello lauraadffdfdfadfadadf11111111',
         vote: []
     },
     firebase: {

@@ -9,7 +9,21 @@ block page_main
                 h1.hide-text 蜜糖甜心就是你，尋找BUTY，品牌大使
                 a.vote__share.hide-text(href="https://www.facebook.com/sharer/sharer.php?u=http://www.butybaby.com/m/index.php" title="Buty Baby 蜜糖甜心" target="_blank") 
         div.vote__bd
-            div.vote__content {{msg}}
-                    
+            div.vote__content
+                ul.vote__items.clearfix
+                    - for(n=0;n<8;n++)
+                        li.vote__item
+                            div.vote__item__wrap
+                                div.vote__item__media
+                                    img(src="https://dummyimage.com/600x600/000/fff" title="name")
+                                div.vote__item__content.clearfix
+                                    div.vote__item__text
+                                        div.name 姓名/暱稱：壯壯
+                                        div.count 票數：9,999,999
+                                    div.vote__item__ctrl
+                                        a.vote-btn.pure-button.pure-button-primary(href="#", title="name") 投票給我
         div.vote__ft
+            h3.pc-only 東森蝶蒙股份有限公司 235新北市中和市景平路258號 0800-013-058
+            p.mb-only 235新北市中和市景平路258號 0800-013-058
 
+    

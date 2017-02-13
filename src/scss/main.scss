@@ -18,24 +18,77 @@
 @import "layout/_nav.scss";
 //5.components
 @import "components/_load.scss"; //html 在 load.js 裡
+@import "vendor/_pure.scss";
 //6.pages
 //7.themes
 $tran:0.3s ease-in all;
 $boxShadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
 
 .hide-text {
-  overflow: hidden;
-  padding: 0; /* 1 */
-  text-indent: 101%;
-  white-space: nowrap;
+    overflow: hidden;
+    padding: 0;
+    /* 1 */
+    text-indent: 101%;
+    white-space: nowrap;
+}
+
+body {
+    color: #757475;
+}
+
+html {
+    font-size: 62.5%;
+    @include respond-to(small) {
+        // font-size: 100%;
+    }
+}
+
+
+h1 {
+    margin: 0;
+}
+
+a.vote-btn.pure-button-primary {
+    background: #94c341;
+    font-size: 1.8rem;
+}
+
+.pc-only {
+    @include respond-to(small) {
+        display: none!important;
+    }
+}
+
+.pc-only {
+    @include respond-to(small-up) {
+        display: none!important;
+    }
 }
 
 .vote {
+    background: #f8f8f8;
+    &__ft {
+        background: #555;
+        color: #fff;
+        font-size: 1.8rem;
+        text-align: center;
+        line-height: 90px;
+        @include respond-to(small) {
+            font-size: 1.3rem;
+        }
+    }
     &__cover {
-        background: url(../images/vote_cover.jpg) no-repeat;
+        background: url(../images/vote_cover.jpg) no-repeat 50% 50%;
         width: 1260px;
         height: 633px;
         position: relative;
+        @include respond-to(small) {
+            background:url(../images/vote_cover-m.jpg) no-repeat 50% 50%;
+            width: 100%;
+            height: 0;
+            padding-bottom: 140.625%;
+            background-size: 100% 100%;
+        }
     }
     &__share {
         background-size: 100% 100%;
@@ -47,17 +100,164 @@ $boxShadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
         right: 11px;
         top: 431px;
     }
+    &__items {
+        padding: 20px 30px;
+        box-sizing: border-box;
+        margin-left: -20px;
+        @include respond-to(small) {
+            padding: grid-width(0.2) grid-width(0.2);
+            margin-left: grid-width(0.1)
+        }
+    }
+    &__item {
+        width: grid-width(3);
+        float: left;
+        padding: 10px;
+        box-sizing: border-box;
+        font-size: 1.6rem;
+        @include respond-to(small) {
+            width: grid-width(6);
+            padding: grid-width(0.2);
+        }
+        &__wrap {
+            background: #fff;
+            box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.2);
+        }
+        &__media {
+            overflow: hidden;
+            img {
+                width: 100%;
+                transform: scale(1);
+                transition: all .5s ease-in-out;
+            }
+        }
+        &__content {
+            padding: 20px 10px;
+        }
+        &__text {
+            float: left;
+            width: 55%;
+            @include respond-to(small) {
+                width: grid-width(12);
+                float: none;
+            }
+            .name {
+                color: #fc7c9f;
+                font-weight: bold;
+                margin-bottom: 10px;
+
+            }
+            .count {
+                color: #2a628f;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+        }
+        &__ctrl {
+            overflow: hidden;
+            @include respond-to(small) {
+                text-align: center;
+                a {
+                    display: block;
+                }
+            }
+        }
+        &:hover {
+            .vote__item__media img {
+                transform: scale(1.2);
+            }
+        }
+    }
     @include respond-to(small-up) {
         //small 以上 不包含small
     }
     @include respond-to(small) {
-        &__cover {
-            background: url(../images/vote_cover-m.jpg);
-            width: 640px;
-            height: 900px;
-        }
         &__share {
             background: url(../images/fb.png) no-repeat;
+            width: 15vw;
+            height: 15vw;
+            background-size: 100% 100%;
+            top: 25.5%;
         }
     }
+}
+
+.vote-dialog {
+    // display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    line-height: 1.6;
+    font-size: 1.3rem;
+    h2 {
+        font-size: 2.0rem;
+        font-weight: bold;
+    }
+    &__close {
+        background: url(../images/fancybox_sprite.png) no-repeat 0 0;
+        display: block;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        position: absolute;
+        top:-18px;
+        right: -18px;
+        z-index: 99;
+        @include respond-to(small) {
+            transform: scale(2);
+            transform-origin: 100% 50%;
+        }
+    }
+    &__box {
+        position: relative;
+        width: 630px;
+        background: #fff;
+        border-radius: 15px;
+        box-sizing: border-box;
+        padding: 30px;
+        margin: 0 auto;
+        top: 10vh;
+        box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.2);
+        @include respond-to(small) {
+            // padding: 20px;
+            width: 90vw;
+        }
+    }
+    &__ctrls {
+        padding-top: 20px;
+        text-align: center;
+    }
+}
+
+.vote-trems {
+    &__list {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #e1e1e1;
+        padding: 10px;
+        box-sizing: border-box;
+        > li {
+            list-style: decimal;
+            list-style-position: outside;
+            margin-left: 1.5em;
+        }
+        ul li {
+            margin-left: 1.5em;
+        }
+    }
+    h2,
+    p,
+    li {
+        margin-bottom: 10px;
+    }
+}
+
+.vote-forms {
+    .pure-form-message {
+        color: red;
+    }
+
 }

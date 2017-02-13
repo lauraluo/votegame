@@ -16270,7 +16270,7 @@ var app = new _vue2.default({
     // delimiters: ['[', ']'],
     el: '#rootApp',
     data: {
-        msg: 'Hello lauraadfadf',
+        msg: 'Hello lauraadffdfdfadfadadf11111111',
         vote: []
     },
     firebase: {
