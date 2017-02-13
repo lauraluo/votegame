@@ -115,14 +115,15 @@ const app = new Vue({
         // results: Firebase_game.database().ref('statistics')
     },
     methods: {
-        open: function(name) {
+        openModal: function(name) {
             this.modalConfig[name].isShow = true;
         },
-        close: function(name) {            
+        closeModal: function(name) {            
             this.modalConfig[name].isShow = false;
         },
         handleClickVoteBtn: function($event){
-            this.open('trems');
+            //不同的狀況，跳不同的視窗
+            this.openModal('trems');
         }
     }
 })

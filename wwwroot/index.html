@@ -58,7 +58,7 @@
           </div>
         </section>
       </div>
-      <lightbox v-on:close="close" v-on:open="open" v-bind:show-modal="modalConfig.trems.isShow" v-bind:name="modalConfig.trems.name">
+      <lightbox v-on:close="closeModal" v-on:open="openModal" v-bind:show-modal="modalConfig.trems.isShow" v-bind:name="modalConfig.trems.name">
         <div>
           <h2>閱讀並同意條款</h2>
           <div class="vote-trems vote-dialog__content">

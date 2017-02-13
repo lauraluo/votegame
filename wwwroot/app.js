@@ -16350,14 +16350,15 @@ var app = new _vue2.default({
         // results: Firebase_game.database().ref('statistics')
     },
     methods: {
-        open: function open(name) {
+        openModal: function openModal(name) {
             this.modalConfig[name].isShow = true;
         },
-        close: function close(name) {
+        closeModal: function closeModal(name) {
             this.modalConfig[name].isShow = false;
         },
         handleClickVoteBtn: function handleClickVoteBtn($event) {
-            this.open('trems');
+            //不同的狀況，跳不同的視窗
+            this.openModal('trems');
         }
     }
 });
