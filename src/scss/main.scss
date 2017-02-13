@@ -48,7 +48,7 @@ h1 {
     margin: 0;
 }
 
-a.vote-btn.pure-button-primary {
+a.pure-button-primary {
     background: #94c341;
     font-size: 1.8rem;
 }
@@ -137,6 +137,7 @@ a.vote-btn.pure-button-primary {
         &__text {
             float: left;
             width: 55%;
+            padding: 0 10px 0 0;
             @include respond-to(small) {
                 width: grid-width(12);
                 float: none;

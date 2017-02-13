@@ -142,18 +142,18 @@ gulp.task('connectDist', function() {
 });
 
 //Copy
-/*
+
 gulp.task('copyJS', function() {
-    gulp.src(['src/js/**'])
-        .pipe(gulp.dest(distPath + 'js'))
+    gulp.src(['src/js/**/*.js'])
+        .pipe(gulp.dest( distPath + 'js/'))
         .pipe(connect.reload());
 });
-*/
+
 
 gulp.task('js', function() {
-    gulp.src('./src/app.js', {})
+    gulp.src('./src/app.js')
         .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'], debug: false }))
-        .pipe(gulp.dest('./' + distPath + 'js/'))
+        .pipe(gulp.dest('./' + distPath))
         .pipe(connect.reload());
 })
 
@@ -167,7 +167,7 @@ gulp.task('copyAssets', function() {
         .pipe(gulp.dest(distPath + 'assets'));
 });
 
-gulp.task('copyAll', ['copyImg', 'copyAssets'], function() {});
+gulp.task('copyAll', ['copyImg', 'copyAssets','copyJS'], function() {});
 
 //Clean
 gulp.task('reset', function() {
@@ -193,6 +193,7 @@ gulp.task('watch', function() {
     gulp.watch(['src/images/*'], ['copyImg']);
     gulp.watch(['src/images/sprites/*'], ['sprite']);
     gulp.watch([ distPath + '*.html'], ['html']);
+    gulp.watch('src/js/**/*.js', ['copyJS']);
 });
 
 //Build

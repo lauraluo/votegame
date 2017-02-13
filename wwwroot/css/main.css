@@ -1277,7 +1277,7 @@ html {
 h1 {
   margin: 0; }
 
-a.vote-btn.pure-button-primary {
+a.pure-button-primary {
   background: #94c341;
   font-size: 1.8rem; }
 
@@ -1359,7 +1359,8 @@ a.vote-btn.pure-button-primary {
       padding: 20px 10px; }
     .vote__item__text {
       float: left;
-      width: 55%; }
+      width: 55%;
+      padding: 0 10px 0 0; }
       @media (max-width: 949px) and (min-width: 0) {
         .vote__item__text {
           width: 100.0%;

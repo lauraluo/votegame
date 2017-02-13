@@ -2,6 +2,10 @@
 import VueFire from 'vuefire'
 import Firebase from 'firebase'
 
+//====================
+//firebase init 
+//====================
+
 var initFBConfig = {
     apiKey: "AIzaSyDMY4iAWlqS5Qv1UklqR5b3nxYKdiISMgo",
     authDomain: "voteconfig.firebaseapp.com",
@@ -17,62 +21,75 @@ var initFBGame = {
     storageBucket: "voterdemo-7aee9.appspot.com",
     messagingSenderId: "164280679850"
 };
-var config = {
-    apiKey: "AIzaSyDeKIutwIDgLhXlPRH3a0jmXKsnGXVVGwU",
-    authDomain: "vuedemo-669fb.firebaseapp.com",
-    databaseURL: "https://vuedemo-669fb.firebaseio.com",
-    storageBucket: "vuedemo-669fb.appspot.com",
-};
 
-Firebase.initializeApp(initFBGame);
-var dbGame = Firebase.database().ref('/voters');
+var Firebase_config = Firebase.initializeApp(initFBConfig);
+var Firebase_game = Firebase.initializeApp(initFBGame, 'Firebase_game');
 
-// Firebase.initializeApp(initFBGame);
-// var fbConfig = Firebase.initializeApp(initFBConfig, "fbConfig");
+// var fbConfigRef = Firebase_config.database().ref();//root
+// var fbGamersRef = Firebase_config.database().ref('gamers');
+// var fbGameResusltRef = Firebase_game.database().ref('statistics');
 
-// var dbGame = Firebase.database();
-// var dbConfig = fbConfig.database();
 
-// console.log(Firebase.app().name); // "[DEFAULT]"
-// console.log(fbConfig.name); // "other"
+//====================
+// vue init 
+//====================
 
 Vue.use(VueFire);
-Vue.component('com1', require('./components/text.vue'))
-    //投票按鈕
-    //是不是暫停 是不是超過了活動時間
-    //輸入資料的視窗
-    //已經投過的視窗
+// Vue.component('com', require('./components/Text.vue'));
+// Vue.component('popup', require('./component/Popup.vue'));
+// Vue.component('popup', require('./components/vDialog.vue'));
 
-dbGame.on('value', function(snapshot) {
-        console.log(snapshot.val());
-    })
-    // dbGame.ref("/voters").push({})
+// fbGamersRef.on('value', function(snapshot) {
+//     // console.log(snapshot.val());
+//     console.log(snapshot);
+//     console.log("There are " + snapshot.numChildren() + " messages");
+// });
+
 const app = new Vue({
     // delimiters: ['[', ']'],
     el: '#rootApp',
-    data: {
-        msg: 'Hello lauraadffdfdfadfadadf11111111',
-        vote: []
+    mounted: function(){
+        var _this = this;
+        
+        //只取一次
+        Firebase_config.database().ref().once('value', function(snapshot) {
+            this.endDate = snapshot.child('endDate').val();
+            this.stage = snapshot.child('stage').val();
+            this.gamers =  snapshot.child('gamers').val();
+            this.isPaused =  snapshot.child('isPaused').val();
+        }.bind(this));
+
+        //參賽者數量初始化
+        Firebase_game.database().ref('statistics').on('value', function(snapshot) {
+            snapshot.forEach(function(snap){
+                console.log(snap.numChildren());
+                console.log(snap.key);
+                _this.counts[snap.key] = snap.numChildren();
+            });
+            console.log(_this.counts);
+        }.bind(this));
+
+
+    
     },
+    data: {
+        startDate: "",
+        endDate: "",
+        isPaused: false,
+        stage: -1,
+        gamers: [],
+        results: [],
+        shareUrl: "",
+        counts:{} //裝計數的容器
+    },
+    //動態綁定
     firebase: {
-        // simple syntax, bind as an array by default
-        vote: dbGame
-            // questions: dbConfig.ref("gammers").limitToLast(25)
-            // can also bind to a query
-            // anArray: db.ref('url/to/my/collection').limitToLast(25)
-            // full syntax
-            // anObject: {
-            //     source: db.ref('url/to/my/object'),
-            //     // optionally bind as an object
-            //     asObject: true,
-            //     // optionally provide the cancelCallback
-            //     cancelCallback: function() {}
-            // }
+        results: Firebase_game.database().ref('statistics')
     },
     methods: {
         clickButton() {
             console.log("click");
-            this.msg = 'page 1'
+            this.msg = 'page 1';
         }
     }
 })

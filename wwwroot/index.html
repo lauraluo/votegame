@@ -26,124 +26,43 @@
   </head>
   <!--html body-->
   <body>
-    <div class="l-container">
-      <ddafdf></ddafdf>
-      <section id="rootApp" class="vote">
-        <div class="vote__hd">
-          <div class="vote__cover">
-            <h1 class="hide-text">蜜糖甜心就是你，尋找BUTY，品牌大使</h1><a href="https://www.facebook.com/sharer/sharer.php?u=http://www.butybaby.com/m/index.php" title="Buty Baby 蜜糖甜心" target="_blank" class="vote__share hide-text"> </a>
+    <div id="rootApp">
+      <div class="l-container">
+        <section class="vote">
+          <div class="vote__hd">
+            <div class="vote__cover">
+              <h1 class="hide-text">蜜糖甜心就是你，尋找BUTY，品牌大使</h1><a href="https://www.facebook.com/sharer/sharer.php?u=http://www.butybaby.com/m/index.php" title="Buty Baby 蜜糖甜心" target="_blank" class="vote__share hide-text"> </a>
+            </div>
           </div>
-        </div>
-        <div class="vote__bd">
-          <div class="vote__content">
-            <ul class="vote__items clearfix">
-              <li class="vote__item">
-                <div class="vote__item__wrap">
-                  <div class="vote__item__media"><img src="https://dummyimage.com/600x600/000/fff" title="name"></div>
-                  <div class="vote__item__content clearfix">
-                    <div class="vote__item__text">
-                      <div class="name">姓名/暱稱：壯壯</div>
-                      <div class="count">票數：9,999,999</div>
+          <div class="vote__bd">
+            <div class="vote__content">
+              <ul class="vote__items clearfix">
+                <li v-for="( gamer,key) in gamers" class="vote__item">
+                  <div class="vote__item__wrap">
+                    <div class="vote__item__media"><img :src="gamer.imgUrl" title="name"></div>
+                    <div class="vote__item__content clearfix">
+                      <div class="vote__item__text">
+                        <div class="name">姓名/暱稱：{{ gamer.name }}</div>
+                        <div class="count">票數： {{ counts[key] ? counts[key] : 0 }}</div>
+                      </div>
+                      <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
                     </div>
-                    <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
                   </div>
-                </div>
-              </li>
-              <li class="vote__item">
-                <div class="vote__item__wrap">
-                  <div class="vote__item__media"><img src="https://dummyimage.com/600x600/000/fff" title="name"></div>
-                  <div class="vote__item__content clearfix">
-                    <div class="vote__item__text">
-                      <div class="name">姓名/暱稱：壯壯</div>
-                      <div class="count">票數：9,999,999</div>
-                    </div>
-                    <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
-                  </div>
-                </div>
-              </li>
-              <li class="vote__item">
-                <div class="vote__item__wrap">
-                  <div class="vote__item__media"><img src="https://dummyimage.com/600x600/000/fff" title="name"></div>
-                  <div class="vote__item__content clearfix">
-                    <div class="vote__item__text">
-                      <div class="name">姓名/暱稱：壯壯</div>
-                      <div class="count">票數：9,999,999</div>
-                    </div>
-                    <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
-                  </div>
-                </div>
-              </li>
-              <li class="vote__item">
-                <div class="vote__item__wrap">
-                  <div class="vote__item__media"><img src="https://dummyimage.com/600x600/000/fff" title="name"></div>
-                  <div class="vote__item__content clearfix">
-                    <div class="vote__item__text">
-                      <div class="name">姓名/暱稱：壯壯</div>
-                      <div class="count">票數：9,999,999</div>
-                    </div>
-                    <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
-                  </div>
-                </div>
-              </li>
-              <li class="vote__item">
-                <div class="vote__item__wrap">
-                  <div class="vote__item__media"><img src="https://dummyimage.com/600x600/000/fff" title="name"></div>
-                  <div class="vote__item__content clearfix">
-                    <div class="vote__item__text">
-                      <div class="name">姓名/暱稱：壯壯</div>
-                      <div class="count">票數：9,999,999</div>
-                    </div>
-                    <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
-                  </div>
-                </div>
-              </li>
-              <li class="vote__item">
-                <div class="vote__item__wrap">
-                  <div class="vote__item__media"><img src="https://dummyimage.com/600x600/000/fff" title="name"></div>
-                  <div class="vote__item__content clearfix">
-                    <div class="vote__item__text">
-                      <div class="name">姓名/暱稱：壯壯</div>
-                      <div class="count">票數：9,999,999</div>
-                    </div>
-                    <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
-                  </div>
-                </div>
-              </li>
-              <li class="vote__item">
-                <div class="vote__item__wrap">
-                  <div class="vote__item__media"><img src="https://dummyimage.com/600x600/000/fff" title="name"></div>
-                  <div class="vote__item__content clearfix">
-                    <div class="vote__item__text">
-                      <div class="name">姓名/暱稱：壯壯</div>
-                      <div class="count">票數：9,999,999</div>
-                    </div>
-                    <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
-                  </div>
-                </div>
-              </li>
-              <li class="vote__item">
-                <div class="vote__item__wrap">
-                  <div class="vote__item__media"><img src="https://dummyimage.com/600x600/000/fff" title="name"></div>
-                  <div class="vote__item__content clearfix">
-                    <div class="vote__item__text">
-                      <div class="name">姓名/暱稱：壯壯</div>
-                      <div class="count">票數：9,999,999</div>
-                    </div>
-                    <div class="vote__item__ctrl"><a href="#" title="name" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
-                  </div>
-                </div>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div class="vote__ft">
-          <h3 class="pc-only">東森蝶蒙股份有限公司 235新北市中和市景平路258號 0800-013-058</h3>
-          <p class="mb-only">235新北市中和市景平路258號 0800-013-058</p>
-        </div>
-      </section>
+          <div class="vote__ft">
+            <h3 class="pc-only">東森蝶蒙股份有限公司 235新北市中和市景平路258號 0800-013-058</h3>
+            <p class="mb-only">235新北市中和市景平路258號 0800-013-058</p>
+          </div>
+        </section>
+      </div>
+      <com>
+      </com>
     </div>
   </body>
-  <script src="js/app.js"></script>
+  <script src="app.js"></script>
   <script type="text/javascript">
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];

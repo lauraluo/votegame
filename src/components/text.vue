@@ -1,6 +1,5 @@
-<template>
-  hahahafadfaddsdsd
-  <p>{{ msg }}</p>
+<template lang="jade">
+ span hahahafadfaddsdsd
 </template>
 
 <script>
