@@ -16179,29 +16179,47 @@ exports.insert = function (css) {
 
 },{}],13:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\np[_v-b7389bb6] {\n    color: #42b983;\n    font-weight: 900;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    props: ['msg']
+    props: ['showModal'],
+    watch: {
+        'showModal': function showModal(newVal, oldVal) {
+            // if(val){
+            //     $('body').css('overflow','hidden');
+            // }else {
+            //     $('body').css('overflow','auto');
+            // }
+        }
+    },
+    methods: {
+        open: function open($event) {
+            // this.$emit('input', true);
+            this.$emit('open');
+        },
+        close: function close($even) {
+            this.$emit('close');
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<span _v-b7389bb6=\"\">hahahafadfaddsdsd</span>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<transition name=\"modal\"><section v-show=\"showModal\" class=\"vote-dialog\"><div class=\"vote-dialog__box\"><a href=\"#\" v-on:click=\"close($event)\" class=\"vote-dialog__close\"></a><slot></slot></div></section></transition>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\np[_v-b7389bb6] {\n    color: #42b983;\n    font-weight: 900;\n}\n"] = false
+    __vueify_insert__.cache["\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-b7389bb6", module.exports)
+    hotAPI.createRecord("_v-af83d376", module.exports)
   } else {
-    hotAPI.update("_v-b7389bb6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-af83d376", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],14:[function(require,module,exports){
@@ -16254,7 +16272,8 @@ var Firebase_game = _firebase2.default.initializeApp(initFBGame, 'Firebase_game'
 //====================
 
 _vue2.default.use(_vuefire2.default);
-_vue2.default.component('com', require('./components/text.vue'));
+_vue2.default.component('lightbox', require('./components/Text.vue'));
+// Vue.component('abc', require('./components/Popup.vue'));
 // Vue.component('popup', require('./components/vDialog.vue'));
 
 // fbGamersRef.on('value', function(snapshot) {
@@ -16287,6 +16306,12 @@ var app = new _vue2.default({
             console.log(_this.counts);
         }.bind(this));
     },
+    watch: {
+        'showModal': function showModal(newVal, oldVal) {
+            console.log(newVal);
+            console.log(oldVal);
+        }
+    },
     data: {
         startDate: "",
         endDate: "",
@@ -16295,18 +16320,27 @@ var app = new _vue2.default({
         gamers: [],
         results: [],
         shareUrl: "",
+        showModal: true,
+        // dialogConfig: {
+        //     trems: true,
+        //     forms: false,
+        //     alert: false
+        // },
         counts: {} //裝計數的容器
     },
     //動態綁定
     firebase: {
-        results: Firebase_game.database().ref('statistics')
+        // results: Firebase_game.database().ref('statistics')
     },
     methods: {
-        clickButton: function clickButton() {
-            console.log("click");
-            this.msg = 'page 1';
+        open: function open($event) {
+            this.showModal = true;
+        },
+        close: function close($even) {
+            // console.log('close');
+            this.showModal = false;
         }
     }
 });
 
-},{"./components/text.vue":13,"firebase":4,"vue/dist/vue.js":9,"vuefire":11}]},{},[14])
+},{"./components/Text.vue":13,"firebase":4,"vue/dist/vue.js":9,"vuefire":11}]},{},[14])

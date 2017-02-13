@@ -4,19 +4,19 @@ html(itemscope,itemtype="http://schema.org/Article",ng-app="markup" debug="false
     block pageInfo
         - var pageTitle = "首頁"
         - var pageDesc = "敘述"
-    //html head
+        //html head
     include _head.jade
     //html body
     body
         div#rootApp
             div.l-container
                 block page_main
-            com
-                //- include _trems.jade
             //- voteDialog
             //-     include _forms.jade
             //- voteDialog
             //-     include _alert.jade
+            lightbox(v-on:close="close",v-on:open="open", v-bind:show-modal="showModal")
+                include _trems.jade
     script(src="app.js")
 
     script(type='text/javascript').         

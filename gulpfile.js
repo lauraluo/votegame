@@ -152,7 +152,9 @@ gulp.task('copyJS', function() {
 
 gulp.task('js', function() {
     gulp.src('./src/app.js')
+        .pipe(plumber())
         .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'], debug: false }))
+        .pipe(plumber())
         .pipe(gulp.dest('./' + distPath))
         .pipe(connect.reload());
 })
@@ -189,7 +191,8 @@ gulp.task('open', function() {
 gulp.task('watch', function() {
     gulp.watch(['src/**/*.jade'], ['jade']);
     gulp.watch('src/scss/**/**.scss', ['sass']);
-    gulp.watch(['src/components/**/*.vue', 'src/app.js'], ['js']);
+    gulp.watch(['src/app.js'], ['js']);
+    gulp.watch(['src/components/**/*.vue'], ['js']);
     gulp.watch(['src/images/*'], ['copyImg']);
     gulp.watch(['src/images/sprites/*'], ['sprite']);
     gulp.watch([ distPath + '*.html'], ['html']);

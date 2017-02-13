@@ -1360,7 +1360,7 @@ a.pure-button-primary {
     .vote__item__text {
       float: left;
       width: 55%;
-      padding: 0 10px 0 0; }
+      padding: 0 10px 0; }
       @media (max-width: 949px) and (min-width: 0) {
         .vote__item__text {
           width: 100.0%;
@@ -1441,6 +1441,18 @@ a.pure-button-primary {
   .vote-dialog__ctrls {
     padding-top: 20px;
     text-align: center; }
+
+.modal-enter {
+  opacity: 0; }
+
+.modal-leave-active {
+  opacity: 0; }
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1); }
 
 .vote-trems__list {
   max-height: 300px;

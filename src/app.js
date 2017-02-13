@@ -35,8 +35,8 @@ var Firebase_game = Firebase.initializeApp(initFBGame, 'Firebase_game');
 //====================
 
 Vue.use(VueFire);
-// Vue.component('com', require('./components/Text.vue'));
-// Vue.component('popup', require('./component/Popup.vue'));
+Vue.component('lightbox', require('./components/Text.vue'));
+// Vue.component('abc', require('./components/Popup.vue'));
 // Vue.component('popup', require('./components/vDialog.vue'));
 
 // fbGamersRef.on('value', function(snapshot) {
@@ -48,20 +48,20 @@ Vue.use(VueFire);
 const app = new Vue({
     // delimiters: ['[', ']'],
     el: '#rootApp',
-    mounted: function(){
+    mounted: function() {
         var _this = this;
-        
+
         //只取一次
         Firebase_config.database().ref().once('value', function(snapshot) {
             this.endDate = snapshot.child('endDate').val();
             this.stage = snapshot.child('stage').val();
-            this.gamers =  snapshot.child('gamers').val();
-            this.isPaused =  snapshot.child('isPaused').val();
+            this.gamers = snapshot.child('gamers').val();
+            this.isPaused = snapshot.child('isPaused').val();
         }.bind(this));
 
         //參賽者數量初始化
         Firebase_game.database().ref('statistics').on('value', function(snapshot) {
-            snapshot.forEach(function(snap){
+            snapshot.forEach(function(snap) {
                 console.log(snap.numChildren());
                 console.log(snap.key);
                 _this.counts[snap.key] = snap.numChildren();
@@ -70,7 +70,13 @@ const app = new Vue({
         }.bind(this));
 
 
-    
+
+    },
+    watch: {
+        'showModal': function(newVal, oldVal) {
+            console.log(newVal);
+            console.log(oldVal);
+        }
     },
     data: {
         startDate: "",
@@ -80,16 +86,25 @@ const app = new Vue({
         gamers: [],
         results: [],
         shareUrl: "",
-        counts:{} //裝計數的容器
+        showModal: true,
+        // dialogConfig: {
+        //     trems: true,
+        //     forms: false,
+        //     alert: false
+        // },
+        counts: {} //裝計數的容器
     },
     //動態綁定
     firebase: {
-        results: Firebase_game.database().ref('statistics')
+        // results: Firebase_game.database().ref('statistics')
     },
     methods: {
-        clickButton() {
-            console.log("click");
-            this.msg = 'page 1';
+        open: function($event) {
+            this.showModal = true;
+        },
+        close: function($even) {
+            // console.log('close');
+            this.showModal = false;
         }
     }
 })
