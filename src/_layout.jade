@@ -11,12 +11,8 @@ html(itemscope,itemtype="http://schema.org/Article",ng-app="markup" debug="false
         div#rootApp
             div.l-container
                 block page_main
-            //- voteDialog
-            //-     include _forms.jade
-            //- voteDialog
-            //-     include _alert.jade
-            lightbox(v-on:close="closeModal",v-on:open="openModal", v-bind:show-modal="modalConfig.trems.isShow", v-bind:name="modalConfig.trems.name")
-                include _trems.jade
+            lightbox(v-on:close="closeModal",v-on:open="openModal", v-bind:show-modal="modalConfig.isShow", v-bind:name="modalConfig.currentView")
+                component(v-bind:is="modalConfig.currentView",v-on:close="closeModal",v-on:open="openModal" v-bind:voteid="submitKey", v-bind:member="member")
     script(src="app.js")
 
     script(type='text/javascript').         

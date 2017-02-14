@@ -1,14 +1,14 @@
-<template lang="jade">
+<template lang="pug">
     transition(name="modal")
         section.vote-dialog(v-show="showModal")
             div.vote-dialog__box
-                a.vote-dialog__close(href="#", v-on:click="close($event)")
+                a.vote-dialog__close(href="#", v-on:click="closeModal($event)")
                 slot
 </template>
 
 <script>
     export default {
-        props:['showModal','name'],
+        props:['showModal'],
         watch: {
             'showModal':function(newVal, oldVal){
                 // if(val){
@@ -19,14 +19,13 @@
             }
         },
         methods: {
-            open: function ($event) {
+            openModal: function ($event) {
                 var _this = this;
-                eventCtrls.$emit('open', _this.name);
-
+                this.$emit('open');
             },
-            close: function ($event) {
+            closeModal: function ($event) {
                 var _this = this;
-                this.$emit('close', _this.name);
+                this.$emit('close');
             }  
         }
     }

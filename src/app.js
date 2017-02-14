@@ -22,13 +22,10 @@ var initFBGame = {
     messagingSenderId: "164280679850"
 };
 
-var Firebase_config = Firebase.initializeApp(initFBConfig);
-var Firebase_game = Firebase.initializeApp(initFBGame, 'Firebase_game');
-
-// var fbConfigRef = Firebase_config.database().ref();//root
-// var fbGamersRef = Firebase_config.database().ref('gamers');
-// var fbGameResusltRef = Firebase_game.database().ref('statistics');
-
+window.Firebase_config = Firebase.initializeApp(initFBConfig,'Firebase_config');
+window.Firebase_game = Firebase.initializeApp(initFBGame, 'Firebase_game');
+window.Firebase_gameStatisticsRef = Firebase_game.database().ref('statistics');
+window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 
 //====================
 // vue init 
@@ -36,78 +33,89 @@ var Firebase_game = Firebase.initializeApp(initFBGame, 'Firebase_game');
 
 var eventCtrls = new Vue();
 
+window.mixins = {
+    enCode: function(str) {
+        return str;
+    },
+    deCode: function(str) {
+        return str;
+    }
+};
+
+
 Vue.use(VueFire);
 Vue.component('lightbox', require('./components/Lightbox.vue'));
-
-// fbGamersRef.on('value', function(snapshot) {
-//     // console.log(snapshot.val());
-//     console.log(snapshot);
-//     console.log("There are " + snapshot.numChildren() + " messages");
-// });
+Vue.component('trems', require('./components/trems.vue'));
+Vue.component('forms', require('./components/forms.vue'));
+// Vue.component('trems', require('./components/alert.vue'));
 
 const app = new Vue({
     // delimiters: ['[', ']'],
     el: '#rootApp',
+    mixins: [mixins],
     mounted: function() {
         var _this = this;
 
         //只取一次
         Firebase_config.database().ref().once('value', function(snapshot) {
-            this.endDate = snapshot.child('endDate').val();
+            var startDate = snapshot.child('startDate').val();
+            var endDate = snapshot.child('endDate').val();
+
+            this.startDate = new Date(startDate);
+            this.endDate = new Date(endDate);
+
             this.stage = snapshot.child('stage').val();
             this.gamers = snapshot.child('gamers').val();
             this.isPaused = snapshot.child('isPaused').val();
         }.bind(this));
 
         //參賽者數量初始化
-        Firebase_game.database().ref('statistics').on('value', function(snapshot) {
+        Firebase_gameStatisticsRef .on('value', function(snapshot) {
             snapshot.forEach(function(snap) {
-                console.log(snap.numChildren());
-                console.log(snap.key);
-                // _this.counts[snap.key] = snap.numChildren();
-                Vue.set(_this.counts, snap.key , snap.numChildren())
+                Vue.set(_this.counts, snap.key, snap.numChildren())
             });
-            console.log(_this.counts);
         }.bind(this));
+
+        //從cookie初始化每一位的投票timemap
+
 
 
 
     },
     watch: {
-        'showModal': function(newVal, oldVal) {
-            console.log(newVal);
-            console.log(oldVal);
-        }
+        'showModal': function(newVal, oldVal) {}
     },
     data: {
-        startDate: "",
-        endDate: "",
+        startDate: '0000/00/00',
+        endDate: '0000/00/00',
         isPaused: false,
         stage: -1,
         gamers: [],
         results: [],
         shareUrl: "",
+        submitKey: "",
         modalConfig: {
-            alert: {
-                isShow:false,
-                title:'',
-                msg: '',
-                name: 'alert'    
-            },
-            forms: {
-                isShow:false,
-                name: 'forms'    
-            },
-            trems:{
-                isShow:false,
-                name: 'trems'    
+            isShow: false,
+            currentView: 'trems'
+        },
+        member: {
+            isVoted: false,
+            name: "",
+            phone: "",
+            timestamps: {
+                //從 cookie 初始化
+                // 'g1': 'date',
+                // 'g2': 'date'
             }
         },
-        // dialogConfig: {
-        //     trems: true,
-        //     forms: false,
-        //     alert: false
-        // },
+        cookieConfig: {
+            trems: {
+                name: 'argeTrems'
+            },
+            localTimestamp: {
+                name: 'localTimestamp'
+            }
+        },
         counts: {} //裝計數的容器
     },
     //動態綁定
@@ -115,15 +123,62 @@ const app = new Vue({
         // results: Firebase_game.database().ref('statistics')
     },
     methods: {
-        openModal: function(name) {
-            this.modalConfig[name].isShow = true;
+        openModal: function(currentView, callback) {
+            console.log(currentView);
+            if (currentView && typeof currentView == 'string') {
+                this.modalConfig.currentView = currentView
+                this.modalConfig.isShow = true;
+            }
+
+            if (callback && typeof callback == 'function') {
+                callback();
+            }
+
         },
-        closeModal: function(name) {            
-            this.modalConfig[name].isShow = false;
+        closeModal: function(callback) {
+            this.modalConfig.isShow = false;
+
+            if (callback && typeof callback == 'function') {
+                callback();
+            }
+
         },
-        handleClickVoteBtn: function($event){
-            //不同的狀況，跳不同的視窗
-            this.openModal('trems');
+        isGameActive: function() {
+            var _this = this;
+            var result = false;
+            var now = new Date((new Date).format('YYYY/MM/DD'));
+
+            if (!_this.isPaused) {
+                if (now <= _this.endDate && now >= _this.startDate) {
+                    result = true;
+                }
+            } 
+
+            return result;
+
+        },
+        isGamerActive: function(key) {
+            return true;
+        },
+        handleClickVoteBtn: function($event, key) {
+            var _this = this;
+            _this.submitKey = key;
+
+            if (!_this.isGameActive()) {
+                alert('活動目前停止中');
+                return false;
+            }
+
+            if (!_this.isGamerActive()) {
+                alert('一天只能投一次票');
+                return false;
+            }
+
+            _this.openModal('trems', function() {
+                console.log('setcookie');
+                utilityJS.cookie(_this.cookieConfig.trems.name,true, { expires: 1 });
+            });
+
         }
     }
 })
