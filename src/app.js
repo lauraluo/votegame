@@ -33,26 +33,25 @@ window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 
 var eventCtrls = new Vue();
 
-window.mixins = {
-    enCode: function(str) {
-        return str;
-    },
-    deCode: function(str) {
-        return str;
-    }
-};
+// window.mixins = {
+//     enCode: function(str) {
+//         return str;
+//     },
+//     deCode: function(str) {
+//         return str;
+//     }
+// };
 
 
 Vue.use(VueFire);
 Vue.component('lightbox', require('./components/Lightbox.vue'));
 Vue.component('trems', require('./components/trems.vue'));
 Vue.component('forms', require('./components/forms.vue'));
-// Vue.component('trems', require('./components/alert.vue'));
+Vue.component('success', require('./components/Success.vue'));
 
 const app = new Vue({
     // delimiters: ['[', ']'],
     el: '#rootApp',
-    mixins: [mixins],
     mounted: function() {
         var _this = this;
 
@@ -76,11 +75,19 @@ const app = new Vue({
             });
         }.bind(this));
 
-        //從cookie初始化每一位的投票timemap
+        //初始化cookie
+        if( utilityJS.cookie(_this.cookieConfig.trems.name) == null){
+            utilityJS.cookie(_this.cookieConfig.trems.name, false , { expires: 1 });
+        }
 
+        if( utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null){
+            utilityJS.cookie(_this.cookieConfig.localTimestamp.name, {} , { expires: 99 });
+        }
 
-
-
+        _this.member.timestamps = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
+        
+        console.log( '_this.member.timestamps');
+        console.log( _this.member.timestamps );
     },
     watch: {
         'showModal': function(newVal, oldVal) {}
@@ -118,7 +125,6 @@ const app = new Vue({
         },
         counts: {} //裝計數的容器
     },
-    //動態綁定
     firebase: {
         // results: Firebase_game.database().ref('statistics')
     },

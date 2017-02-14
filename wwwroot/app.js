@@ -16232,8 +16232,41 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
+    props: [],
+    watch: {},
+    methods: {
+        handeClickBtn: function handeClickBtn(e) {
+            e.preventDefault();
+            this.$emit('close', function () {});
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div><h2>謝謝您的參與，您已完成投票</h2><div class=\"vote-dialog__content\"><p>投票後，該投票者看到該參賽者的按鈕改為”已投票”，系統限制一天對某參賽者只能投一票，但隔天即可繼續投票，累積票數。</p></div><div class=\"vote-dialog__ctrls\"><a class=\"vote-btn pure-button pure-button-primary\" href=\"forms.html\" title=\"同意\" v-on:click=\"handeClickBtn($event)\">完成</a></div></div>"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-e27d2fca", module.exports)
+  } else {
+    hotAPI.update("_v-e27d2fca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],15:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
     props: ['voteid', 'member'],
-    mixins: [mixins],
     created: function created() {
         var _this = this;
 
@@ -16253,10 +16286,17 @@ exports.default = {
             phone: {
                 value: '',
                 isError: false
-            }
+            },
+            timestamp: '0000/00/00'
         };
     },
     methods: {
+        enCode: function enCode(str) {
+            return str;
+        },
+        deCode: function deCode(str) {
+            return str;
+        },
         checkResult: function checkResult() {
             var _this = this;
             var phoneReg = /^[09]{2}[0-9]{8}$/;
@@ -16274,26 +16314,40 @@ exports.default = {
 
             return !(_this.name.isError || _this.phone.isError);
         },
+        setVoteStatusCookie: function setVoteStatusCookie() {
+            var cookiename = 'localTimestamp';
+            var voteID = _this.voteid;
+            var timestamp = _this.timestamp;
+            var oldStatus = utilityJS.cookie(cookiename);
+            var updateStatus = {};
+
+            //utilityJS.cookie(cookiename, $.extend( oldStatus, updateStatus ) , { expires: 14 });
+        },
         submitSuccess: function submitSuccess() {
             var _this = this;
-            _this.isDisabed = false;
-
-            _this.$emit('close', function () {});
+            _this.resetForms();
+            _this.$emit('open', 'success', function () {});
         },
-        getTimestamp: function getTimestamp() {},
+        resetForms: function resetForms() {
+            var _this = this;
+            _this.isDisabed = false;
+            _this.name.isError = false;
+            _this.phone.isError = false;
+        },
         submitData: function submitData() {
             var _this = this;
             var voteID = _this.voteid;
             var memberKey = _this.enCode(_this.phone.value);
-            var timestamp = new Date().format('YYYY/MM/DD');
+
+            _this.timestamp = new Date().format('YYYY/MM/DD');
 
             var pushMemberObject = {
                 name: _this.name.value,
-                timestamp: timestamp
+                timestamp: _this.timestamp
             };
 
             var pushResultObject = {
-                timestamp: timestamp
+                timestamp: _this.timestamp
             };
 
             _this.disabed = true;
@@ -16320,6 +16374,9 @@ exports.default = {
             if (_this.disabled) {
                 return false;
             }
+
+            _this.resetForms();
+
             if (!_this.checkResult()) {
                 return false;
             }
@@ -16363,7 +16420,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7ed15e67", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],15:[function(require,module,exports){
+},{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],16:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -16397,7 +16454,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2281f4c5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],16:[function(require,module,exports){
+},{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],17:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue/dist/vue.js');
@@ -16445,25 +16502,25 @@ window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 
 var eventCtrls = new _vue2.default();
 
-window.mixins = {
-    enCode: function enCode(str) {
-        return str;
-    },
-    deCode: function deCode(str) {
-        return str;
-    }
-};
+// window.mixins = {
+//     enCode: function(str) {
+//         return str;
+//     },
+//     deCode: function(str) {
+//         return str;
+//     }
+// };
+
 
 _vue2.default.use(_vuefire2.default);
 _vue2.default.component('lightbox', require('./components/Lightbox.vue'));
 _vue2.default.component('trems', require('./components/trems.vue'));
 _vue2.default.component('forms', require('./components/forms.vue'));
-// Vue.component('trems', require('./components/alert.vue'));
+_vue2.default.component('success', require('./components/Success.vue'));
 
 var app = new _vue2.default({
     // delimiters: ['[', ']'],
     el: '#rootApp',
-    mixins: [mixins],
     mounted: function mounted() {
         var _this = this;
 
@@ -16487,8 +16544,19 @@ var app = new _vue2.default({
             });
         }.bind(this));
 
-        //從cookie初始化每一位的投票timemap
+        //初始化cookie
+        if (utilityJS.cookie(_this.cookieConfig.trems.name) == null) {
+            utilityJS.cookie(_this.cookieConfig.trems.name, false, { expires: 1 });
+        }
 
+        if (utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null) {
+            utilityJS.cookie(_this.cookieConfig.localTimestamp.name, {}, { expires: 99 });
+        }
+
+        _this.member.timestamps = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
+
+        console.log('_this.member.timestamps');
+        console.log(_this.member.timestamps);
     },
     watch: {
         'showModal': function showModal(newVal, oldVal) {}
@@ -16526,7 +16594,6 @@ var app = new _vue2.default({
         },
         counts: {} //裝計數的容器
     },
-    //動態綁定
     firebase: {
         // results: Firebase_game.database().ref('statistics')
     },
@@ -16587,4 +16654,4 @@ var app = new _vue2.default({
     }
 });
 
-},{"./components/Lightbox.vue":13,"./components/forms.vue":14,"./components/trems.vue":15,"firebase":4,"vue/dist/vue.js":9,"vuefire":11}]},{},[16])
+},{"./components/Lightbox.vue":13,"./components/Success.vue":14,"./components/forms.vue":15,"./components/trems.vue":16,"firebase":4,"vue/dist/vue.js":9,"vuefire":11}]},{},[17])

@@ -20,7 +20,6 @@ div
 <script>
     export default {
         props:['voteid','member'],
-        mixins: [mixins],
         created: function(){
             var _this = this;
 
@@ -42,10 +41,17 @@ div
                 phone: {
                     value: '',
                     isError: false
-                }
+                },
+                timestamp: '0000/00/00'
             }
         },
         methods: {
+            enCode: function(str) {
+                return str;
+            },
+            deCode: function(str) {
+                return str;
+            },
             checkResult: function(){
                 var _this = this;
                 var phoneReg =  /^[09]{2}[0-9]{8}$/;
@@ -64,29 +70,41 @@ div
                 return  !(_this.name.isError || _this.phone.isError);
 
             },
-            submitSuccess: function(){
-                var _this = this;
-                _this.isDisabed = false;
-
-                _this.$emit('close' ,function(){});
+            setVoteStatusCookie:function(){
+                var cookiename = 'localTimestamp';
+                var voteID = _this.voteid;
+                var timestamp = _this.timestamp;
+                var oldStatus = utilityJS.cookie(cookiename);
+                var updateStatus = {};
+                
+                //utilityJS.cookie(cookiename, $.extend( oldStatus, updateStatus ) , { expires: 14 });
 
             },
-            getTimestamp: function(){
-
+            submitSuccess: function(){
+                var _this = this;
+                _this.resetForms();
+                _this.$emit('open', 'success' ,function(){});
+            },
+            resetForms: function(){
+                var _this = this;
+                _this.isDisabed = false;
+                _this.name.isError = false;
+                _this.phone.isError = false;
             },
             submitData: function(){
                 var _this = this;
                 var voteID = _this.voteid;
                 var memberKey = _this.enCode(_this.phone.value);
-                var timestamp = (new Date).format('YYYY/MM/DD');
+                
+                _this.timestamp = (new Date).format('YYYY/MM/DD');
 
                 var pushMemberObject = {
                     name: _this.name.value,
-                    timestamp: timestamp
+                    timestamp: _this.timestamp
                 };
 
                 var pushResultObject = {
-                    timestamp: timestamp
+                    timestamp: _this.timestamp
                 };
 
                 _this.disabed = true;
@@ -114,11 +132,15 @@ div
                 var voteID = _this.voteid;
                 var memberKey = _this.enCode(_this.phone.value);
 
+
                 e.preventDefault();
 
                 if(_this.disabled) {
                     return false;
-                }             
+                }
+                                
+                _this.resetForms();
+
                 if(!_this.checkResult()){
                     return false;
                 }
