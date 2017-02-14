@@ -1,10 +1,10 @@
 var utilityJS;
 
-(function () {
+(function() {
 
     var that = {};
 
-    that.getDocumentHeight = function () {
+    that.getDocumentHeight = function() {
         var body = document.body,
             html = document.documentElement;
 
@@ -13,11 +13,11 @@ var utilityJS;
             html.clientHeight, html.scrollHeight, html.offsetHeight);
     }
 
-    that.supportBrowserProperty = function () {
-        return typeof (window) !== 'undefined';
+    that.supportBrowserProperty = function() {
+        return typeof(window) !== 'undefined';
     }
 
-    that.supportsTransitions = function () {
+    that.supportsTransitions = function() {
         var b = document.body || document.documentElement,
             s = b.style,
             p = 'transition';
@@ -35,11 +35,11 @@ var utilityJS;
         return false;
     }
 
-    that.supportTouch = function () {
+    that.supportTouch = function() {
         return 'ontouchstart' in document.documentElement;
     }
 
-    that.getDropEvents = function () {
+    that.getDropEvents = function() {
 
         var isSupportTouch = that.supportTouch();
 
@@ -50,30 +50,30 @@ var utilityJS;
         };
     }
 
-    that.isMobile = function () {
+    that.isMobile = function() {
         return (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
     }
 
-    that.isAppleDevice = function () {
+    that.isAppleDevice = function() {
         return (/iphone|ipad/gi).test(navigator.appVersion);
     };
 
-    that.isIPhone = function () {
+    that.isIPhone = function() {
         return (/iphone/gi).test(navigator.appVersion);
     }
 
-    that.isIPad = function () {
+    that.isIPad = function() {
         return (/ipad/gi).test(navigator.appVersion);
     }
 
-    that.iOSversion = function () {
+    that.iOSversion = function() {
         if (/iP(hone|od|ad)/.test(navigator.platform)) {
             var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
             return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
         }
     }
 
-    that.cancelBubble = function (event) {
+    that.cancelBubble = function(event) {
         if (event.preventDefault) { event.preventDefault(); }
 
         event.cancelBubble = true;
@@ -81,7 +81,7 @@ var utilityJS;
     }
 
     // set cookie
-    that.cookie = function (name, value, options) {
+    that.cookie = function(name, value, options) {
 
         if (typeof value != 'undefined') { // name and value given, set cookie
             options = options || {};
@@ -122,7 +122,7 @@ var utilityJS;
         }
     };
 
-    that.testLocalstorage = function (value) {
+    that.testLocalstorage = function(value) {
         try {
             localStorage.setItem(value, value);
             localStorage.removeItem(value);
@@ -132,21 +132,38 @@ var utilityJS;
         }
     };
 
-    that.numberToCurrency = function (num) {
+    that.numberToCurrency = function(num) {
         num = num.toString();
         var currencyString = num.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         return currencyString;
     }
 
-    that.parseQueryString = function (queryString) {
-        
+    that.stringToBinaryArray = function(source) {
+        var result = [];
+        for (var i = 0; i < source.length; i++) {
+            result.push(source.charCodeAt(i).toString(2));
+        }
+        return result;
+    }
+
+    that.binaryArrayToString = function(source) {
+        var result = [];
+        for (var i = 0; i < source.length; i++) {
+            result.push(String.fromCharCode(parseInt(source[i], 2)));
+        }
+        return result.join('');
+    }
+
+    that.parseQueryString = function(queryString) {
+
         var index = queryString.indexOf('?');
-        var params = {}, quires, temp;
+        var params = {},
+            quires, temp;
 
         queryString = queryString.substr(index);
         queries = queryString.replace(/\?/, '').split(/\&/);
 
-        for (var i = 0; i < queries.length ; i++) {
+        for (var i = 0; i < queries.length; i++) {
 
             temp = queries[i].split(/\=/);
 
@@ -158,9 +175,9 @@ var utilityJS;
 
     }
 
-    that.extend = function (target) {
+    that.extend = function(target) {
         var sources = [].slice.call(arguments, 1);
-        sources.forEach(function (source) {
+        sources.forEach(function(source) {
             for (var prop in source) {
                 target[prop] = source[prop];
             }
@@ -170,15 +187,15 @@ var utilityJS;
 
 
     that.isNumber = function(input) {
-        return (typeof (input) === 'number')
-            ? true
-            : (input - 0) == input && input.length > 0;
+        return (typeof(input) === 'number') ?
+            true :
+            (input - 0) == input && input.length > 0;
     }
 
     that.tryParseInt = function(input) {
-        return (that.isNumber(input))
-            ? parseInt(input)
-            : null;
+        return (that.isNumber(input)) ?
+            parseInt(input) :
+            null;
     }
 
     that.shallowEqual = function(objA, objB) {
@@ -201,23 +218,23 @@ var utilityJS;
         }
         return true;
     }
-    
+
     utilityJS = that;
 
 })();
 
 if (!String.format) {
-    (function () {
+    (function() {
 
-        String.format = function () {
+        String.format = function() {
             var args = arguments;
-            return args[0].replace(/\{(\d+)\}/g, function (m, i) { return args[parseInt(i) + 1]; });
+            return args[0].replace(/\{(\d+)\}/g, function(m, i) { return args[parseInt(i) + 1]; });
         };
 
     }());
 }
 
-(function () {
+(function() {
 
     function pad(number) {
         if (number < 10) {
@@ -227,21 +244,21 @@ if (!String.format) {
     }
 
     if (!Date.prototype.toISOString) {
-        Date.prototype.toISOString = function () {
+        Date.prototype.toISOString = function() {
             return this.getUTCFullYear() +
-              '-' + pad(this.getUTCMonth() + 1) +
-              '-' + pad(this.getUTCDate()) +
-              'T' + pad(this.getUTCHours()) +
-              ':' + pad(this.getUTCMinutes()) +
-              ':' + pad(this.getUTCSeconds()) +
-              '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-              'Z';
+                '-' + pad(this.getUTCMonth() + 1) +
+                '-' + pad(this.getUTCDate()) +
+                'T' + pad(this.getUTCHours()) +
+                ':' + pad(this.getUTCMinutes()) +
+                ':' + pad(this.getUTCSeconds()) +
+                '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+                'Z';
         };
     }
 
     if (!Date.prototype.format) {
         // YYYY-MM-DD hh:mm:ss format
-        Date.prototype.format = function (formatString) {
+        Date.prototype.format = function(formatString) {
             return formatString.replace(/sss/g, (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5))
                 .replace(/YYYY|yyyy/g, this.getFullYear())
                 .replace(/MM/g, pad(this.getMonth() + 1))
