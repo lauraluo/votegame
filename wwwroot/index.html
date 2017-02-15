@@ -40,7 +40,7 @@
               <ul class="vote__items clearfix">
                 <li v-for="gamer in gamersSort" v-show="gamer.stage == stage" class="vote__item">
                   <div class="vote__item__wrap">
-                    <div class="vote__item__media"><img :src="gamer.imgUrl" title="name"></div>
+                    <div class="vote__item__media"><img :src="gamer.imgUrl"></div>
                     <div class="vote__item__content clearfix">
                       <div class="vote__item__text">
                         <div class="name">姓名/暱稱：{{ gamer.name }}</div>

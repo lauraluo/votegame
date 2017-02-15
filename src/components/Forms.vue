@@ -98,7 +98,7 @@ div
                 var _this = this;
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
-                
+
                 _this.timestamp = (new Date).format('YYYY/MM/DD');
 
                 var pushMemberObject = {
@@ -134,6 +134,8 @@ div
                 var _this = this;
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
+                console.log(memberKey);
+                console.log(_this.cryptographer.decrypt(memberKey));
 
 
                 e.preventDefault();

@@ -15,7 +15,7 @@ block page_main
                     li.vote__item(v-for="gamer in gamersSort" v-show="gamer.stage == stage")
                         div.vote__item__wrap
                             div.vote__item__media
-                                img(:src="gamer.imgUrl" title="name")
+                                img(:src="gamer.imgUrl")
                             div.vote__item__content.clearfix
                                 div.vote__item__text
                                     div.name 姓名/暱稱：{{ gamer.name }}

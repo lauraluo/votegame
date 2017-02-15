@@ -96,6 +96,12 @@ Vue.mixin({
                 toEncryptSource = mgr.getCustomHash(true, toEncryptSource);
                 var result = utilityJS.binaryArrayToString(toEncryptSource);
 
+                result = result.replace(/\./g,"．");
+                result = result.replace(/\#/g,"＃");
+                result = result.replace(/\$/g,"＄");
+                result = result.replace(/\[/g,"〔");
+                result = result.replace(/\]/g,"〕");
+
                 return encodeURI(result);
             };
 
@@ -105,11 +111,20 @@ Vue.mixin({
              * @returns {string} 解密後的字串
              */
             that.decrypt = function(source) {
+                source = decodeURI(source)
+                
+                source = source.replace(/\．/g,".");
+                source = source.replace(/\＃/g,"#");
+                source = source.replace(/\＄/g,"$");
+                source = source.replace(/\〔/g,"[");
+                source = source.replace(/\〕/g,"]");
+
                 var toDecryptSource = utilityJS.stringToBinaryArray(source);
                 toDecryptSource = mgr.getCustomHash(false, toDecryptSource);
                 var result = utilityJS.binaryArrayToString(toDecryptSource);
 
-                return decodeURI(result);
+
+                return result;
             };
 
         };
@@ -222,7 +237,6 @@ const app = new Vue({
     },
     methods: {
         openModal: function(currentView, callback) {
-            console.log(currentView);
             if (currentView && typeof currentView == 'string') {
                 this.modalConfig.currentView = currentView;
                 this.modalConfig.isShow = true;
@@ -266,7 +280,6 @@ const app = new Vue({
 
         },
         handleCompletedVote: function(key) {
-            console.log('reset');
             var _this = this;
             var timestampString = "";
 
