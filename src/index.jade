@@ -3,28 +3,31 @@ extends _layout.jade
 
 //page html
 block page_main
-    section.vote
-        div.vote__hd
-            div.vote__cover
-                h1.hide-text 蜜糖甜心就是你，尋找BUTY，品牌大使
-                a.vote__share.hide-text(href="https://www.facebook.com/sharer/sharer.php?u=http://www.butybaby.com/m/index.php" title="Buty Baby 蜜糖甜心" target="_blank") 
-        div.vote__bd
-            div.vote__content
-                ul.vote__items.clearfix
-                    //- for(n=0;n<8;n++)
-                    li.vote__item(v-for="gamer in gamersSort" v-show="gamer.stage == stage")
-                        div.vote__item__wrap
-                            div.vote__item__media
-                                img(:src="gamer.imgUrl")
-                            div.vote__item__content.clearfix
-                                div.vote__item__text
-                                    div.name 姓名/暱稱：{{ gamer.name }}
-                                    div.count 票數： {{ counts[gamer.key] ? counts[gamer.key] : 0 }}
-                                div.vote__item__ctrl
-                                    a.vote__btn.pure-button.pure-button-primary(href="#", title="name", v-on:click="handleClickVoteBtn($event, gamer.key)", v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(gamer.key) }") 投票給我
+    div#rootApp
+        div.l-container
+            section.vote
+                div.vote__hd
+                    div.vote__cover
+                        h1.hide-text 蜜糖甜心就是你，尋找BUTY，品牌大使
+                        a.vote__share.hide-text(href="https://www.facebook.com/sharer/sharer.php?u=http://www.butybaby.com/m/index.php" title="Buty Baby 蜜糖甜心" target="_blank") 
+                div.vote__bd
+                    div.vote__content
+                        ul.vote__items.clearfix
+                            //- for(n=0;n<8;n++)
+                            li.vote__item(v-for="gamer in gamersSort" v-show="gamer.stage == stage")
+                                div.vote__item__wrap
+                                    div.vote__item__media
+                                        img(:src="gamer.imgUrl")
+                                    div.vote__item__content.clearfix
+                                        div.vote__item__text
+                                            div.name 姓名/暱稱：{{ gamer.name }}
+                                            div.count 票數： {{ counts[gamer.key] ? counts[gamer.key] : 0 }}
+                                        div.vote__item__ctrl
+                                            a.vote__btn.pure-button.pure-button-primary(href="#", title="name", v-on:click="handleClickVoteBtn($event, gamer.key)", v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(gamer.key) }") 投票給我
 
-        div.vote__ft
-            h3.pc-only 東森蝶蒙股份有限公司 235新北市中和市景平路258號 0800-013-058
-            p.mb-only 235新北市中和市景平路258號 0800-013-058
+                div.vote__ft
+                    h3.pc-only 東森蝶蒙股份有限公司 235新北市中和市景平路258號 0800-013-058
+                    p.mb-only 235新北市中和市景平路258號 0800-013-058
 
-    
+        lightbox(v-on:close="closeModal",v-on:open="openModal", v-bind:show-modal="modalConfig.isShow", v-bind:name="modalConfig.currentView")
+            component(v-bind:is="modalConfig.currentView",v-on:close="closeModal",v-on:open="openModal"  v-on:complete="handleCompletedVote" v-bind:voteid="submitKey", v-bind:member="member")   

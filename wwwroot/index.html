@@ -60,7 +60,7 @@
         </section>
       </div>
       <lightbox v-on:close="closeModal" v-on:open="openModal" v-bind:show-modal="modalConfig.isShow" v-bind:name="modalConfig.currentView">
-        <component v-bind:is="modalConfig.currentView" v-on:close="closeModal" v-on:open="openModal" v-on:complete="handleCompletedVote" v-bind:voteid="submitKey" v-bind:member="member"></component>
+        <component v-bind:is="modalConfig.currentView" v-on:close="closeModal" v-on:open="openModal" v-on:complete="handleCompletedVote" v-bind:voteid="submitKey" v-bind:member="member">  </component>
       </lightbox>
     </div>
   </body>

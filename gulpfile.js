@@ -152,9 +152,8 @@ gulp.task('copyJS', function() {
 
 gulp.task('js', function() {
     gulp.src('./src/app.js')
-        .pipe(plumber())
         .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'], debug: false }))
-        .pipe(plumber())
+        .pipe(uglify())
         .pipe(gulp.dest('./' + distPath))
         .pipe(connect.reload());
 })
