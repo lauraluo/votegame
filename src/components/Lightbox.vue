@@ -20,10 +20,13 @@
         },
         methods: {
             openModal: function ($event) {
+                $event.preventDefault();
                 var _this = this;
                 this.$emit('open');
             },
             closeModal: function ($event) {
+                $event.preventDefault();
+                
                 var _this = this;
                 this.$emit('close');
             }  

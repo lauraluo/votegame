@@ -96,7 +96,7 @@ Vue.mixin({
                 toEncryptSource = mgr.getCustomHash(true, toEncryptSource);
                 var result = utilityJS.binaryArrayToString(toEncryptSource);
 
-                return result;
+                return encodeURI(result);
             };
 
             /** 
@@ -109,7 +109,7 @@ Vue.mixin({
                 toDecryptSource = mgr.getCustomHash(false, toDecryptSource);
                 var result = utilityJS.binaryArrayToString(toDecryptSource);
 
-                return result;
+                return decodeURI(result);
             };
 
         };
@@ -144,32 +144,36 @@ const app = new Vue({
         _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
 
 
-        //只取一次
         Firebase_config.database().ref().on('value', function(snapshot) {
             var startDate = snapshot.child('startDate').val();
             var endDate = snapshot.child('endDate').val();
 
-            this.startDate = new Date(startDate);
-            this.endDate = new Date(endDate);
+            _this.startDate = new Date(startDate);
+            _this.endDate = new Date(endDate);
 
-            this.stage = snapshot.child('stage').val();
-            this.gamers = snapshot.child('gamers').val();
-            this.isPaused = snapshot.child('isPaused').val();
-        }.bind(this));
+            _this.stage = snapshot.child('stage').val();
+            _this.gamers = snapshot.child('gamers').val();
+            _this.isPaused = snapshot.child('isPaused').val();
 
-        //參賽者數量初始化
-        Firebase_gameStatisticsRef.on('value', function(snapshot) {
-            snapshot.forEach(function(snap) {
-                var timestampString = _this.member.timestamps[snap.key] || '0';
-                Vue.set(_this.counts, snap.key, snap.numChildren());
-                Vue.set(_this.member.timesExpired, snap.key, (_this.getNowDate() > new Date(timestampString)))
+            Firebase_gameStatisticsRef.on('value', function(snapshot) {
+                snapshot.forEach(function(snap) {
+                    var timestampString = _this.member.timestamps[snap.key] || '0';
+                    Vue.set(_this.counts, snap.key, snap.numChildren());
+                    Vue.set(_this.member.timesExpired, snap.key, (_this.getNowDate() > new Date(timestampString)))
+                });
+
+
+                _this.sortGamersOrderByCount();
+
             });
-        }.bind(this));
-        
+
+        });
+
+
+
+
     },
-    watch: {
-        'showModal': function(newVal, oldVal) {}
-    },
+    watch: {},
     data: {
         startDate: '0',
         endDate: '0',
@@ -178,7 +182,8 @@ const app = new Vue({
             return new Date((new Date).format('YYYY/MM/DD'));
         },
         stage: -1,
-        gamers: [],
+        gamers: {},
+        gamersSort: [],
         results: [],
         shareUrl: "",
         submitKey: "",
@@ -209,8 +214,8 @@ const app = new Vue({
             }
         },
         counts: {
-
-        }, //裝計數的容器
+            //"g1": 0
+        }
     },
     firebase: {
         // results: Firebase_game.database().ref('statistics')
@@ -219,7 +224,7 @@ const app = new Vue({
         openModal: function(currentView, callback) {
             console.log(currentView);
             if (currentView && typeof currentView == 'string') {
-                this.modalConfig.currentView = currentView
+                this.modalConfig.currentView = currentView;
                 this.modalConfig.isShow = true;
             }
 
@@ -227,6 +232,49 @@ const app = new Vue({
                 callback();
             }
 
+        },
+        closeModal: function(callback) {
+            this.modalConfig.isShow = false;
+            this.modalConfig.currentView = null;
+            if (callback && typeof callback == 'function') {
+                callback();
+            }
+
+        },
+        sortGamersOrderByCount: function() {
+            var _this = this;
+            var arr = [];
+
+            $.each(_this.gamers, function(key, element) {
+                arr.push({
+                    key: key,
+                    name: element.name,
+                    stage: element.stage,
+                    imgUrl: element.imgUrl,
+                    count: _this.counts[key] || 0
+                });
+            });
+
+
+            arr.sort(function(a, b) {
+                return b.count - a.count;
+            });
+
+
+            _this.gamersSort = arr;
+
+
+        },
+        handleCompletedVote: function(key) {
+            console.log('reset');
+            var _this = this;
+            var timestampString = "";
+
+            _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
+
+            timestampString = _this.member.timestamps[key] || '0';
+
+            Vue.set(_this.member.timesExpired, key, (_this.getNowDate() > new Date(timestampString)))
         },
         isVoteBtnActive: function(key) {
             var _this = this;
@@ -237,14 +285,6 @@ const app = new Vue({
             }
 
             return result;
-        },
-        closeModal: function(callback) {
-            this.modalConfig.isShow = false;
-
-            if (callback && typeof callback == 'function') {
-                callback();
-            }
-
         },
         isGameActive: function() {
             var _this = this;

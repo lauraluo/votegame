@@ -38,15 +38,15 @@
           <div class="vote__bd">
             <div class="vote__content">
               <ul class="vote__items clearfix">
-                <li v-for="( gamer,key) in gamers" class="vote__item">
+                <li v-for="gamer in gamersSort" v-show="gamer.stage == stage" class="vote__item">
                   <div class="vote__item__wrap">
                     <div class="vote__item__media"><img :src="gamer.imgUrl" title="name"></div>
                     <div class="vote__item__content clearfix">
                       <div class="vote__item__text">
                         <div class="name">姓名/暱稱：{{ gamer.name }}</div>
-                        <div class="count">票數： {{ counts[key] ? counts[key] : 0 }}</div>
+                        <div class="count">票數： {{ counts[gamer.key] ? counts[gamer.key] : 0 }}</div>
                       </div>
-                      <div class="vote__item__ctrl"><a href="#" title="name" v-on:click="handleClickVoteBtn($event, key)" v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(key) }" class="vote__btn pure-button pure-button-primary">投票給我</a></div>
+                      <div class="vote__item__ctrl"><a href="#" title="name" v-on:click="handleClickVoteBtn($event, gamer.key)" v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(gamer.key) }" class="vote__btn pure-button pure-button-primary">投票給我</a></div>
                     </div>
                   </div>
                 </li>
@@ -60,7 +60,7 @@
         </section>
       </div>
       <lightbox v-on:close="closeModal" v-on:open="openModal" v-bind:show-modal="modalConfig.isShow" v-bind:name="modalConfig.currentView">
-        <component v-bind:is="modalConfig.currentView" v-on:close="closeModal" v-on:open="openModal" v-bind:voteid="submitKey" v-bind:member="member"></component>
+        <component v-bind:is="modalConfig.currentView" v-on:close="closeModal" v-on:open="openModal" v-on:complete="handleCompletedVote" v-bind:voteid="submitKey" v-bind:member="member"></component>
       </lightbox>
     </div>
   </body>

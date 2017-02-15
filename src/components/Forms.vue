@@ -11,7 +11,7 @@ div
                         span.pure-form-message.pure-form-message--error(v-show="name.isError") 這是必填欄位
                     li
                         label(for='phone') 手機號碼 (必填)
-                        input#phone.pure-input-1(type='text', placeholder='請輸入手機號碼 例如 09112233444', v-model="phone.value")
+                                                input#phone.pure-input-1(type='text', placeholder='請輸入手機號碼 例如 09112233444', v-model="phone.value")
                         span.pure-form-message.pure-form-message--error(v-show="phone.isError") 這是必填欄位，請輸入正確格式的手機號碼 ex 09123112233
     div.vote-dialog__ctrls
         a.vote-btn.pure-button.pure-button-primary(href='#', title='同意', v-on:click="handeClickAgreeBtn($event)") 確認投票
@@ -27,8 +27,6 @@ div
                 _this.submitSuccess();
             });
 
-        },
-        mounted: function(){
         },
         data:function(){
             return {
@@ -88,6 +86,7 @@ div
                 _this.setVoteStatusCookie();
                 _this.resetForms();
                 _this.$emit('open', 'success' ,function(){});
+                _this.$emit('complete', _this.voteid);
             },
             resetForms: function(){
                 var _this = this;
@@ -98,7 +97,7 @@ div
             submitData: function(){
                 var _this = this;
                 var voteID = _this.voteid;
-                var memberKey = _this.enCode(_this.phone.value);
+                var memberKey = _this.cryptographer.encrypt(_this.phone.value);
                 
                 _this.timestamp = (new Date).format('YYYY/MM/DD');
 
@@ -113,30 +112,28 @@ div
 
                 _this.disabed = true;
 
-                Firebase_gameStatisticsRef.child(voteID+'/'+memberKey).update(pushResultObject,function(result){
-                    _this.seekingRequest[0].resolve(result);
-                })
-                .then(function(){
-                })
-                .catch(function(error){
-                    alert(error);
+                Firebase_gameStatisticsRef.child(voteID+'/'+ memberKey).update(pushResultObject,function(error){
+                    // console.log(error);
+                    // if (error) {
+                    //     alert("資料無法儲存." + error);
+                    //     return false;
+                    // }
+                    _this.seekingRequest[0].resolve(error);
                 });
 
-                Firebase_gameVotersRef.child(memberKey).update(pushMemberObject, function(result){
-                    _this.seekingRequest[1].resolve(result);
-                })
-                .then(function(){
-                })
-                .catch(function(error){
-                    alert(error);
+                Firebase_gameVotersRef.child(memberKey).update(pushMemberObject, function(error){
+                    // console.log(error);
+                    // if (error) {
+                    //     alert("資料無法儲存." + error);
+                    //     return false;
+                    // }
+                    _this.seekingRequest[1].resolve(error);
                 });
             },
             handeClickAgreeBtn: function(e){
                 var _this = this;
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
-                console.log(_this.cryptographer.encrypt(_this.phone.value));
-                console.log(_this.cryptographer.decrypt(memberKey));
 
 
                 e.preventDefault();
@@ -151,7 +148,7 @@ div
                     return false;
                 }
 
-                Firebase_gameStatisticsRef.child(voteID+'/'+memberKey).once('value',function(snapshot){
+                Firebase_gameStatisticsRef.child(voteID+'/'+ memberKey).once('value',function(snapshot){
                     
                     var result = snapshot.val();
 
