@@ -1489,3 +1489,12 @@ a.pure-button-primary {
 
 .vote-forms .pure-form-message {
   color: red; }
+
+@media (max-width: 949px) and (min-width: 0) {
+  .vote-forms input,
+  .vote-forms label {
+    font-size: 2.0rem; } }
+
+@media (max-width: 949px) and (min-width: 0) {
+  a.vote-btn {
+    font-size: 2.0rem; } }

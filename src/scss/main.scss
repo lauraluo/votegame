@@ -18,13 +18,11 @@
 @import "layout/_nav.scss";
 //5.components
 @import "components/_load.scss"; //html 在 load.js 裡
-
 @import "vendor/_pure.scss";
 //6.pages
 //7.themes
 $tran:0.3s ease-in all;
 $boxShadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
-
 .hide-text {
     overflow: hidden;
     padding: 0;
@@ -43,7 +41,6 @@ html {
         // font-size: 100%;
     }
 }
-
 
 h1 {
     margin: 0;
@@ -89,7 +86,7 @@ a.pure-button-primary {
         height: 633px;
         position: relative;
         @include respond-to(small) {
-            background:url(../images/vote_cover-m.jpg) no-repeat 50% 50%;
+            background: url(../images/vote_cover-m.jpg) no-repeat 50% 50%;
             width: 100%;
             height: 0;
             padding-bottom: 140.625%;
@@ -137,7 +134,7 @@ a.pure-button-primary {
             img {
                 width: 100%;
                 position: absolute;
-                top:0;
+                top: 0;
                 left: 0;
                 transform: scale(1);
                 transition: all .5s ease-in-out;
@@ -158,7 +155,6 @@ a.pure-button-primary {
                 color: #fc7c9f;
                 font-weight: bold;
                 margin-bottom: 10px;
-
             }
             .count {
                 color: #2a628f;
@@ -210,6 +206,9 @@ a.pure-button-primary {
     h2 {
         font-size: 2.0rem;
         font-weight: bold;
+        @include respond-to(small) {
+            // font-size: 2.8rem;
+        }
     }
     &__close {
         background: url(../images/fancybox_sprite.png) no-repeat 0 0;
@@ -218,7 +217,7 @@ a.pure-button-primary {
         height: 36px;
         cursor: pointer;
         position: absolute;
-        top:-18px;
+        top: -18px;
         right: -18px;
         z-index: 99;
         @include respond-to(small) {
@@ -249,18 +248,17 @@ a.pure-button-primary {
     }
 }
 
-
 .modal-enter {
-  opacity: 0;
+    opacity: 0;
 }
 
 .modal-leave-active {
-  opacity: 0;
+    opacity: 0;
 }
 
 .modal-enter .vote-dialog__box,
 .modal-leave-active .vote-dialog__box {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .vote-trems {
@@ -290,5 +288,16 @@ a.pure-button-primary {
     .pure-form-message {
         color: red;
     }
+    @include respond-to(small) {
+        input,
+        label {
+            font-size: 2.0rem;
+        }
+    }
+}
 
+a.vote-btn {
+    @include respond-to(small) {
+        font-size: 2.0rem;
+    }
 }
