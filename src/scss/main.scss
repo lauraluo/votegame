@@ -60,7 +60,7 @@ a.pure-button-primary {
     }
 }
 
-.pc-only {
+.mb-only {
     @include respond-to(small-up) {
         display: none!important;
     }
@@ -131,6 +131,9 @@ a.pure-button-primary {
         }
         &__media {
             overflow: hidden;
+            width: 100%;
+            padding-bottom: 100%;
+            position: 
             img {
                 width: 100%;
                 transform: scale(1);

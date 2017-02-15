@@ -1285,7 +1285,7 @@ a.pure-button-primary {
     display: none !important; } }
 
 @media (min-width: 950px) {
-  .pc-only {
+  .mb-only {
     display: none !important; } }
 
 .vote {
@@ -1346,14 +1346,13 @@ a.pure-button-primary {
       -webkit-box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.2);
       box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.2); }
     .vote__item__media {
-      overflow: hidden; }
-      .vote__item__media img {
-        width: 100%;
-        -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-        transform: scale(1);
-        -webkit-transition: all .5s ease-in-out;
-        transition: all .5s ease-in-out; }
+      overflow: hidden;
+      width: 100%;
+      padding-bottom: 100%;
+      position: img;
+        position-width: 100%;
+        position-transform: scale(1);
+        position-transition: all .5s ease-in-out; }
     .vote__item__content {
       padding: 20px 10px; }
     .vote__item__text {
