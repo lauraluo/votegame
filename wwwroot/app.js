@@ -16218,9 +16218,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-5f5a0a0d", module.exports)
+    hotAPI.createRecord("_v-656205ed", module.exports)
   } else {
-    hotAPI.update("_v-5f5a0a0d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-656205ed", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],14:[function(require,module,exports){
@@ -16252,9 +16252,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-e27d2fca", module.exports)
+    hotAPI.createRecord("_v-2bda703b", module.exports)
   } else {
-    hotAPI.update("_v-e27d2fca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2bda703b", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],15:[function(require,module,exports){
@@ -16302,29 +16302,33 @@ exports.default = {
             var phoneReg = /^[09]{2}[0-9]{8}$/;
             var result = false;
 
-            //|| !_this.phone.value.match(phoneReg)
-
             if (_this.name.value == null || _this.name.value == '') {
                 _this.name.isError = true;
             }
 
-            if (_this.phone.value == null || _this.phone.value == '') {
+            if (_this.phone.value == null || _this.phone.value == '' || _this.phone.value.match(phoneReg) === null) {
                 _this.phone.isError = true;
             }
 
             return !(_this.name.isError || _this.phone.isError);
         },
         setVoteStatusCookie: function setVoteStatusCookie() {
+            var _this = this;
             var cookiename = 'localTimestamp';
             var voteID = _this.voteid;
             var timestamp = _this.timestamp;
-            var oldStatus = utilityJS.cookie(cookiename);
+            var cookie = utilityJS.cookie(cookiename);
+            var oldStatus = JSON.parse(cookie);
             var updateStatus = {};
+            updateStatus[voteID] = timestamp;
 
-            //utilityJS.cookie(cookiename, $.extend( oldStatus, updateStatus ) , { expires: 14 });
+            utilityJS.cookie(cookiename, JSON.stringify($.extend(oldStatus, updateStatus)), { expires: 14 });
+
+            //諸存使用者的金鑰
         },
         submitSuccess: function submitSuccess() {
             var _this = this;
+            _this.setVoteStatusCookie();
             _this.resetForms();
             _this.$emit('open', 'success', function () {});
         },
@@ -16415,9 +16419,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-7ed15e67", module.exports)
+    hotAPI.createRecord("_v-ae6422f2", module.exports)
   } else {
-    hotAPI.update("_v-7ed15e67", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-ae6422f2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],16:[function(require,module,exports){
@@ -16434,6 +16438,7 @@ exports.default = {
     methods: {
         handeClickAgreeBtn: function handeClickAgreeBtn(e) {
             e.preventDefault();
+            utilityJS.cookie('argeTrems', true, { expires: 1 });
             this.$emit('open', 'forms', function () {});
         }
     }
@@ -16449,9 +16454,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2281f4c5", module.exports)
+    hotAPI.createRecord("_v-4c7e84e5", module.exports)
   } else {
-    hotAPI.update("_v-2281f4c5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-4c7e84e5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],17:[function(require,module,exports){
@@ -16502,6 +16507,7 @@ window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 
 var eventCtrls = new _vue2.default();
 
+var cookieConfig = {};
 // window.mixins = {
 //     enCode: function(str) {
 //         return str;
@@ -16523,9 +16529,21 @@ var app = new _vue2.default({
     el: '#rootApp',
     mounted: function mounted() {
         var _this = this;
+        var localTimestampCookie = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
+
+        if (utilityJS.cookie(_this.cookieConfig.trems.name) == null) {
+            utilityJS.cookie(_this.cookieConfig.trems.name, false, { expires: 1 });
+        }
+
+        if (utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null) {
+            utilityJS.cookie(_this.cookieConfig.localTimestamp.name, "{}", { expires: 99 });
+            // Vue.delete( object, key )
+        }
+
+        _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
 
         //只取一次
-        Firebase_config.database().ref().once('value', function (snapshot) {
+        Firebase_config.database().ref().on('value', function (snapshot) {
             var startDate = snapshot.child('startDate').val();
             var endDate = snapshot.child('endDate').val();
 
@@ -16540,31 +16558,22 @@ var app = new _vue2.default({
         //參賽者數量初始化
         Firebase_gameStatisticsRef.on('value', function (snapshot) {
             snapshot.forEach(function (snap) {
+                var timestampString = _this.member.timestamps[snap.key] || '0';
                 _vue2.default.set(_this.counts, snap.key, snap.numChildren());
+                _vue2.default.set(_this.member.timesExpired, snap.key, _this.getNowDate() > new Date(timestampString));
             });
         }.bind(this));
-
-        //初始化cookie
-        if (utilityJS.cookie(_this.cookieConfig.trems.name) == null) {
-            utilityJS.cookie(_this.cookieConfig.trems.name, false, { expires: 1 });
-        }
-
-        if (utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null) {
-            utilityJS.cookie(_this.cookieConfig.localTimestamp.name, {}, { expires: 99 });
-        }
-
-        _this.member.timestamps = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
-
-        console.log('_this.member.timestamps');
-        console.log(_this.member.timestamps);
     },
     watch: {
         'showModal': function showModal(newVal, oldVal) {}
     },
     data: {
-        startDate: '0000/00/00',
-        endDate: '0000/00/00',
+        startDate: '0',
+        endDate: '0',
         isPaused: false,
+        getNowDate: function getNowDate() {
+            return new Date(new Date().format('YYYY/MM/DD'));
+        },
         stage: -1,
         gamers: [],
         results: [],
@@ -16580,8 +16589,12 @@ var app = new _vue2.default({
             phone: "",
             timestamps: {
                 //從 cookie 初始化
-                // 'g1': 'date',
-                // 'g2': 'date'
+                // 'g1': 'Date object',
+                // 'g2': 'Date object'
+            },
+            timesExpired: {
+                // 'g1': true,
+                // 'g2': false               
             }
         },
         cookieConfig: {
@@ -16592,8 +16605,7 @@ var app = new _vue2.default({
                 name: 'localTimestamp'
             }
         },
-        counts: {} //裝計數的容器
-    },
+        counts: {} },
     firebase: {
         // results: Firebase_game.database().ref('statistics')
     },
@@ -16608,6 +16620,16 @@ var app = new _vue2.default({
             if (callback && typeof callback == 'function') {
                 callback();
             }
+        },
+        isVoteBtnActive: function isVoteBtnActive(key) {
+            var _this = this;
+            var result = true;
+
+            if (_this.member.timesExpired[key] !== undefined) {
+                result = _this.member.timesExpired[key];
+            }
+
+            return result;
         },
         closeModal: function closeModal(callback) {
             this.modalConfig.isShow = false;
@@ -16632,24 +16654,31 @@ var app = new _vue2.default({
         isGamerActive: function isGamerActive(key) {
             return true;
         },
+        handelCookieChange: function handelCookieChange(name, value) {
+            //when cookie change reset data
+        },
         handleClickVoteBtn: function handleClickVoteBtn($event, key) {
             var _this = this;
             _this.submitKey = key;
+
+            $event.preventDefault();
 
             if (!_this.isGameActive()) {
                 alert('活動目前停止中');
                 return false;
             }
 
-            if (!_this.isGamerActive()) {
+            if (!_this.isVoteBtnActive(key)) {
                 alert('一天只能投一次票');
                 return false;
             }
 
-            _this.openModal('trems', function () {
-                console.log('setcookie');
-                utilityJS.cookie(_this.cookieConfig.trems.name, true, { expires: 1 });
-            });
+            if (JSON.parse(utilityJS.cookie('argeTrems')) == true) {
+                _this.openModal('forms', function () {});
+                return false;
+            }
+
+            _this.openModal('trems', function () {});
         }
     }
 });

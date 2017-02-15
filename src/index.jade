@@ -21,7 +21,8 @@ block page_main
                                     div.name 姓名/暱稱：{{ gamer.name }}
                                     div.count 票數： {{ counts[key] ? counts[key] : 0 }}
                                 div.vote__item__ctrl
-                                    a.vote-btn.pure-button.pure-button-primary(href="#", title="name", v-on:click="handleClickVoteBtn($event,key)") 投票給我
+                                    a.vote__btn.pure-button.pure-button-primary(href="#", title="name", v-on:click="handleClickVoteBtn($event, key)", v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(key) }") 投票給我
+
         div.vote__ft
             h3.pc-only 東森蝶蒙股份有限公司 235新北市中和市景平路258號 0800-013-058
             p.mb-only 235新北市中和市景平路258號 0800-013-058

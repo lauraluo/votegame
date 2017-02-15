@@ -57,13 +57,11 @@ div
                 var phoneReg =  /^[09]{2}[0-9]{8}$/;
                 var result = false;
                 
-                //|| !_this.phone.value.match(phoneReg)
-
                 if( _this.name.value == null || _this.name.value == '' ) {
                     _this.name.isError = true;
                 }
 
-                if(_this.phone.value == null || _this.phone.value == '' ) {
+                if((_this.phone.value == null || _this.phone.value == '') || _this.phone.value.match(phoneReg) === null) {
                     _this.phone.isError = true;
                 }
 
@@ -71,17 +69,23 @@ div
 
             },
             setVoteStatusCookie:function(){
+                var _this = this;
                 var cookiename = 'localTimestamp';
                 var voteID = _this.voteid;
                 var timestamp = _this.timestamp;
-                var oldStatus = utilityJS.cookie(cookiename);
+                var cookie = utilityJS.cookie(cookiename)
+                var oldStatus = JSON.parse( cookie );
                 var updateStatus = {};
+                updateStatus[voteID] = timestamp;
                 
-                //utilityJS.cookie(cookiename, $.extend( oldStatus, updateStatus ) , { expires: 14 });
+                utilityJS.cookie(cookiename, JSON.stringify($.extend( oldStatus, updateStatus )) , { expires: 14 });
+
+                //諸存使用者的金鑰
 
             },
             submitSuccess: function(){
                 var _this = this;
+                _this.setVoteStatusCookie();
                 _this.resetForms();
                 _this.$emit('open', 'success' ,function(){});
             },

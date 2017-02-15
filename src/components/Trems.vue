@@ -84,9 +84,8 @@ div
         methods: {
             handeClickAgreeBtn: function(e){
                 e.preventDefault();
-                this.$emit('open','forms',function(){
-
-                });    
+                utilityJS.cookie('argeTrems',true, { expires: 1 });
+                this.$emit('open','forms',function(){});    
             }
         }
     }

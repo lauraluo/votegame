@@ -68,6 +68,11 @@ a.pure-button-primary {
 
 .vote {
     background: #f8f8f8;
+    // &__btn {
+    //     &.disabled {
+    //         @extend .pure-button-disable;
+    //     }
+    // }
     &__ft {
         background: #555;
         color: #fff;

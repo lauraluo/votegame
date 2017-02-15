@@ -22,7 +22,7 @@ var initFBGame = {
     messagingSenderId: "164280679850"
 };
 
-window.Firebase_config = Firebase.initializeApp(initFBConfig,'Firebase_config');
+window.Firebase_config = Firebase.initializeApp(initFBConfig, 'Firebase_config');
 window.Firebase_game = Firebase.initializeApp(initFBGame, 'Firebase_game');
 window.Firebase_gameStatisticsRef = Firebase_game.database().ref('statistics');
 window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
@@ -33,6 +33,9 @@ window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 
 var eventCtrls = new Vue();
 
+var cookieConfig = {
+
+};
 // window.mixins = {
 //     enCode: function(str) {
 //         return str;
@@ -54,9 +57,24 @@ const app = new Vue({
     el: '#rootApp',
     mounted: function() {
         var _this = this;
+        var localTimestampCookie = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
+
+
+        if (utilityJS.cookie(_this.cookieConfig.trems.name) == null) {
+            utilityJS.cookie(_this.cookieConfig.trems.name, false, { expires: 1 });
+        }
+
+        if (utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null ) {
+            utilityJS.cookie(_this.cookieConfig.localTimestamp.name, "{}", { expires: 99 });
+            // Vue.delete( object, key )
+
+        }
+
+        _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
+
 
         //只取一次
-        Firebase_config.database().ref().once('value', function(snapshot) {
+        Firebase_config.database().ref().on('value', function(snapshot) {
             var startDate = snapshot.child('startDate').val();
             var endDate = snapshot.child('endDate').val();
 
@@ -69,33 +87,30 @@ const app = new Vue({
         }.bind(this));
 
         //參賽者數量初始化
-        Firebase_gameStatisticsRef .on('value', function(snapshot) {
+        Firebase_gameStatisticsRef.on('value', function(snapshot) {
             snapshot.forEach(function(snap) {
-                Vue.set(_this.counts, snap.key, snap.numChildren())
+                var timestampString  = _this.member.timestamps[snap.key] || '0';
+                Vue.set(_this.counts, snap.key, snap.numChildren());
+                Vue.set(_this.member.timesExpired, snap.key, (_this.getNowDate() > new Date(timestampString)))
             });
         }.bind(this));
 
-        //初始化cookie
-        if( utilityJS.cookie(_this.cookieConfig.trems.name) == null){
-            utilityJS.cookie(_this.cookieConfig.trems.name, false , { expires: 1 });
-        }
 
-        if( utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null){
-            utilityJS.cookie(_this.cookieConfig.localTimestamp.name, {} , { expires: 99 });
-        }
 
-        _this.member.timestamps = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
-        
-        console.log( '_this.member.timestamps');
-        console.log( _this.member.timestamps );
+
+
+
     },
     watch: {
         'showModal': function(newVal, oldVal) {}
     },
     data: {
-        startDate: '0000/00/00',
-        endDate: '0000/00/00',
+        startDate: '0',
+        endDate: '0',
         isPaused: false,
+        getNowDate: function() {
+            return new Date((new Date).format('YYYY/MM/DD'));
+        },
         stage: -1,
         gamers: [],
         results: [],
@@ -111,8 +126,12 @@ const app = new Vue({
             phone: "",
             timestamps: {
                 //從 cookie 初始化
-                // 'g1': 'date',
-                // 'g2': 'date'
+                // 'g1': 'Date object',
+                // 'g2': 'Date object'
+            },
+            timesExpired: {
+                // 'g1': true,
+                // 'g2': false               
             }
         },
         cookieConfig: {
@@ -123,7 +142,9 @@ const app = new Vue({
                 name: 'localTimestamp'
             }
         },
-        counts: {} //裝計數的容器
+        counts: {
+
+        }, //裝計數的容器
     },
     firebase: {
         // results: Firebase_game.database().ref('statistics')
@@ -140,6 +161,16 @@ const app = new Vue({
                 callback();
             }
 
+        },
+        isVoteBtnActive: function(key) {
+            var _this = this;
+            var result = true;
+
+            if (_this.member.timesExpired[key] !== undefined) {
+                result = _this.member.timesExpired[key];
+            }
+
+            return result;
         },
         closeModal: function(callback) {
             this.modalConfig.isShow = false;
@@ -158,7 +189,7 @@ const app = new Vue({
                 if (now <= _this.endDate && now >= _this.startDate) {
                     result = true;
                 }
-            } 
+            }
 
             return result;
 
@@ -166,24 +197,31 @@ const app = new Vue({
         isGamerActive: function(key) {
             return true;
         },
+        handelCookieChange: function(name, value) {
+            //when cookie change reset data
+        },
         handleClickVoteBtn: function($event, key) {
             var _this = this;
             _this.submitKey = key;
+
+            $event.preventDefault();
 
             if (!_this.isGameActive()) {
                 alert('活動目前停止中');
                 return false;
             }
 
-            if (!_this.isGamerActive()) {
+            if (!_this.isVoteBtnActive(key)) {
                 alert('一天只能投一次票');
                 return false;
             }
 
-            _this.openModal('trems', function() {
-                console.log('setcookie');
-                utilityJS.cookie(_this.cookieConfig.trems.name,true, { expires: 1 });
-            });
+            if (JSON.parse(utilityJS.cookie('argeTrems')) == true) {
+                _this.openModal('forms', function() {});
+                return false;
+            }
+
+            _this.openModal('trems', function() {});
 
         }
     }

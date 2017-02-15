@@ -44,7 +44,7 @@
                         <div class="name">姓名/暱稱：{{ gamer.name }}</div>
                         <div class="count">票數： {{ counts[key] ? counts[key] : 0 }}</div>
                       </div>
-                      <div class="vote__item__ctrl"><a href="#" title="name" v-on:click="handleClickVoteBtn($event,key)" class="vote-btn pure-button pure-button-primary">投票給我</a></div>
+                      <div class="vote__item__ctrl"><a href="#" title="name" v-on:click="handleClickVoteBtn($event, key)" v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(key) }" class="vote__btn pure-button pure-button-primary">投票給我</a></div>
                     </div>
                   </div>
                 </li>
