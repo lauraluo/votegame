@@ -134,7 +134,9 @@ div
             handeClickAgreeBtn: function(e){
                 var _this = this;
                 var voteID = _this.voteid;
-                var memberKey = _this.enCode(_this.phone.value);
+                var memberKey = _this.cryptographer.encrypt(_this.phone.value);
+                console.log(_this.cryptographer.encrypt(_this.phone.value));
+                console.log(_this.cryptographer.decrypt(memberKey));
 
 
                 e.preventDefault();

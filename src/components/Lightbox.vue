@@ -11,11 +11,11 @@
         props:['showModal'],
         watch: {
             'showModal':function(newVal, oldVal){
-                // if(val){
-                //     $('body').css('overflow','hidden');
-                // }else {
-                //     $('body').css('overflow','auto');
-                // }
+                if(newVal){
+                    $('body').css('overflow','hidden');
+                }else {
+                    $('body').css('overflow','auto');
+                }
             }
         },
         methods: {

@@ -1,4 +1,4 @@
-var Cryptographer;
+var cryptographer;
 
 (function() {
 
@@ -63,10 +63,10 @@ var Cryptographer;
             var result = utilityJS.binaryArrayToString(toDecryptSource);
 
             return result;
-        }.bind(this);
+        };
 
     };
 
-    Cryptographer = new CryptographerManager();
+    cryptographer = new CryptographerManager();
 
 })();

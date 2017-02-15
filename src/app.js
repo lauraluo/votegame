@@ -45,6 +45,79 @@ var cookieConfig = {
 //     }
 // };
 
+//gobal mixins
+Vue.mixin({
+    created: function() {
+        var _this = this;
+        var CryptographerManager = function() {
+
+            var that = this, // Public methods
+                mgr = {}; // Privat methods
+
+            /** 
+             * 取得加解密規則
+             * @returns {binary[]} 加解密規則
+             */
+            mgr['CUSTOM_HASH_VALUE'] = function() {
+                return [7, -1, -4, 9, 8, 1, 3, 2, -6, 5, -4, -2, 1, 1, 9, -1];
+            };
+
+            /** 
+             * 取得自訂加密或解密結果
+             * @param {bool} isEncrypt true:加密 / false:解密
+             * @param {binary[]} source 需加解密二位元文字
+             * @returns {binary[]} 加解密處理後二位元文字
+             */
+            mgr['getCustomHash'] = function(isEncrypt, source) {
+                var count = 0,
+                    customHash = mgr.CUSTOM_HASH_VALUE(),
+                    customHashLength = customHash.length,
+                    size = source.length,
+                    result = [];
+
+                for (var i = 0; i < size; i++) {
+                    var sourceChar = parseInt(source[i], 2);
+                    result[i] = sourceChar + (isEncrypt ? customHash[count] : -customHash[count]);
+                    result[i] = result[i].toString(2);
+
+                    count++;
+                    count = count % customHashLength;
+                }
+                return result;
+            }
+
+            /** 
+             * 加密字串
+             * @param {string} source 欲加密的字串
+             * @returns {string} 加密後的字串
+             */
+            that.encrypt = function(source) {
+                var toEncryptSource = utilityJS.stringToBinaryArray(source);
+                toEncryptSource = mgr.getCustomHash(true, toEncryptSource);
+                var result = utilityJS.binaryArrayToString(toEncryptSource);
+
+                return result;
+            };
+
+            /** 
+             * 解密字串
+             * @param {string} source 欲解密字串
+             * @returns {string} 解密後的字串
+             */
+            that.decrypt = function(source) {
+                var toDecryptSource = utilityJS.stringToBinaryArray(source);
+                toDecryptSource = mgr.getCustomHash(false, toDecryptSource);
+                var result = utilityJS.binaryArrayToString(toDecryptSource);
+
+                return result;
+            };
+
+        };
+
+        _this.cryptographer = new CryptographerManager();
+    }
+});
+
 
 Vue.use(VueFire);
 Vue.component('lightbox', require('./components/Lightbox.vue'));
@@ -53,18 +126,16 @@ Vue.component('forms', require('./components/forms.vue'));
 Vue.component('success', require('./components/Success.vue'));
 
 const app = new Vue({
-    // delimiters: ['[', ']'],
     el: '#rootApp',
     mounted: function() {
         var _this = this;
         var localTimestampCookie = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
 
-
         if (utilityJS.cookie(_this.cookieConfig.trems.name) == null) {
             utilityJS.cookie(_this.cookieConfig.trems.name, false, { expires: 1 });
         }
 
-        if (utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null ) {
+        if (utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null) {
             utilityJS.cookie(_this.cookieConfig.localTimestamp.name, "{}", { expires: 99 });
             // Vue.delete( object, key )
 
@@ -89,17 +160,12 @@ const app = new Vue({
         //參賽者數量初始化
         Firebase_gameStatisticsRef.on('value', function(snapshot) {
             snapshot.forEach(function(snap) {
-                var timestampString  = _this.member.timestamps[snap.key] || '0';
+                var timestampString = _this.member.timestamps[snap.key] || '0';
                 Vue.set(_this.counts, snap.key, snap.numChildren());
                 Vue.set(_this.member.timesExpired, snap.key, (_this.getNowDate() > new Date(timestampString)))
             });
         }.bind(this));
-
-
-
-
-
-
+        
     },
     watch: {
         'showModal': function(newVal, oldVal) {}

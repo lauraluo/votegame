@@ -1349,10 +1349,17 @@ a.pure-button-primary {
       overflow: hidden;
       width: 100%;
       padding-bottom: 100%;
-      position: img;
-        position-width: 100%;
-        position-transform: scale(1);
-        position-transition: all .5s ease-in-out; }
+      position: relative; }
+      .vote__item__media img {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: all .5s ease-in-out;
+        transition: all .5s ease-in-out; }
     .vote__item__content {
       padding: 20px 10px; }
     .vote__item__text {
