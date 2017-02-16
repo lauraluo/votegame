@@ -26,11 +26,14 @@ var environment = {
             this.development;
     },
     // Are we running under the development environment.
-    isDevelopment: function() { return this.current() === this.development; },
+    isDevelopment: function() {
+        return this.current() === this.development; },
     // Are we running under the staging environment.
-    isStaging: function() { return this.current() === this.staging; },
+    isStaging: function() {
+        return this.current() === this.staging; },
     // Are we running under the production environment.
-    isProduction: function() { return this.current() === this.production; }
+    isProduction: function() {
+        return this.current() === this.production; }
 };
 
 //need require os
@@ -54,11 +57,15 @@ var gulp = require('gulp'),
     connect = require('gulp-connect'),
     clean = require('gulp-clean'),
     open = require('gulp-open');
-// bowerFiles = require('bower-files');
+
+var concat = require('gulp-concat');
+
+var minify = require('gulp-minify');
+
 
 var distPath = "wwwroot/";
 
-console.log(environment.current());
+// console.log(environment.current());
 
 // // Sass
 gulp.task('sass', function() {
@@ -135,7 +142,7 @@ gulp.task('html', function() {
 //Sever
 gulp.task('connectDist', function() {
     connect.server({
-        root: ['wwwroot/','src/'],
+        root: ['wwwroot/', 'src/'],
         port: 3001,
         livereload: true
     });
@@ -145,16 +152,19 @@ gulp.task('connectDist', function() {
 
 gulp.task('copyJS', function() {
     gulp.src(['src/js/**/*.js'])
-        .pipe(gulp.dest( distPath + 'js/'))
+        .pipe(gulp.dest(distPath + 'js/'))
         .pipe(connect.reload());
 });
 
 
 gulp.task('js', function() {
     gulp.src('./src/app.js')
-        .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'], debug: false }))
-        .pipe(uglify())
-        .pipe(gulp.dest('./' + distPath))
+        .pipe(browserify({
+            insertGlobals: true,
+            transform: ['vueify', 'babelify', 'aliasify'],
+            debug: false
+        }))
+        .pipe(gulp.dest('./' + distPath + 'js/'))
         .pipe(connect.reload());
 })
 
@@ -168,7 +178,7 @@ gulp.task('copyAssets', function() {
         .pipe(gulp.dest(distPath + 'assets'));
 });
 
-gulp.task('copyAll', ['copyImg', 'copyAssets','copyJS'], function() {});
+gulp.task('copyAll', ['copyImg', 'copyAssets', 'copyJS'], function() {});
 
 //Clean
 gulp.task('reset', function() {
@@ -182,7 +192,7 @@ gulp.task('open', function() {
     gulp.src(__filename)
         .pipe(open({
             uri: 'http://localhost:3001',
-            app:  'google chrome'
+            app: 'google chrome'
         }));
 });
 
@@ -194,13 +204,32 @@ gulp.task('watch', function() {
     gulp.watch(['src/components/**/*.vue'], ['js']);
     gulp.watch(['src/images/*'], ['copyImg']);
     gulp.watch(['src/images/sprites/*'], ['sprite']);
-    gulp.watch([ distPath + '*.html'], ['html']);
+    gulp.watch([distPath + '*.html'], ['html']);
     gulp.watch('src/js/**/*.js', ['copyJS']);
 });
 
+
+
+gulp.task('jsConcat', function() {
+  return gulp.src(['wwwroot/js/jquery-3.1.1.min.js','wwwroot/js/utility.js', 'wwwroot/js/firebase.js','wwwroot/js/vue.min.js', 'wwwroot/js/app.js'])
+    .pipe(concat('all.js'))
+    .pipe(gulp.dest('wwwroot/js/'));
+});
+
+
+
+
+// gulp.task('compress', function() {
+//     gulp.src('wwwroot/js/app.js', 'src/js/utility.js')
+//         .pipe(minify({
+//             ext: {
+//                 min: '.js'
+//             }
+//         }))
+//         .pipe(gulp.dest(distPath + 'js/'))
+// });
 //Build
 gulp.task('build', ['js', 'sprite', 'jade', 'sass', 'copyAll'], function() {});
 
 //run
-gulp.task('default', ['build', 'watch', 'connectDist', 'open'], function() {});
-
+gulp.task('default', ['build', 'watch', 'connectDist','jsConcat','open'], function() {});
