@@ -8,5 +8,8 @@
     "headers": [{
         "key": "X-Frame-Options",
         "value": "*"
+    }, {
+        "key": "Access-Control-Allow-Origin",
+        "value": "*"
     }]
 }
