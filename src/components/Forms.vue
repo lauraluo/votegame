@@ -6,15 +6,17 @@ div
             fieldset
                 ul
                     li
-                        label(for='userName') 你的暱稱 (必填)
-                        input#userName.pure-input-1(type='text', placeholder='請輸入你的暱稱', v-model="name.value")
+                        label(for='name') 你的暱稱 (必填)
+                        div.vote-froms__input-wrap
+                            input#name.pure-input-1(type='text', placeholder='請輸入你的暱稱', v-model="name.value", name="name")
                         span.pure-form-message.pure-form-message--error(v-show="name.isError") 這是必填欄位
                     li
                         label(for='phone') 手機號碼 (必填)
-                                                input#phone.pure-input-1(type='text', placeholder='請輸入手機號碼 例如 09112233444', v-model="phone.value")
+                        div.vote-froms__input-wrap
+                            input#phone.pure-input-1(type='tel', placeholder='範 09112233444', v-model="phone.value", name="phone")
                         span.pure-form-message.pure-form-message--error(v-show="phone.isError") 這是必填欄位，請輸入正確格式的手機號碼 ex 09123112233
     div.vote-dialog__ctrls
-        a.vote-btn.pure-button.pure-button-primary(href='#', title='同意', v-on:click="handeClickAgreeBtn($event)") 確認投票
+        a.vote-btn.pure-button.pure-button-primary(href='#', title='同意', v-on:click="handleClickSubmitBtn($event)") 確認投票
 </template>
 
 <script>
@@ -27,21 +29,45 @@ div
                 _this.submitSuccess();
             });
 
+            // _this.token = _this.getToken();
+
+            // if(_this.token) {
+            //     Firebase_gameStatisticsRef.child(_this.voteid+'/'+ _this.token).once('value',function(snapshot){
+                    
+            //         var result = snapshot.val();
+
+            //         console.log(result);
+
+            //         if (result){
+            //             _this.name.temp = result.name;
+            //             _this.phone.temp =  result.phone;
+            //         }
+
+            //     });                
+            // }
+
+
         },
         data:function(){
             return {
                 seekingRequest: [$.Deferred(), $.Deferred()],
                 disabled: false,
+                token: null,
+                isChanged: false,
                 name: {
                     value: '',
+                    temp:'',
                     isError: false
                 },
                 phone: {
                     value: '',
+                    temp:'',
                     isError: false
                 },
-                timestamp: '0000/00/00'
+                timestamp: '0'
             }
+        },
+        computed: {
         },
         methods: {
             enCode: function(str) {
@@ -66,19 +92,24 @@ div
                 return  !(_this.name.isError || _this.phone.isError);
 
             },
+            handleTempClick: function($event, inputID){
+                console.log(inputID);
+            },
             setVoteStatusCookie:function(){
                 var _this = this;
-                var cookiename = 'localTimestamp';
+                // var cookiename = 'localTimestamp';
                 var voteID = _this.voteid;
                 var timestamp = _this.timestamp;
-                var cookie = utilityJS.cookie(cookiename)
+                var cookie = utilityJS.cookie('localTimestamp')
                 var oldStatus = JSON.parse( cookie );
                 var updateStatus = {};
                 updateStatus[voteID] = timestamp;
                 
-                utilityJS.cookie(cookiename, JSON.stringify($.extend( oldStatus, updateStatus )) , { expires: 14 });
+                utilityJS.cookie('localTimestamp', JSON.stringify($.extend( oldStatus, updateStatus )) , { expires: 14 });
 
-                //諸存使用者的金鑰
+                utilityJS.cookie('token', _this.cryptographer.encrypt(_this.phone.value)  ,{ expires: 14 });
+
+                
 
             },
             submitSuccess: function(){
@@ -130,12 +161,13 @@ div
                     _this.seekingRequest[1].resolve(error);
                 });
             },
-            handeClickAgreeBtn: function(e){
+            handleClickSubmitBtn: function(e){
                 var _this = this;
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
-                console.log(memberKey);
-                console.log(_this.cryptographer.decrypt(memberKey));
+
+                // console.log(memberKey);
+                // console.log(_this.cryptographer.decrypt(memberKey));
 
 
                 e.preventDefault();
@@ -155,6 +187,7 @@ div
                     var result = snapshot.val();
 
                     if (!result){
+                        //如果資料庫沒有資料，則繼續儲存
                         _this.submitData();
                     
                     }

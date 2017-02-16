@@ -1490,9 +1490,22 @@ a.pure-button-primary {
 .vote-forms .pure-form-message {
   color: red; }
 
+.vote-forms .vote-froms__input-wrap {
+  position: relative; }
+
+.vote-forms .temp {
+  width: 90%;
+  position: absolute;
+  display: block;
+  background: #fff;
+  font-size: 1.6rem;
+  top: 0.25em;
+  left: 0.5em;
+  line-height: 1.8; }
+
 @media (max-width: 949px) and (min-width: 0) {
   .vote-forms input,
-  .vote-forms label {
+  .vote-forms label, .vote-forms .temp {
     font-size: 2.0rem; } }
 
 @media (max-width: 949px) and (min-width: 0) {

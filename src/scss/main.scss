@@ -288,9 +288,24 @@ a.pure-button-primary {
     .pure-form-message {
         color: red;
     }
+    .vote-froms__input-wrap {
+        position: relative;   
+    }
+    .temp {
+        width: 90%;
+        position: absolute;
+        display: block;
+        background: #fff;
+        font-size: 1.6rem;
+        top:0.25em;
+        left: 0.5em;
+        line-height: 1.8;
+
+
+    }
     @include respond-to(small) {
         input,
-        label {
+        label,.temp {
             font-size: 2.0rem;
         }
     }
