@@ -13,8 +13,8 @@ div
                     li
                         label(for='phone') 手機號碼 (必填)
                         div.vote-froms__input-wrap
-                            input#phone.pure-input-1(type='tel', placeholder='範 09112233444', v-model="phone.value", name="phone")
-                        span.pure-form-message.pure-form-message--error(v-show="phone.isError") 這是必填欄位，請輸入正確格式的手機號碼 ex 09123112233
+                            input#phone.pure-input-1(type='tel', placeholder='範例 0912345678', v-model="phone.value", name="phone")
+                        span.pure-form-message.pure-form-message--error(v-show="phone.isError") 這是必填欄位，請輸入正確格式的手機號碼，09開頭共10碼
     div.vote-dialog__ctrls
         a.vote-btn.pure-button.pure-button-primary(href='#', title='同意', v-on:click="handleClickSubmitBtn($event)") 確認投票
 </template>

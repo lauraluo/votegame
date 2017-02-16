@@ -27,13 +27,16 @@ var environment = {
     },
     // Are we running under the development environment.
     isDevelopment: function() {
-        return this.current() === this.development; },
+        return this.current() === this.development;
+    },
     // Are we running under the staging environment.
     isStaging: function() {
-        return this.current() === this.staging; },
+        return this.current() === this.staging;
+    },
     // Are we running under the production environment.
     isProduction: function() {
-        return this.current() === this.production; }
+        return this.current() === this.production;
+    }
 };
 
 //need require os
@@ -49,7 +52,7 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     autoprefixer = require('gulp-autoprefixer'),
     spritesmith = require("gulp.spritesmith"),
-    minifyCSS = require('gulp-minify-css'),
+    minifyCSS = require('gulp-clean-css'),
     plumber = require('gulp-plumber'),
     browserify = require('gulp-browserify'),
 
@@ -79,6 +82,7 @@ gulp.task('sass', function() {
             browsers: ["last 4 versions", "Firefox >= 27", "Blackberry >= 7", "IE 8", "IE 9"],
             cascade: false
         }))
+        .pipe(minifyCSS())
         .pipe(gulp.dest(distPath + 'css/'))
         .pipe(connect.reload());
 
@@ -210,26 +214,26 @@ gulp.task('watch', function() {
 
 
 
-gulp.task('jsConcat', function() {
-  return gulp.src(['wwwroot/js/jquery-3.1.1.min.js','wwwroot/js/utility.js', 'wwwroot/js/firebase.js','wwwroot/js/vue.min.js', 'wwwroot/js/app.js'])
-    .pipe(concat('all.js'))
-    .pipe(gulp.dest('wwwroot/js/'));
+gulp.task('jsConcatApp', function() {
+    return gulp.src(['src/js/utility.js', 'wwwroot/js/app.js'])
+        .pipe(concat('concatApp.js'))
+        // .pipe(minify())
+        .pipe(uglify())
+        .pipe(gulp.dest('wwwroot/js/'));
+});
+
+gulp.task('jsConcatAll', ['jsConcatApp'], function() {
+    return gulp.src(['wwwroot/js/jquery-3.1.1.min.js', 'wwwroot/js/firebase.js', 'wwwroot/js/vue.min.js', 'wwwroot/js/concatApp.js'])
+        .pipe(concat('all.js'))
+        .pipe(gulp.dest('wwwroot/js/'));
 });
 
 
-
-
-// gulp.task('compress', function() {
-//     gulp.src('wwwroot/js/app.js', 'src/js/utility.js')
-//         .pipe(minify({
-//             ext: {
-//                 min: '.js'
-//             }
-//         }))
-//         .pipe(gulp.dest(distPath + 'js/'))
-// });
 //Build
 gulp.task('build', ['js', 'sprite', 'jade', 'sass', 'copyAll'], function() {});
 
 //run
-gulp.task('default', ['build', 'watch', 'connectDist','jsConcat','open'], function() {});
+gulp.task('default', ['build', 'watch', 'connectDist', 'open'], function() {});
+
+//public
+gulp.task('public', ['build', 'watch', 'connectDist', 'jsConcatAll', 'open'], function() {});

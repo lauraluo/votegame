@@ -84,6 +84,7 @@ a.pure-button-primary {
         background: url(../images/vote_cover.jpg) no-repeat 50% 50%;
         width: 1260px;
         height: 633px;
+        margin: 0 auto;
         position: relative;
         @include respond-to(small) {
             background: url(../images/vote_cover-m.jpg) no-repeat 50% 50%;
@@ -106,7 +107,7 @@ a.pure-button-primary {
     &__items {
         padding: 20px 30px;
         box-sizing: border-box;
-        margin-left: -20px;
+        margin-left: -10px;
         @include respond-to(small) {
             padding: grid-width(0.2) grid-width(0.2);
             margin-left: grid-width(0.1)

@@ -10,7 +10,7 @@
 //firebase init 
 //====================
 
-var Firebase = firebase;
+// var Firebase = firebase;
 
 var initFBConfig = {
     apiKey: "AIzaSyDMY4iAWlqS5Qv1UklqR5b3nxYKdiISMgo",
@@ -28,8 +28,8 @@ var initFBGame = {
     messagingSenderId: "164280679850"
 };
 
-window.Firebase_config = Firebase.initializeApp(initFBConfig, 'Firebase_config');
-window.Firebase_game = Firebase.initializeApp(initFBGame, 'Firebase_game');
+window.Firebase_config = firebase.initializeApp(initFBConfig, 'Firebase_config');
+window.Firebase_game = firebase.initializeApp(initFBGame, 'Firebase_game');
 window.Firebase_gameStatisticsRef = Firebase_game.database().ref('statistics');
 window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 
