@@ -1,8 +1,12 @@
 {
-  "database": {
-    "rules": "database.rules.json"
-  },
-  "hosting": {
-    "public": "wwwroot"
-  }
+    "database": {
+        "rules": "database.rules.json"
+    },
+    "hosting": {
+        "public": "wwwroot"
+    },
+    "headers": [{
+        "key": "X-Frame-Options",
+        "value": "*"
+    }]
 }
