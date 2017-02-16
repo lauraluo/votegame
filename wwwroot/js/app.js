@@ -7976,9 +7976,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-656205ed", module.exports)
+    hotAPI.createRecord("_v-2fb58e94", module.exports)
   } else {
-    hotAPI.update("_v-656205ed", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2fb58e94", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/Lightbox.vue","/components")
@@ -8012,9 +8012,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2bda703b", module.exports)
+    hotAPI.createRecord("_v-6c2fb6b4", module.exports)
   } else {
-    hotAPI.update("_v-2bda703b", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-6c2fb6b4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/Success.vue","/components")
@@ -8223,9 +8223,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-255ac53c", module.exports)
+    hotAPI.createRecord("_v-429a9189", module.exports)
   } else {
-    hotAPI.update("_v-255ac53c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-429a9189", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/Vote.vue","/components")
@@ -8429,9 +8429,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-ae6422f2", module.exports)
+    hotAPI.createRecord("_v-06f70180", module.exports)
   } else {
-    hotAPI.update("_v-ae6422f2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-06f70180", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/forms.vue","/components")
@@ -8466,9 +8466,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-4c7e84e5", module.exports)
+    hotAPI.createRecord("_v-bf95d4c4", module.exports)
   } else {
-    hotAPI.update("_v-4c7e84e5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-bf95d4c4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/trems.vue","/components")
@@ -8621,5 +8621,9 @@ var app = new Vue({
     template: '<vote></vote>'
 });
 
+<<<<<<< HEAD
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_768cef90.js","/")
+=======
+}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_8ede087f.js","/")
+>>>>>>> 75712fbfabce99e2d23076d5ae8c63202b8df70a
 },{"./components/Lightbox.vue":8,"./components/Success.vue":9,"./components/Vote.vue":10,"./components/forms.vue":11,"./components/trems.vue":12,"buffer":2,"pBGvAp":4}]},{},[13])
