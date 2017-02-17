@@ -223,7 +223,7 @@ gulp.task('jsConcatApp', function() {
 });
 
 gulp.task('jsConcatAll', ['jsConcatApp'], function() {
-    return gulp.src(['wwwroot/js/jquery-3.1.1.min.js', 'wwwroot/js/firebase.js', 'wwwroot/js/vue.min.js', 'wwwroot/js/concatApp.js'])
+    return gulp.src(['src/js/jquery-3.1.1.min.js', 'src/js/firebase.js', 'src/js/vue.min.js', 'wwwroot/js/concatApp.js'])
         .pipe(concat('all.js'))
         .pipe(gulp.dest('wwwroot/js/'));
 });

@@ -151,6 +151,7 @@ a.pure-button-primary {
             @include respond-to(small) {
                 width: grid-width(12);
                 float: none;
+                padding-right: 0;
             }
             .name {
                 color: #fc7c9f;

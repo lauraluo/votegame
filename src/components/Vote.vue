@@ -57,7 +57,8 @@
 
                 _this.stage = snapshot.child('stage').val();
                 _this.gamers = snapshot.child('gamers').val();
-                _this.isPaused = snapshot.child('isPaused').val();
+                _this.isPaused = /true/i.test(snapshot.child('isPaused').val());
+
 
                 Firebase_gameStatisticsRef.on('value', function(snapshot) {
                     snapshot.forEach(function(snap) {
@@ -80,7 +81,7 @@
                 endDate: '0',
                 isPaused: false,
                 getNowDate: function() {
-                    return new Date((new Date).format('YYYY/MM/DD'));
+                    return new Date((new Date).format('YYYY-MM-DD'));
                 },
                 stage: -1,
                 gamers: {},
@@ -186,7 +187,7 @@
             isGameActive: function() {
                 var _this = this;
                 var result = false;
-                var now = new Date((new Date).format('YYYY/MM/DD'));
+                var now = _this.getNowDate();
 
                 if (!_this.isPaused) {
                     if (now <= _this.endDate && now >= _this.startDate) {
@@ -194,7 +195,7 @@
                     }
                 }
 
-                return result;
+                return true;
 
             },
             isGamerActive: function(key) {

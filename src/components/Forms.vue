@@ -130,7 +130,7 @@ div
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
 
-                _this.timestamp = (new Date).format('YYYY/MM/DD');
+                _this.timestamp = (new Date).format('YYYY-MM-DD');
 
                 var pushMemberObject = {
                     name: _this.name.value,
@@ -194,7 +194,7 @@ div
                     else if( result.timestamp ){
                         
                         var lastVoteTime = new Date(result.timestamp);
-                        var today = new Date((new Date().format('YYYY/MM/DD')));
+                        var today = new Date((new Date().format('YYYY-MM-DD')));
                         
                         if(today  >  lastVoteTime){
                             _this.submitData();
