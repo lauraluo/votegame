@@ -198,6 +198,7 @@
                 _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
 
                 timestampString = _this.member.timestamps[key] || '0';
+                _this.gamers[key].ui = _this.getVoteBtnText(key);
 
                 Vue.set(_this.member.timesExpired, key, (_this.getNowDate() > new Date(timestampString)))
             },

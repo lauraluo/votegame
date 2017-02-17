@@ -8456,6 +8456,7 @@ exports.default = {
             _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
 
             timestampString = _this.member.timestamps[key] || '0';
+            _this.gamers[key].ui = _this.getVoteBtnText(key);
 
             Vue.set(_this.member.timesExpired, key, _this.getNowDate() > new Date(timestampString));
         },
@@ -8922,5 +8923,5 @@ var app = new Vue({
     template: '<vote></vote>'
 });
 
-}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_bf186b7a.js","/")
+}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_75153742.js","/")
 },{"./components/Lightbox.vue":8,"./components/Success.vue":9,"./components/Vote.vue":10,"./components/forms.vue":11,"./components/trems.vue":12,"buffer":2,"pBGvAp":4}]},{},[13])
