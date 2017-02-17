@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-    h2 謝謝您的參與，您已完成投票
+    h2 已完成投票，謝謝你的參與!
     div.vote-dialog__content
         p 投票後，該投票者看到該參賽者的按鈕改為”已投票”，系統限制一天對某參賽者只能投一票，但隔天即可繼續投票，累積票數。
     div.vote-dialog__ctrls

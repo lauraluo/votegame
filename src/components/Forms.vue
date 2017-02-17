@@ -1,12 +1,12 @@
 <template lang="pug">
 div
-    h2 請輸入以下資訊，以完成投票並參與抽獎
+    h2 請輸入以下的資訊以完成投票並參加抽獎!
     .vote-forms
         form.pure-form.pure-form-stacked(action='vote-done.html')
             fieldset
                 ul
                     li
-                        label(for='name') 你的暱稱 (必填)
+                        label(for='name') 你的名字 (必填)
                         div.vote-froms__input-wrap
                             input#name.pure-input-1(type='text', placeholder='請輸入你的暱稱', v-model="name.value", name="name")
                         span.pure-form-message.pure-form-message--error(v-show="name.isError") 這是必填欄位
@@ -16,7 +16,7 @@ div
                             input#phone.pure-input-1(type='tel', placeholder='範例 0912345678', v-model="phone.value", name="phone")
                         span.pure-form-message.pure-form-message--error(v-show="phone.isError") 這是必填欄位，請輸入正確格式的手機號碼，09開頭共10碼
     div.vote-dialog__ctrls
-        a.vote-btn.pure-button.pure-button-primary(href='#', title='同意', v-on:click="handleClickSubmitBtn($event)") 確認投票
+        a.vote-btn.pure-button.pure-button-primary(href='#', title='同意', v-on:click="handleClickSubmitBtn($event)") 投我一票
 </template>
 
 <script>

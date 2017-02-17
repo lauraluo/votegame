@@ -9,6 +9,8 @@
                 div.vote__bd
                     div.vote__content
                         ul.vote__items.clearfix
+                            transition(name="fade")
+                                div.vote__items-load(v-show="isLoading")
                             //- for(n=0;n<8;n++)
                             li.vote__item(v-for="gamer in gamersSort" v-show="gamer.stage == stage")
                                 div.vote__item__wrap
@@ -19,7 +21,7 @@
                                             div.name 姓名/暱稱：{{ gamer.name }}
                                             div.count 票數： {{ counts[gamer.key] ? counts[gamer.key] : 0 }}
                                         div.vote__item__ctrl
-                                            a.vote__btn.pure-button.pure-button-primary(href="#", title="", v-on:click="handleClickVoteBtn($event, gamer.key)", v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(gamer.key) }") 投票給我
+                                            a.vote__btn.pure-button.pure-button-primary(href="#", title="", v-on:click="handleClickVoteBtn($event, gamer.key)", v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(gamer.key) || isPaused }") {{gamer.ui ? gamer.ui : voteBtnStatusList[0]}}
                 div.vote__ft
                     h3.pc-only 東森蝶蒙股份有限公司 235新北市中和市景平路258號 0800-013-058
                     p.mb-only 235新北市中和市景平路258號 0800-013-058
@@ -31,7 +33,7 @@
 
 <script>
     export default {
-        mounted: function() {
+        created: function() {
             var _this = this;
             var localTimestampCookie = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
 
@@ -57,16 +59,19 @@
 
                 _this.stage = snapshot.child('stage').val();
                 _this.gamers = snapshot.child('gamers').val();
+
                 _this.isPaused = /true/i.test(snapshot.child('isPaused').val());
 
 
                 Firebase_gameStatisticsRef.on('value', function(snapshot) {
                     snapshot.forEach(function(snap) {
                         var timestampString = _this.member.timestamps[snap.key] || '0';
+
                         Vue.set(_this.counts, snap.key, snap.numChildren());
                         Vue.set(_this.member.timesExpired, snap.key, (_this.getNowDate() > new Date(timestampString)))
                     });
 
+                    _this.isLoading = false;
 
                     _this.sortGamersOrderByCount();
 
@@ -80,9 +85,15 @@
                 startDate: '0',
                 endDate: '0',
                 isPaused: false,
+                voteBtnStatusList: {
+                    "0": "投我一票",
+                    "1": "已投票",
+                    "2": "投票暫停"
+                },
                 getNowDate: function() {
                     return new Date((new Date).format('YYYY-MM-DD'));
                 },
+                isLoading: true,
                 stage: -1,
                 gamers: {},
                 gamersSort: [],
@@ -121,6 +132,21 @@
             }
         },
         methods: {
+            getVoteBtnText: function(key){
+                var _this = this;
+                var result = _this.voteBtnStatusList[0];
+                console.log(_this.isGameActive(key));
+
+                console.log(_this.isPaused);
+
+                if(!_this.isGameActive()){
+                    result = _this.voteBtnStatusList[2];
+                } else if(!_this.isVoteBtnActive(key)) {
+                    result = _this.voteBtnStatusList[1];
+                }
+
+                return result;
+            },
             openModal: function(currentView, callback) {
                 if (currentView && typeof currentView == 'string') {
                     this.modalConfig.currentView = currentView;
@@ -150,6 +176,7 @@
                         name: element.name,
                         stage: element.stage,
                         imgUrl: element.imgUrl,
+                        ui: _this.getVoteBtnText(key),
                         count: _this.counts[key] || 0
                     });
                 });
@@ -195,7 +222,7 @@
                     }
                 }
 
-                return true;
+                return result;
 
             },
             isGamerActive: function(key) {

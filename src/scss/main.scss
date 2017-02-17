@@ -108,6 +108,19 @@ a.pure-button-primary {
         padding: 20px 30px;
         box-sizing: border-box;
         margin-left: -10px;
+        min-height: 300px;
+        position: relative;
+        .vote__items-load {
+            width:100%;
+            background: url(../images/ring.gif) no-repeat 50% 50%;
+            height: 300px; 
+            position: absolute;
+            top:0;
+            left: 0;
+            transition: all .5s ease-in-out;
+            opacity: 1;
+
+        }
         @include respond-to(small) {
             padding: grid-width(0.2) grid-width(0.2);
             margin-left: grid-width(0.1)
@@ -166,12 +179,20 @@ a.pure-button-primary {
         }
         &__ctrl {
             overflow: hidden;
+            @include respond-to(small-up) {
+                .vote__btn {
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+            }
             @include respond-to(small) {
                 text-align: center;
                 a {
                     display: block;
                 }
             }
+
         }
         &:hover {
             .vote__item__media img {
@@ -262,6 +283,15 @@ a.pure-button-primary {
 .modal-leave-active .vote-dialog__box {
     transform: scale(1.1);
 }
+
+.fade-enter {
+    opacity: 0;
+}
+
+.fade-leave-active {
+    opacity: 0;
+}
+
 
 .vote-trems {
     &__list {
