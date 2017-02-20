@@ -38,11 +38,15 @@
             var localTimestampCookie = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
 
             if (utilityJS.cookie(_this.cookieConfig.trems.name) == null) {
-                utilityJS.cookie(_this.cookieConfig.trems.name, false, { expires: 1 });
+                utilityJS.cookie(_this.cookieConfig.trems.name, false, {
+                    expires: 1
+                });
             }
 
             if (utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null) {
-                utilityJS.cookie(_this.cookieConfig.localTimestamp.name, "{}", { expires: 99 });
+                utilityJS.cookie(_this.cookieConfig.localTimestamp.name, "{}", {
+                    expires: 99
+                });
                 // Vue.delete( object, key )
 
             }
@@ -80,7 +84,7 @@
             });
 
         },
-        data: function(){
+        data: function() {
             return {
                 startDate: '0',
                 endDate: '0',
@@ -132,16 +136,13 @@
             }
         },
         methods: {
-            getVoteBtnText: function(key){
+            getVoteBtnText: function(key) {
                 var _this = this;
                 var result = _this.voteBtnStatusList[0];
-                console.log(_this.isGameActive(key));
 
-                console.log(_this.isPaused);
-
-                if(!_this.isGameActive()){
+                if (!_this.isGameActive()) {
                     result = _this.voteBtnStatusList[2];
-                } else if(!_this.isVoteBtnActive(key)) {
+                } else if (!_this.isVoteBtnActive(key)) {
                     result = _this.voteBtnStatusList[1];
                 }
 
@@ -256,7 +257,7 @@
                 _this.openModal('trems', function() {});
 
             }
-        }        
+        }
     }
 </script>
 

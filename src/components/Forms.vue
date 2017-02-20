@@ -21,8 +21,8 @@ div
 
 <script>
     export default {
-        props:['voteid','member'],
-        created: function(){
+        props: ['voteid', 'member'],
+        created: function() {
             var _this = this;
 
             $.when(_this.seekingRequest[0], _this.seekingRequest[1]).done(function(task1, task2) {
@@ -33,7 +33,7 @@ div
 
             // if(_this.token) {
             //     Firebase_gameStatisticsRef.child(_this.voteid+'/'+ _this.token).once('value',function(snapshot){
-                    
+
             //         var result = snapshot.val();
 
             //         console.log(result);
@@ -48,7 +48,7 @@ div
 
 
         },
-        data:function(){
+        data: function() {
             return {
                 seekingRequest: [$.Deferred(), $.Deferred()],
                 disabled: false,
@@ -56,19 +56,18 @@ div
                 isChanged: false,
                 name: {
                     value: '',
-                    temp:'',
+                    temp: '',
                     isError: false
                 },
                 phone: {
                     value: '',
-                    temp:'',
+                    temp: '',
                     isError: false
                 },
                 timestamp: '0'
             }
         },
-        computed: {
-        },
+        computed: {},
         methods: {
             enCode: function(str) {
                 return str;
@@ -76,56 +75,57 @@ div
             deCode: function(str) {
                 return str;
             },
-            checkResult: function(){
+            checkResult: function() {
                 var _this = this;
-                var phoneReg =  /^[09]{2}[0-9]{8}$/;
+                var phoneReg = /^[09]{2}[0-9]{8}$/;
                 var result = false;
-                
-                if( _this.name.value == null || _this.name.value == '' ) {
+
+                if (_this.name.value == null || _this.name.value == '') {
                     _this.name.isError = true;
                 }
 
-                if((_this.phone.value == null || _this.phone.value == '') || _this.phone.value.match(phoneReg) === null) {
+                if ((_this.phone.value == null || _this.phone.value == '') || _this.phone.value.match(phoneReg) === null) {
                     _this.phone.isError = true;
                 }
 
-                return  !(_this.name.isError || _this.phone.isError);
+                return !(_this.name.isError || _this.phone.isError);
 
             },
-            handleTempClick: function($event, inputID){
-                console.log(inputID);
-            },
-            setVoteStatusCookie:function(){
+            handleTempClick: function($event, inputID) {},
+            setVoteStatusCookie: function() {
                 var _this = this;
-                // var cookiename = 'localTimestamp';
                 var voteID = _this.voteid;
                 var timestamp = _this.timestamp;
                 var cookie = utilityJS.cookie('localTimestamp')
-                var oldStatus = JSON.parse( cookie );
+                var oldStatus = JSON.parse(cookie);
                 var updateStatus = {};
                 updateStatus[voteID] = timestamp;
-                
-                utilityJS.cookie('localTimestamp', JSON.stringify($.extend( oldStatus, updateStatus )) , { expires: 14 });
 
-                utilityJS.cookie('token', _this.cryptographer.encrypt(_this.phone.value)  ,{ expires: 14 });
+                utilityJS.cookie('localTimestamp', JSON.stringify($.extend(oldStatus, updateStatus)), {
+                    expires: 14
+                });
 
-                
+                utilityJS.cookie('token', _this.cryptographer.encrypt(_this.phone.value), {
+                    expires: 14
+                });
+
+
 
             },
-            submitSuccess: function(){
+            submitSuccess: function() {
                 var _this = this;
                 _this.setVoteStatusCookie();
                 _this.resetForms();
-                _this.$emit('open', 'success' ,function(){});
+                _this.$emit('open', 'success', function() {});
                 _this.$emit('complete', _this.voteid);
             },
-            resetForms: function(){
+            resetForms: function() {
                 var _this = this;
                 _this.isDisabed = false;
                 _this.name.isError = false;
                 _this.phone.isError = false;
             },
-            submitData: function(){
+            submitData: function() {
                 var _this = this;
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
@@ -143,7 +143,7 @@ div
 
                 _this.disabed = true;
 
-                Firebase_gameStatisticsRef.child(voteID+'/'+ memberKey).update(pushResultObject,function(error){
+                Firebase_gameStatisticsRef.child(voteID + '/' + memberKey).update(pushResultObject, function(error) {
                     // console.log(error);
                     // if (error) {
                     //     alert("資料無法儲存." + error);
@@ -152,7 +152,7 @@ div
                     _this.seekingRequest[0].resolve(error);
                 });
 
-                Firebase_gameVotersRef.child(memberKey).update(pushMemberObject, function(error){
+                Firebase_gameVotersRef.child(memberKey).update(pushMemberObject, function(error) {
                     // console.log(error);
                     // if (error) {
                     //     alert("資料無法儲存." + error);
@@ -161,7 +161,7 @@ div
                     _this.seekingRequest[1].resolve(error);
                 });
             },
-            handleClickSubmitBtn: function(e){
+            handleClickSubmitBtn: function(e) {
                 var _this = this;
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
@@ -172,36 +172,35 @@ div
 
                 e.preventDefault();
 
-                if(_this.disabled) {
+                if (_this.disabled) {
                     return false;
                 }
-                                
+
                 _this.resetForms();
 
-                if(!_this.checkResult()){
+                if (!_this.checkResult()) {
                     return false;
                 }
 
-                Firebase_gameStatisticsRef.child(voteID+'/'+ memberKey).once('value',function(snapshot){
-                    
+                Firebase_gameStatisticsRef.child(voteID + '/' + memberKey).once('value', function(snapshot) {
+
                     var result = snapshot.val();
 
-                    if (!result){
+                    if (!result) {
                         //如果資料庫沒有資料，則繼續儲存
                         _this.submitData();
-                    
-                    }
-                    else if( result.timestamp ){
-                        
+
+                    } else if (result.timestamp) {
+
                         var lastVoteTime = new Date(result.timestamp);
                         var today = new Date((new Date().format('YYYY-MM-DD')));
-                        
-                        if(today  >  lastVoteTime){
+
+                        if (today > lastVoteTime) {
                             _this.submitData();
                         } else {
                             alert('每天只能投一票');
                         }
-  
+
                     } else {
                         alert('取不到初始化資料');
                     }
