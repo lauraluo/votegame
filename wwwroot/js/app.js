@@ -7976,9 +7976,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-5f5a0a0d", module.exports)
+    hotAPI.createRecord("_v-13362850", module.exports)
   } else {
-    hotAPI.update("_v-5f5a0a0d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-13362850", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/Lightbox.vue","/components")
@@ -8012,9 +8012,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-e27d2fca", module.exports)
+    hotAPI.createRecord("_v-073da0f0", module.exports)
   } else {
-    hotAPI.update("_v-e27d2fca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-073da0f0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/Success.vue","/components")
@@ -8033,12 +8033,15 @@ exports.default = {
         var localTimestampCookie = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
 
         if (utilityJS.cookie(_this.cookieConfig.trems.name) == null) {
-            utilityJS.cookie(_this.cookieConfig.trems.name, false, { expires: 1 });
+            utilityJS.cookie(_this.cookieConfig.trems.name, false, {
+                expires: 1
+            });
         }
 
         if (utilityJS.cookie(_this.cookieConfig.localTimestamp.name) == null) {
-            utilityJS.cookie(_this.cookieConfig.localTimestamp.name, "{}", { expires: 99 });
-            // Vue.delete( object, key )
+            utilityJS.cookie(_this.cookieConfig.localTimestamp.name, "{}", {
+                expires: 99
+            });
         }
 
         _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
@@ -8056,6 +8059,9 @@ exports.default = {
             _this.isPaused = /true/i.test(snapshot.child('isPaused').val());
 
             Firebase_gameStatisticsRef.on('value', function (snapshot) {
+                var token = _this.getToken();
+
+                //紀錄按鈕裝態
                 snapshot.forEach(function (snap) {
                     var timestampString = _this.member.timestamps[snap.key] || '0';
 
@@ -8063,9 +8069,9 @@ exports.default = {
                     Vue.set(_this.member.timesExpired, snap.key, _this.getNowDate() > new Date(timestampString));
                 });
 
-                _this.isLoading = false;
-
                 _this.sortGamersOrderByCount();
+
+                _this.isLoading = false;
             });
         });
     },
@@ -8124,9 +8130,6 @@ exports.default = {
         getVoteBtnText: function getVoteBtnText(key) {
             var _this = this;
             var result = _this.voteBtnStatusList[0];
-            console.log(_this.isGameActive(key));
-
-            console.log(_this.isPaused);
 
             if (!_this.isGameActive()) {
                 result = _this.voteBtnStatusList[2];
@@ -8174,16 +8177,16 @@ exports.default = {
 
             _this.gamersSort = arr;
         },
-        handleCompletedVote: function handleCompletedVote(key) {
+        handleCompletedVote: function handleCompletedVote(voteID) {
             var _this = this;
             var timestampString = "";
 
             _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
 
-            timestampString = _this.member.timestamps[key] || '0';
-            _this.gamers[key].ui = _this.getVoteBtnText(key);
+            timestampString = _this.member.timestamps[voteID] || '0';
+            _this.gamers[voteID].ui = _this.getVoteBtnText(voteID);
 
-            Vue.set(_this.member.timesExpired, key, _this.getNowDate() > new Date(timestampString));
+            Vue.set(_this.member.timesExpired, voteID, _this.getNowDate() > new Date(timestampString));
         },
         isVoteBtnActive: function isVoteBtnActive(key) {
             var _this = this;
@@ -8250,9 +8253,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-599c9cfc", module.exports)
+    hotAPI.createRecord("_v-30f330cd", module.exports)
   } else {
-    hotAPI.update("_v-599c9cfc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-30f330cd", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/Vote.vue","/components")
@@ -8334,12 +8337,9 @@ exports.default = {
 
             return !(_this.name.isError || _this.phone.isError);
         },
-        handleTempClick: function handleTempClick($event, inputID) {
-            console.log(inputID);
-        },
+        handleTempClick: function handleTempClick($event, inputID) {},
         setVoteStatusCookie: function setVoteStatusCookie() {
             var _this = this;
-            // var cookiename = 'localTimestamp';
             var voteID = _this.voteid;
             var timestamp = _this.timestamp;
             var cookie = utilityJS.cookie('localTimestamp');
@@ -8347,9 +8347,13 @@ exports.default = {
             var updateStatus = {};
             updateStatus[voteID] = timestamp;
 
-            utilityJS.cookie('localTimestamp', JSON.stringify($.extend(oldStatus, updateStatus)), { expires: 14 });
+            utilityJS.cookie('localTimestamp', JSON.stringify($.extend(oldStatus, updateStatus)), {
+                expires: 14
+            });
 
-            utilityJS.cookie('token', _this.cryptographer.encrypt(_this.phone.value), { expires: 14 });
+            utilityJS.cookie('token', _this.cryptographer.encrypt(_this.phone.value), {
+                expires: 14
+            });
         },
         submitSuccess: function submitSuccess() {
             var _this = this;
@@ -8369,7 +8373,7 @@ exports.default = {
             var voteID = _this.voteid;
             var memberKey = _this.cryptographer.encrypt(_this.phone.value);
 
-            _this.timestamp = new Date().format('YYYY-MM-DD');
+            _this.timestamp = _this.getNowFormatString();
 
             var pushMemberObject = {
                 name: _this.name.value,
@@ -8377,26 +8381,18 @@ exports.default = {
             };
 
             var pushResultObject = {
+                memberkey: memberKey,
                 timestamp: _this.timestamp
             };
 
             _this.disabed = true;
 
-            Firebase_gameStatisticsRef.child(voteID + '/' + memberKey).update(pushResultObject, function (error) {
-                // console.log(error);
-                // if (error) {
-                //     alert("資料無法儲存." + error);
-                //     return false;
-                // }
+            //雙主key
+            Firebase_gameStatisticsRef.child(voteID + '/' + (memberKey + _this.timestamp)).update(pushResultObject, function (error) {
                 _this.seekingRequest[0].resolve(error);
             });
 
             Firebase_gameVotersRef.child(memberKey).update(pushMemberObject, function (error) {
-                // console.log(error);
-                // if (error) {
-                //     alert("資料無法儲存." + error);
-                //     return false;
-                // }
                 _this.seekingRequest[1].resolve(error);
             });
         },
@@ -8404,6 +8400,7 @@ exports.default = {
             var _this = this;
             var voteID = _this.voteid;
             var memberKey = _this.cryptographer.encrypt(_this.phone.value);
+            _this.timestamp = _this.getNowFormatString();
 
             // console.log(memberKey);
             // console.log(_this.cryptographer.decrypt(memberKey));
@@ -8421,25 +8418,18 @@ exports.default = {
                 return false;
             }
 
-            Firebase_gameStatisticsRef.child(voteID + '/' + memberKey).once('value', function (snapshot) {
+            Firebase_gameStatisticsRef.child(voteID + '/' + (memberKey + _this.timestamp)).once('value', function (snapshot) {
 
                 var result = snapshot.val();
 
                 if (!result) {
                     //如果資料庫沒有資料，則繼續儲存
                     _this.submitData();
-                } else if (result.timestamp) {
-
-                    var lastVoteTime = new Date(result.timestamp);
-                    var today = new Date(new Date().format('YYYY-MM-DD'));
-
-                    if (today > lastVoteTime) {
-                        _this.submitData();
-                    } else {
-                        alert('每天只能投一票');
-                    }
                 } else {
-                    alert('取不到初始化資料');
+                    alert('你已經投過票');
+                    _this.setVoteStatusCookie();
+                    _this.$emit('complete', _this.voteid);
+                    _this.$emit('close');
                 }
             });
         }
@@ -8456,9 +8446,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-7ed15e67", module.exports)
+    hotAPI.createRecord("_v-4d806f08", module.exports)
   } else {
-    hotAPI.update("_v-7ed15e67", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-4d806f08", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/forms.vue","/components")
@@ -8483,7 +8473,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div><h2>閱讀並同意條款</h2><div class=\"vote-trems vote-dialog__content\"><p>歡迎您，在您申請得易Ponta聯名卡前，請詳閱會員服務使用辦法：</p><ol class=\"vote-trems__list\"><li>當您完成相關申請註冊，並使用得易Ponta卡服務(包括各相關特約商、網站、APP等，以下皆同)時，即表示您或(及)您的父母、監護人(如您未滿二十歲)已經閱讀、瞭解、並同意本使用辦法之各項約定條款。</li><li>申請作業<ul><li>(1) 申請人須填寫個人資料提出申請，經東森整合行銷股份有限公司(下稱得易Ponta卡)或指定之發卡特約商依程序完成會員發卡作業後，始成為得易Ponta卡會員（以下簡稱會員）。</li><li>(2) 申請人應填寫正確之個人資料，若有變更應盡速更新，並提供相關身分證件以供查驗，以確保權益。</li><li>(3) 申請人同意得易Ponta卡得依申請人所提供之個人資料，不定期發送各項行銷獎勵活動或優惠資訊。</li><li>(4) 如有冒用他人身分、個人資料填寫不正確或不完整者(含嗣後變動未更新者等)，須自負相關法律責任及會員權益受損之風險(例如：無法享受完整之會員服務、無法累兌點數、停卡或加入會員失敗…等等)。會員填寫之電話號碼，得易Ponta卡可能會提供警政署進行555165反詐騙平台執行密碼驗證之用。</li><li>(5) 會員須經啟動得易Ponta卡網站 <a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a> 會員服務驗證，始能進行兌點作業。</li></ul></li><li>凡成功加入得易Ponta卡會員者，即得享有得易Ponta卡及各合作特約商(將不定期於得易Ponta卡網站<a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a>或得易Ponta卡手機APP公告更新)贈送之得易Ponta卡會員點數(下稱點數)，並可累積點數以兌換得易Ponta卡各合作特約商提供之優惠服務或贈獎。</li><li>得易Ponta卡及其指定之委外合作廠商或合作銀行得於得易Ponta卡業務營運期間，於得易Ponta卡營運地區內，依「個人資料保護法之特定目的及個人資料之類別」之規定，蒐集、處理、利用及保有會員個人資料之特定目的：「○二四民意調查」、「○四○行銷」、「○八一個人資料之合法交易業務」、「○九○消費者、客戶管理與服務」、「一三六資訊與資料庫管理」、「一四八網路購物及其他電子商務服務」、「一七九其他財政服務」、「一八一其他經營合於營業登記項目或組織章程所定之業務」「一八二其他諮詢與顧問服務」等合理相關聯之特定目的範圍內，以各項資訊分析工具、資料交叉比對、手機簡訊及活動訊息推播、紙本或電子之郵件或問卷、電話行銷或服務、電子APP程式等方式蒐集、國際傳輸、處理及利用包括但不限於會員姓名、年齡、生日、身分證字號、職業、電話、地址、電子郵件、消費時間、消費明細(金額及商品等)、特約商、發票號碼、卡號，得易Ponta卡點數等各式相關資料，以執行本使用辦法並提供會員各種行銷優惠服務及訊息。會員得隨時向得易Ponta卡公司要求停止上述行為，得易Ponta卡及其指定之委外合作廠商於接到會員之通知後，將立即停止。</li><li>會員所提供之各項資料，除依個人資料保護法規定方式處理外，原則上將於得易Ponta卡停止營運後刪除之。</li><li>得易Ponta卡得將會員之個人資料提供予各相關特約商，以利累點及兌點作業、點數通知、各式統計分析、商品及服務行銷或其他服務之用，但得易Ponta卡應僅提供必要範圍之資料，且應要求特約商應依法保護會員之個人資料。又若得易Ponta卡擬將會員個人資料提供予非特約商進行電話、紙本或電子郵件等行銷時，將會取得會員以電話、手機簡訊及活動訊息推播、紙本、電子郵件或其他方式回覆同意後，始將會員之個人資料提供予特約商進行各式行銷。</li><li>得易Ponta卡僅與經政府合法立案成立之團體合作點數兌換現金之捐款活動，會員如表示同意以點數兌換現金以捐贈予該團體者，得易Ponta卡會一併將會員之姓名、地址、捐贈點數、兌換金額提供予受捐贈之合作團體，俾供其開立並寄發收據；但如會員同意無需開立收據或該次捐款活動公告無需開立收據及匿名捐贈者，得易Ponta卡則將依約定不提供會員地址或會員姓名予該受捐贈之團體。</li><li>依個人資料保護法之規定，會員本人得就所提供之個人資料向得易Ponta卡查詢、請求閱覽、請求製給複製本、請求補充或更正、請求停止蒐集處理或利用及刪除的權利；其中如係查詢或請求閱覽個人資料或製給複製本者，得易Ponta卡將酌收必要成本費用。</li><li>會員於得易Ponta卡網站(<a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a> ) 或得易Ponta卡手機APP之會員帳號為身分證號，且必須提供一組個人辨識密碼，請務必詳實填寫，不可重複申請註冊。若會員持有多張得易Ponta卡者，累兌之點數將不重複計算，每張卡片所累兌之點數，均將歸戶計算於同一身分證帳號。</li><li>會員如因遺失或毀損得易Ponta卡而申請補發時，得易Ponta卡將以800點兌換折抵工本費或酌收工本費每卡50元。</li><li>請會員務必妥善保管會員帳號及密碼，且勿將帳號或密碼洩露或提供予第三人知悉，以防止他人盜用。以同一個會員資料登錄使用會員服務的所有行為，都將被得易Ponta卡視為是這位會員本人的行為，應由會員本人自負完全的責任。</li><li>會員於行使會員所屬各相關權利或服務時，應出示會員卡或完成相關認證作業，得易Ponta卡或各特約商並得要求出示會員本人身分證明文件。</li><li>若發生資訊系統故障或點數登錄異常…等情形者，得易Ponta卡將暫停資訊系統服務或異常情形之點數累兌功能；待異常狀況排除後，將盡速恢復各項會員服務功能、調整發生異常情形之會員卡點數或以更換會員卡片之方式處理。</li><li>會員如欲辦理退貨者，得易Ponta卡或特約商將扣回原來該商品或服務所贈送之點數，如會員之點數不夠扣回者，會員需先繳交該不足扣回點數之處理成本費用(即不足之點數*NT$ 0.06)後，若會員未先繳交點數處理成本費用者，會員同意得易Ponta卡或特約商得逕自應退還之款項中扣抵該點數處理成本費用後，再將餘額退還會員。</li><li>會員申請點數移轉每次需額外收取移轉手續費點數50點，點數移轉作業將於申請後48小時內完成入帳，受讓人取得點數之有效期間，以點數移轉日期起算。點數移轉一經申請作業成功，無法要求取消。</li><li>會員不得要求將點數兌換現金或其他非得易Ponta卡所公告且有效之商品、服務或優惠等。</li><li>會員於成功完成啟用得易Ponta卡所寄發之確認電子郵件程序後，可使用得易Ponta卡網站(<a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a> ) 或得易Ponta卡手機APP之相關會員服務功能。</li><li>會員點數之累兌作業辦法、可兌換之優惠或贈品將隨時更新，會員得隨時透過得易Ponta卡網站(<a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a>) 或得易Ponta卡手機APP查詢。</li><li>得易Ponta卡公司與各特約商或其他合作廠商間並無僱傭、委任、合夥、經銷、代理或保證等法律關係，會員與店家間之交易或兌換贈品，均由各店家負責提供予會員，亦由各店家自行對會員擔負相關之法律交易責任，概與得易Ponta卡無關。得易Ponta卡所提供之各項行銷活動悉依得易Ponta卡網站(<a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a>) 或得易Ponta卡手機APP之公告為準。</li><li>除特約商另有公告外，會員新增累積之點數將於特約商確認交易後48小時內轉入會員帳戶內，且於兌換贈品時，將優先扣除獲贈日在前者之所需點數；會員當年度所累積之點數，可使用至次年12月31日止，惟點數到期之當年度，會員使用得易Ponta卡累積點數達當年度公告之標準者，則當年度將到期之點數使用效期將自動展延一年（如當年度未公告者，則延用前一年度之公告），且展延以一次為限。嗣後得易Ponta卡公司如另有調整點數展延效期規定之公告（詳官網）者，則優先適用該公告之說明。</li><li>得易Ponta卡保留修改或終止有關得易Ponta卡之申請或各項會員權益服務之權利。有關得易Ponta卡之各項服務辦法及會員相關權益等(包括但不限於特約商、行銷優惠等)均以得易Ponta卡網站之公告(<a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a>) 為準。如有問題者，並得電話向得易Ponta卡詢問。</li><li>因使用得易Ponta卡網站(<a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a>) 及得易Ponta卡手機APP或加入得易Ponta卡會員所生之爭議，如致生訴訟者，會員及得易Ponta卡同意以台灣台北地方法院為第一審管轄法院。</li><li>如有得易Ponta卡會員服務使用辦法或得易Ponta卡網站(<a href=\"https://www.ponta.com.tw/\">www.ponta.com.tw</a>)未公告規定之事項或公告規定之事項有爭議者，得易Ponta卡享有最終之解釋權；但如任一規定與法律之強行規定有相衝突者，則以法律之強行規定為準。</li></ol></div><div class=\"vote-dialog__ctrls\"><a class=\"vote-btn pure-button pure-button-primary\" href=\"voting-forms.html\" title=\"同意\" v-on:click=\"handeClickAgreeBtn($event)\">同意</a></div></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div><h2>閱讀並同意條款</h2><div class=\"vote-trems vote-dialog__content\"><ul class=\"vote-trems__list\"><li>參與者（即本文中所稱「個人」）參加「蜜糖甜心 品牌大使選拔」投票及抽獎活動（以下稱本活動），同意東森購物Buty Baby（以下簡稱本活動主辦單位） 在本活動及其相關事務之範圍內蒐集、處理與利用參與者之個人資料，且參與者本人已詳閱後列本活動主辦單位依個人資料保護法第8條規定所為之告知事項，並同意本活動主辦單位於參與者首次登入投票後繼續分散投票時（同一FACEBOOK帳號最多可投10票，可於同一天內或活動投票期間內分散投票，但每個提案限投1票）， 不再另行告知本個人資料保密措施與告知事項。</li><li>於投票活動結束後，主辦單位將依本活動之抽獎辦法從符合資格且已勾選同意參加抽獎並留存資料之投票者中隨機抽出中獎名單。 </li><li>本活動主辦單位將對個人資料謹慎保護，並採取必要之保密措施，以維護參與者所提供資料之安全性。本活動主辦單位之個人資料保密措施，係依據個人資料保護法以及主管機關之相關法令辦理，以善盡參與本活動或相關事務人員保密資料之職責。 </li><li>一、個人資料之蒐集方式 <br/>本活動主辦單位擁有參與者的個人資料，係因參與者參與本活動主辦單位舉辦之第七屆「蜜糖甜心 品牌大使選拔」投票及抽獎活動並提供（或允許存取）資料。本活動主辦單位蒐集參與者的個人資料類別，如您的暱稱、電話號碼、相關投票記錄等，並以本活動往來時所實際蒐集之個人資料為準。參與者可以自由選擇是否提供相關個人資料。若參與者選擇不提供個人資料或是提供不完全時，基於本活動相關業務之執行所需，本活動主辦單位可能無法受理其參與本活動，敬請見諒。 </li><li>二、個人資料之儲存、保管及資料安全與維護方式 <br/>本活動主辦單位將採取謹慎措施保護參與者資料，並依相關作業規範建立個人資料庫，按業務權責指定專門人員控管資料庫存取，以保護個人資料之安全性。任何未經本活動主辦單位正式授權之人員，絕對禁止接觸參與者的個人資料。 </li><li>三、個人資料為利用之期間、地區、對象及方式：<ol><li>期間：<ol><li>特定目的存續期間。</li><li>依相關法令所定或因執行業務所必須之保存期間或依個別契約約定之保存年限〈以期限最長者為準〉。</li></ol></li><li>地區：以下第3點所列之利用對象，其國內所在地。</li><li>對象：<ol><li>本活動主辦單位〈含受其委託處理事務之委外機構〉。</li><li>依法有權機關（如主辦單位之主管機關、司法機關、稅務機關等）。</li></ol></li><li>方式：符合個人資料保護相關法令以自動化機器或其他非自動化之利用方式。</li></ol></li><li>四、依據個人資料保護法第3條規定，參與者就主辦單位保有參與者之個人資料，得行使下列權利：<ol><li>除有個人資料保護法第10條所規定之例外情形外，得向主辦單位查詢、請求閱覽或請求製給複製本。</li><li>得向主辦單位請求補充或更正個人資料，惟依個人資料保護法施行細則第19條規定，請求者應適當釋明其原因及事實。</li><li>依個人資料保護法第11條第3項規定，個人資料蒐集之特定目的消失或期限屆滿時，得向主辦單位請求刪除、停止處理或利用您的個人資料。惟依該項但書規定，主辦單位因執行業務所必須或經參與者書面同意者，不在此限。</li></ol></li><li>六、參與者如欲行使上述個人資料保護法第3條規定之各項權利，有關如何行使之方式，您得向本活動主辦單位查詢。參與者得選擇是否提供相關個人資料，惟參與者如拒絕提供之個人資料及類別，將無法參與本活動，敬請見諒。</li><li>七、本活動主辦單位保有修訂保密措施與相關告知事項之權利，並將於網站或以其他主管機關認定公開揭露之管道公告揭露相關訊息，修訂時亦同；若有其他與保密措施相關之問題，亦可隨時洽詢本活動主辦單位。</li></ul></div><div class=\"vote-dialog__ctrls\"><a class=\"vote-btn pure-button pure-button-primary\" href=\"voting-forms.html\" title=\"同意\" v-on:click=\"handeClickAgreeBtn($event)\">同意</a></div></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -8493,9 +8483,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2281f4c5", module.exports)
+    hotAPI.createRecord("_v-7cf05eda", module.exports)
   } else {
-    hotAPI.update("_v-2281f4c5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-7cf05eda", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 }).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/components/trems.vue","/components")
@@ -8541,6 +8531,7 @@ window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 //====================
 // vue init 
 //====================
+
 
 //gobal mixins
 Vue.mixin({
@@ -8633,6 +8624,10 @@ Vue.mixin({
 
             return token;
         };
+
+        _this.getNowFormatString = function () {
+            return new Date().format('YYYY-MM-DD');
+        };
     }
 });
 
@@ -8647,6 +8642,6 @@ var app = new Vue({
     el: '#rootApp',
     template: '<vote></vote>'
 });
-
-}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_16c2c4b6.js","/")
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImZha2VfZDEwM2ZlMDYuanMiXSwibmFtZXMiOlsiaW5pdEZCQ29uZmlnIiwiYXBpS2V5IiwiYXV0aERvbWFpbiIsImRhdGFiYXNlVVJMIiwic3RvcmFnZUJ1Y2tldCIsIm1lc3NhZ2luZ1NlbmRlcklkIiwiaW5pdEZCR2FtZSIsIndpbmRvdyIsIkZpcmViYXNlX2NvbmZpZyIsImZpcmViYXNlIiwiaW5pdGlhbGl6ZUFwcCIsIkZpcmViYXNlX2dhbWUiLCJGaXJlYmFzZV9nYW1lU3RhdGlzdGljc1JlZiIsImRhdGFiYXNlIiwicmVmIiwiRmlyZWJhc2VfZ2FtZVZvdGVyc1JlZiIsIlZ1ZSIsIm1peGluIiwiY3JlYXRlZCIsIl90aGlzIiwiQ3J5cHRvZ3JhcGhlck1hbmFnZXIiLCJ0aGF0IiwibWdyIiwiaXNFbmNyeXB0Iiwic291cmNlIiwiY291bnQiLCJjdXN0b21IYXNoIiwiQ1VTVE9NX0hBU0hfVkFMVUUiLCJjdXN0b21IYXNoTGVuZ3RoIiwibGVuZ3RoIiwic2l6ZSIsInJlc3VsdCIsImkiLCJzb3VyY2VDaGFyIiwicGFyc2VJbnQiLCJ0b1N0cmluZyIsImVuY3J5cHQiLCJ0b0VuY3J5cHRTb3VyY2UiLCJ1dGlsaXR5SlMiLCJzdHJpbmdUb0JpbmFyeUFycmF5IiwiZ2V0Q3VzdG9tSGFzaCIsImJpbmFyeUFycmF5VG9TdHJpbmciLCJyZXBsYWNlIiwiZW5jb2RlVVJJIiwiZGVjcnlwdCIsImRlY29kZVVSSSIsInRvRGVjcnlwdFNvdXJjZSIsImNyeXB0b2dyYXBoZXIiLCJnZXRUb2tlbiIsInRva2VuIiwiY29va2llIiwiZ2V0Tm93Rm9ybWF0U3RyaW5nIiwiRGF0ZSIsImZvcm1hdCIsImNvbXBvbmVudCIsInJlcXVpcmUiLCJhcHAiLCJlbCIsInRlbXBsYXRlIl0sIm1hcHBpbmdzIjoiOztBQUFBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBOztBQUVBOztBQUVBLElBQUlBLGVBQWU7QUFDZkMsWUFBUSx5Q0FETztBQUVm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Q2pDLG1CQUFTLElBQUlDLElBQUosRUFBRCxDQUFXQyxNQUFYLENBQWtCLFlBQWxCLENBQVI7QUFDSCxTQUZEO0FBR0g7QUFqR0ssQ0FBVjs7QUFxR0E7QUFDQXJDLElBQUlzQyxTQUFKLENBQWMsVUFBZCxFQUEwQkMsUUFBUSwyQkFBUixDQUExQjtBQUNBdkMsSUFBSXNDLFNBQUosQ0FBYyxPQUFkLEVBQXVCQyxRQUFRLHdCQUFSLENBQXZCO0FBQ0F2QyxJQUFJc0MsU0FBSixDQUFjLE9BQWQsRUFBdUJDLFFBQVEsd0JBQVIsQ0FBdkI7QUFDQXZDLElBQUlzQyxTQUFKLENBQWMsU0FBZCxFQUF5QkMsUUFBUSwwQkFBUixDQUF6QjtBQUNBdkMsSUFBSXNDLFNBQUosQ0FBYyxNQUFkLEVBQXNCQyxRQUFRLHVCQUFSLENBQXRCOztBQUVBLElBQU1DLE1BQU0sSUFBSXhDLEdBQUosQ0FBUTtBQUNoQnlDLFFBQUksVUFEWTtBQUVoQkMsY0FBVTtBQUZNLENBQVIsQ0FBWiIsImZpbGUiOiJmYWtlX2QxMDNmZTA2LmpzIiwic291cmNlc0NvbnRlbnQiOlsiLy8gaW1wb3J0IFZ1ZSBmcm9tICd2dWUnXG4vLyBpbXBvcnQgRmlyZWJhc2UgZnJvbSAnZmlyZWJhc2UnXG4vLyBpbXBvcnQgJCBmcm9tICdqcXVlcnknXG5cbi8vIHZhciBWdWUgPSByZXF1aXJlKCd2dWUnKTtcbi8vIHZhciBGaXJlYmFzZSA9IHJlcXVpcmUoJ2ZpcmViYXNlJyk7XG4vLyB2YXIgJCA9IHJlcXVpcmUoJ2pxdWVyeScpO1xuXG4vLz09PT09PT09PT09PT09PT09PT09XG4vL2ZpcmViYXNlIGluaXQgXG4vLz09PT09PT09PT09PT09PT09PT09XG5cbi8vIHZhciBGaXJlYmFzZSA9IGZpcmViYXNlO1xuXG52YXIgaW5pdEZCQ29uZmlnID0ge1xuICAgIGFwaUtleTogXCJBSXphU3lETVk0aUFXbHFTNVF2MVVrbHFSNWIzbnhZS2RpSVNNZ29cIixcbiAgICBhdXRoRG9tYWluOiBcInZvdGVjb25maWcuZmlyZWJhc2VhcHAuY29tXCIsXG4gICAgZGF0YWJhc2VVUkw6IFwiaHR0cHM6Ly92b3RlY29uZmlnLmZpcmViYXNlaW8uY29tXCIsXG4gICAgc3RvcmFnZUJ1Y2tldDogXCJ2b3RlY29uZmlnLmFwcHNwb3QuY29tXCIsXG4gICAgbWVzc2FnaW5nU2VuZGVySWQ6IFwiNTg1MjYyMzM5MTA4XCJcbn07XG5cbnZhciBpbml0RkJHYW1lID0ge1xuICAgIGFwaUtleTogXCJBSXphU3lCWkFjajVxRjROcW5ON0JPRWNibnFOR0loNmxKc1FQVDhcIixcbiAgICBhdXRoRG9tYWluOiBcInZvdGVyZGVtby03YWVlOS5maXJlYmFzZWFwcC5jb21cIixcbiAgICBkYXRhYmFzZVVSTDogXCJodHRwczovL3ZvdGVyZGVtby03YWVlOS5maXJlYmFzZWlvLmNvbVwiLFxuICAgIHN0b3JhZ2VCdWNrZXQ6IFwidm90ZXJkZW1vLTdhZWU5LmFwcHNwb3QuY29tXCIsXG4gICAgbWVzc2FnaW5nU2VuZGVySWQ6IFwiMTY0MjgwNjc5ODUwXCJcbn07XG5cbndpbmRvdy5GaXJlYmFzZV9jb25maWcgPSBmaXJlYmFzZS5pbml0aWFsaXplQXBwKGluaXRGQkNvbmZpZywgJ0ZpcmViYXNlX2NvbmZpZycpO1xud2luZG93LkZpcmViYXNlX2dhbWUgPSBmaXJlYmFzZS5pbml0aWFsaXplQXBwKGluaXRGQkdhbWUsICdGaXJlYmFzZV9nYW1lJyk7XG53aW5kb3cuRmlyZWJhc2VfZ2FtZVN0YXRpc3RpY3NSZWYgPSBGaXJlYmFzZV9nYW1lLmRhdGFiYXNlKCkucmVmKCdzdGF0aXN0aWNzJyk7XG53aW5kb3cuRmlyZWJhc2VfZ2FtZVZvdGVyc1JlZiA9IEZpcmViYXNlX2dhbWUuZGF0YWJhc2UoKS5yZWYoJ3ZvdGVycycpO1xuXG4vLz09PT09PT09PT09PT09PT09PT09XG4vLyB2dWUgaW5pdCBcbi8vPT09PT09PT09PT09PT09PT09PT1cblxuXG5cblxuLy9nb2JhbCBtaXhpbnNcblZ1ZS5taXhpbih7XG4gICAgY3JlYXRlZDogZnVuY3Rpb24oKSB7XG4gICAgICAgIHZhciBfdGhpcyA9IHRoaXM7XG4gICAgICAgIHZhciBDcnlwdG9ncmFwaGVyTWFuYWdlciA9IGZ1bmN0aW9uKCkge1xuXG4gICAgICAgICAgICB2YXIgdGhhdCA9IHRoaXMsIC8vIFB1YmxpYyBtZXRob2RzXG4gICAgICAgICAgICAgICAgbWdyID0ge307IC8vIFByaXZhdCBtZXRob2RzXG5cbiAgICAgICAgICAgIC8qKiBcbiAgICAgICAgICAgICAqIOWPluW+l+WKoOino+Wvhuimj+WJh1xuICAgICAgICAgICAgICogQHJldHVybnMge2JpbmFyeVtdfSDliqDop6Plr4bopo/liYdcbiAgICAgICAgICAgICAqL1xuICAgICAgICAgICAgbWdyWydDVVNUT01fSEFTSF9WQUxVRSddID0gZnVuY3Rpb24oKSB7XG4gICAgICAgICAgICAgICAgcmV0dXJuIFs3LCAtMSwgLTQsIDksIDgsIDEsIDMsIDIsIC02LCA1LCAtNCwgLTIsIDEsIDEsIDksIC0xXTtcbiAgICAgICAgICAgIH07XG5cbiAgICAgICAgICAgIC8qKiBcbiAgICAgICAgICAgICAqIOWPluW+l+iHquioguWKoOWvhuaIluino+Wvhue1kOaenFxuICAgICAgICAgICAgICogQHBhcmFtIHtib29sfSBpc0VuY3J5cHQgdHJ1ZTrliqDlr4YgLyBmYWxzZTrop6Plr4ZcbiAgICAgICAgICAgICAqIEBwYXJhbSB7YmluYXJ5W119IHNvdXJjZSDpnIDliqDop6Plr4bkuozkvY3lhYPmloflrZdcbiAgICAgICAgICAgICAqIEByZXR1cm5zIHtiaW5hcnlbXX0g5Yqg6Kej5a+G6JmV55CG5b6M5LqM5L2N5YWD5paH5a2XXG4gICAgICAgICAgICAgKi9cbiAgICAgICAgICAgIG1nclsnZ2V0Q3VzdG9tSGFzaCddID0gZnVuY3Rpb24oaXNFbmNyeXB0LCBzb3VyY2UpIHtcbiAgICAgICAgICAgICAgICB2YXIgY291bnQgPSAwLFxuICAgICAgICAgICAgICAgICAgICBjdXN0b21IYXNoID0gbWdyLkNVU1RPTV9IQVNIX1ZBTFVFKCksXG4gICAgICAgICAgICAgICAgICAgIGN1c3RvbUhhc2hMZW5ndGggPSBjdXN0b21IYXNoLmxlbmd0aCxcbiAgICAgICAgICAgICAgICAgICAgc2l6ZSA9IHNvdXJjZS5sZW5ndGgsXG4gICAgICAgICAgICAgICAgICAgIHJlc3VsdCA9IFtdO1xuXG4gICAgICAgICAgICAgICAgZm9yICh2YXIgaSA9IDA7IGkgPCBzaXplOyBpKyspIHtcbiAgICAgICAgICAgICAgICAgICAgdmFyIHNvdXJjZUNoYXIgPSBwYXJzZUludChzb3VyY2VbaV0sIDIpO1xuICAgICAgICAgICAgICAgICAgICByZXN1bHRbaV0gPSBzb3VyY2VDaGFyICsgKGlzRW5jcnlwdCA/IGN1c3RvbUhhc2hbY291bnRdIDogLWN1c3RvbUhhc2hbY291bnRdKTtcbiAgICAgICAgICAgICAgICAgICAgcmVzdWx0W2ldID0gcmVzdWx0W2ldLnRvU3RyaW5nKDIpO1xuXG4gICAgICAgICAgICAgICAgICAgIGNvdW50Kys7XG4gICAgICAgICAgICAgICAgICAgIGNvdW50ID0gY291bnQgJSBjdXN0b21IYXNoTGVuZ3RoO1xuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICByZXR1cm4gcmVzdWx0O1xuICAgICAgICAgICAgfVxuXG4gICAgICAgICAgICAvKiogXG4gICAgICAgICAgICAgKiDliqDlr4blrZfkuLJcbiAgICAgICAgICAgICAqIEBwYXJhbSB7c3RyaW5nfSBzb3VyY2Ug5qyy5Yqg5a+G55qE5a2X5LiyXG4gICAgICAgICAgICAgKiBAcmV0dXJucyB7c3RyaW5nfSDliqDlr4blvoznmoTlrZfkuLJcbiAgICAgICAgICAgICAqL1xuICAgICAgICAgICAgdGhhdC5lbmNyeXB0ID0gZnVuY3Rpb24oc291cmNlKSB7XG4gICAgICAgICAgICAgICAgdmFyIHRvRW5jcnlwdFNvdXJjZSA9IHV0aWxpdHlKUy5zdHJpbmdUb0JpbmFyeUFycmF5KHNvdXJjZSk7XG4gICAgICAgICAgICAgICAgdG9FbmNyeXB0U291cmNlID0gbWdyLmdldEN1c3RvbUhhc2godHJ1ZSwgdG9FbmNyeXB0U291cmNlKTtcbiAgICAgICAgICAgICAgICB2YXIgcmVzdWx0ID0gdXRpbGl0eUpTLmJpbmFyeUFycmF5VG9TdHJpbmcodG9FbmNyeXB0U291cmNlKTtcblxuICAgICAgICAgICAgICAgIHJlc3VsdCA9IHJlc3VsdC5yZXBsYWNlKC9cXC4vZywgXCLvvI5cIik7XG4gICAgICAgICAgICAgICAgcmVzdWx0ID0gcmVzdWx0LnJlcGxhY2UoL1xcIy9nLCBcIu+8g1wiKTtcbiAgICAgICAgICAgICAgICByZXN1bHQgPSByZXN1bHQucmVwbGFjZSgvXFwkL2csIFwi77yEXCIpO1xuICAgICAgICAgICAgICAgIHJlc3VsdCA9IHJlc3VsdC5yZXBsYWNlKC9cXFsvZywgXCLjgJRcIik7XG4gICAgICAgICAgICAgICAgcmVzdWx0ID0gcmVzdWx0LnJlcGxhY2UoL1xcXS9nLCBcIuOAlVwiKTtcblxuICAgICAgICAgICAgICAgIHJldHVybiBlbmNvZGVVUkkocmVzdWx0KTtcbiAgICAgICAgICAgIH07XG5cbiAgICAgICAgICAgIC8qKiBcbiAgICAgICAgICAgICAqIOino+WvhuWtl+S4slxuICAgICAgICAgICAgICogQHBhcmFtIHtzdHJpbmd9IHNvdXJjZSDmrLLop6Plr4blrZfkuLJcbiAgICAgICAgICAgICAqIEByZXR1cm5zIHtzdHJpbmd9IOino+WvhuW+jOeahOWtl+S4slxuICAgICAgICAgICAgICovXG4gICAgICAgICAgICB0aGF0LmRlY3J5cHQgPSBmdW5jdGlvbihzb3VyY2UpIHtcbiAgICAgICAgICAgICAgICBzb3VyY2UgPSBkZWNvZGVVUkkoc291cmNlKVxuXG4gICAgICAgICAgICAgICAgc291cmNlID0gc291cmNlLnJlcGxhY2UoL1xc77yOL2csIFwiLlwiKTtcbiAgICAgICAgICAgICAgICBzb3VyY2UgPSBzb3VyY2UucmVwbGFjZSgvXFzvvIMvZywgXCIjXCIpO1xuICAgICAgICAgICAgICAgIHNvdXJjZSA9IHNvdXJjZS5yZXBsYWNlKC9cXO+8hC9nLCBcIiRcIik7XG4gICAgICAgICAgICAgICAgc291cmNlID0gc291cmNlLnJlcGxhY2UoL1xc44CUL2csIFwiW1wiKTtcbiAgICAgICAgICAgICAgICBzb3VyY2UgPSBzb3VyY2UucmVwbGFjZSgvXFzjgJUvZywgXCJdXCIpO1xuXG4gICAgICAgICAgICAgICAgdmFyIHRvRGVjcnlwdFNvdXJjZSA9IHV0aWxpdHlKUy5zdHJpbmdUb0JpbmFyeUFycmF5KHNvdXJjZSk7XG4gICAgICAgICAgICAgICAgdG9EZWNyeXB0U291cmNlID0gbWdyLmdldEN1c3RvbUhhc2goZmFsc2UsIHRvRGVjcnlwdFNvdXJjZSk7XG4gICAgICAgICAgICAgICAgdmFyIHJlc3VsdCA9IHV0aWxpdHlKUy5iaW5hcnlBcnJheVRvU3RyaW5nKHRvRGVjcnlwdFNvdXJjZSk7XG5cblxuICAgICAgICAgICAgICAgIHJldHVybiByZXN1bHQ7XG4gICAgICAgICAgICB9O1xuXG5cbiAgICAgICAgfTtcblxuICAgICAgICBfdGhpcy5jcnlwdG9ncmFwaGVyID0gbmV3IENyeXB0b2dyYXBoZXJNYW5hZ2VyKCk7XG5cbiAgICAgICAgX3RoaXMuZ2V0VG9rZW4gPSBmdW5jdGlvbigpIHtcbiAgICAgICAgICAgIFxuICAgICAgICAgICAgdmFyIHRva2VuID0gdXRpbGl0eUpTLmNvb2tpZSgndG9rZW4nKTtcblxuICAgICAgICAgICAgcmV0dXJuIHRva2VuO1xuICAgICAgICB9O1xuXG5cbiAgICAgICAgX3RoaXMuZ2V0Tm93Rm9ybWF0U3RyaW5nID0gZnVuY3Rpb24oKXtcbiAgICAgICAgICAgIHJldHVybiAgKG5ldyBEYXRlKS5mb3JtYXQoJ1lZWVktTU0tREQnKTtcbiAgICAgICAgfVxuICAgIH1cbn0pO1xuXG5cbi8vIFZ1ZS51c2UoVnVlRmlyZSk7XG5WdWUuY29tcG9uZW50KCdsaWdodGJveCcsIHJlcXVpcmUoJy4vY29tcG9uZW50cy9MaWdodGJveC52dWUnKSk7XG5WdWUuY29tcG9uZW50KCd0cmVtcycsIHJlcXVpcmUoJy4vY29tcG9uZW50cy90cmVtcy52dWUnKSk7XG5WdWUuY29tcG9uZW50KCdmb3JtcycsIHJlcXVpcmUoJy4vY29tcG9uZW50cy9mb3Jtcy52dWUnKSk7XG5WdWUuY29tcG9uZW50KCdzdWNjZXNzJywgcmVxdWlyZSgnLi9jb21wb25lbnRzL1N1Y2Nlc3MudnVlJykpO1xuVnVlLmNvbXBvbmVudCgndm90ZScsIHJlcXVpcmUoJy4vY29tcG9uZW50cy9Wb3RlLnZ1ZScpKTtcblxuY29uc3QgYXBwID0gbmV3IFZ1ZSh7XG4gICAgZWw6ICcjcm9vdEFwcCcsXG4gICAgdGVtcGxhdGU6ICc8dm90ZT48L3ZvdGU+J1xufSk7XG4iXX0=
+}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_d103fe06.js","/")
 },{"./components/Lightbox.vue":8,"./components/Success.vue":9,"./components/Vote.vue":10,"./components/forms.vue":11,"./components/trems.vue":12,"buffer":2,"pBGvAp":4}]},{},[13])

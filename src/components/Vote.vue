@@ -37,6 +37,7 @@
             var _this = this;
             var localTimestampCookie = utilityJS.cookie(_this.cookieConfig.localTimestamp.name);
 
+
             if (utilityJS.cookie(_this.cookieConfig.trems.name) == null) {
                 utilityJS.cookie(_this.cookieConfig.trems.name, false, {
                     expires: 1
@@ -47,8 +48,6 @@
                 utilityJS.cookie(_this.cookieConfig.localTimestamp.name, "{}", {
                     expires: 99
                 });
-                // Vue.delete( object, key )
-
             }
 
             _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
@@ -68,6 +67,9 @@
 
 
                 Firebase_gameStatisticsRef.on('value', function(snapshot) {
+                    var token = _this.getToken();
+
+                    //紀錄按鈕裝態
                     snapshot.forEach(function(snap) {
                         var timestampString = _this.member.timestamps[snap.key] || '0';
 
@@ -75,9 +77,11 @@
                         Vue.set(_this.member.timesExpired, snap.key, (_this.getNowDate() > new Date(timestampString)))
                     });
 
-                    _this.isLoading = false;
+  
 
                     _this.sortGamersOrderByCount();
+                    
+                    _this.isLoading = false;
 
                 });
 
@@ -192,16 +196,16 @@
 
 
             },
-            handleCompletedVote: function(key) {
+            handleCompletedVote: function(voteID) {
                 var _this = this;
                 var timestampString = "";
 
                 _this.member.timestamps = JSON.parse(utilityJS.cookie(_this.cookieConfig.localTimestamp.name));
+                
+                timestampString = _this.member.timestamps[voteID] || '0';
+                _this.gamers[voteID].ui = _this.getVoteBtnText(voteID);
 
-                timestampString = _this.member.timestamps[key] || '0';
-                _this.gamers[key].ui = _this.getVoteBtnText(key);
-
-                Vue.set(_this.member.timesExpired, key, (_this.getNowDate() > new Date(timestampString)))
+                Vue.set(_this.member.timesExpired, voteID, (_this.getNowDate() > new Date(timestampString)))
             },
             isVoteBtnActive: function(key) {
                 var _this = this;
@@ -238,7 +242,7 @@
                 _this.submitKey = key;
 
                 $event.preventDefault();
-
+                
                 if (!_this.isGameActive()) {
                     alert('活動目前停止中');
                     return false;
@@ -253,6 +257,7 @@
                     _this.openModal('forms', function() {});
                     return false;
                 }
+                
 
                 _this.openModal('trems', function() {});
 

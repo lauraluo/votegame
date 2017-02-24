@@ -37,6 +37,9 @@ window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 // vue init 
 //====================
 
+
+
+
 //gobal mixins
 Vue.mixin({
     created: function() {
@@ -119,6 +122,7 @@ Vue.mixin({
                 return result;
             };
 
+
         };
 
         _this.cryptographer = new CryptographerManager();
@@ -129,6 +133,11 @@ Vue.mixin({
 
             return token;
         };
+
+
+        _this.getNowFormatString = function(){
+            return  (new Date).format('YYYY-MM-DD');
+        }
     }
 });
 

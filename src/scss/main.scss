@@ -309,6 +309,19 @@ a.pure-button-primary {
     li {
         margin-bottom: 10px;
     }
+    ul > li {
+        list-style: disc;
+    }
+    li > ol li {
+        list-style: decimal;
+        margin-left: 2em;
+    }
+    li > ol li > ol li {
+        margin-left: 2em;
+        list-style: disc;
+        margin-bottom: 0px;
+
+    }
 }
 
 .vote-forms {

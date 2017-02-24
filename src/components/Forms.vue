@@ -130,7 +130,7 @@ div
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
 
-                _this.timestamp = (new Date).format('YYYY-MM-DD');
+                _this.timestamp = _this.getNowFormatString();
 
                 var pushMemberObject = {
                     name: _this.name.value,
@@ -138,26 +138,18 @@ div
                 };
 
                 var pushResultObject = {
+                    memberkey: memberKey,
                     timestamp: _this.timestamp
                 };
 
                 _this.disabed = true;
 
-                Firebase_gameStatisticsRef.child(voteID + '/' + memberKey).update(pushResultObject, function(error) {
-                    // console.log(error);
-                    // if (error) {
-                    //     alert("資料無法儲存." + error);
-                    //     return false;
-                    // }
+                //雙主key
+                Firebase_gameStatisticsRef.child(voteID + '/' + (memberKey+_this.timestamp)).update(pushResultObject, function(error) {
                     _this.seekingRequest[0].resolve(error);
                 });
 
                 Firebase_gameVotersRef.child(memberKey).update(pushMemberObject, function(error) {
-                    // console.log(error);
-                    // if (error) {
-                    //     alert("資料無法儲存." + error);
-                    //     return false;
-                    // }
                     _this.seekingRequest[1].resolve(error);
                 });
             },
@@ -165,6 +157,7 @@ div
                 var _this = this;
                 var voteID = _this.voteid;
                 var memberKey = _this.cryptographer.encrypt(_this.phone.value);
+                _this.timestamp = _this.getNowFormatString();
 
                 // console.log(memberKey);
                 // console.log(_this.cryptographer.decrypt(memberKey));
@@ -182,7 +175,7 @@ div
                     return false;
                 }
 
-                Firebase_gameStatisticsRef.child(voteID + '/' + memberKey).once('value', function(snapshot) {
+                Firebase_gameStatisticsRef.child(voteID + '/' + (memberKey+_this.timestamp)).once('value', function(snapshot) {
 
                     var result = snapshot.val();
 
@@ -190,19 +183,11 @@ div
                         //如果資料庫沒有資料，則繼續儲存
                         _this.submitData();
 
-                    } else if (result.timestamp) {
-
-                        var lastVoteTime = new Date(result.timestamp);
-                        var today = new Date((new Date().format('YYYY-MM-DD')));
-
-                        if (today > lastVoteTime) {
-                            _this.submitData();
-                        } else {
-                            alert('每天只能投一票');
-                        }
-
-                    } else {
-                        alert('取不到初始化資料');
+                    } else  {
+                        alert('你已經投過票');
+                        _this.setVoteStatusCookie();
+                        _this.$emit('complete', _this.voteid);
+                        _this.$emit('close');
                     }
                 });
 
