@@ -50,6 +50,12 @@ a.pure-button-primary {
     font-size: 1.8rem;
 }
 
+.pure-button-primary.pure-button-blue {
+    background: #3b5998;
+    color: #fff;
+    margin-right: 20px;
+}
+
 .pc-only {
     @include respond-to(small) {
         display: none!important;

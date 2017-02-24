@@ -5,7 +5,7 @@
                 div.vote__hd
                     div.vote__cover
                         h1.hide-text 蜜糖甜心就是你，尋找BUTY，品牌大使
-                        a.vote__share.hide-text(href="https://www.facebook.com/sharer/sharer.php?u=http://www.butybaby.com/m/index.php" title="Buty Baby 蜜糖甜心" target="_blank") 
+                        a.vote__share.hide-text(href="https://www.facebook.com/sharer/sharer.php?u=http://www.butybaby.com/butygirl.php" title="Buty Baby 蜜糖甜心" target="_blank") 
                 div.vote__bd
                     div.vote__content
                         ul.vote__items.clearfix
@@ -123,7 +123,7 @@
                     },
                     timesExpired: {
                         // 'g1': true,
-                        // 'g2': false               
+                        // 'g2': false           
                     }
                 },
                 cookieConfig: {

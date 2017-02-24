@@ -1,10 +1,10 @@
 <template lang="pug">
 div
-    h2 已完成投票，謝謝你的參與!
+    h2 還差一個步驟！抽好獎
     div.vote-dialog__content
-        p 投票後，該投票者看到該參賽者的按鈕改為”已投票”，系統限制一天對某參賽者只能投一票，但隔天即可繼續投票，累積票數。
+        |別忘了至BUTY BABY官方粉絲頁按讚並留言「我的#蜜糖甜心 候選人ＸＸＸ」即可抽大獎喔。
     div.vote-dialog__ctrls
-        a.vote-btn.pure-button.pure-button-primary(href='forms.html', title='同意', v-on:click="handeClickBtn($event)") 完成
+        a.vote-btn.pure-button.pure-button-primary.pure-button-blue(href='https://www.facebook.com/permalink.php?story_fbid=178017672692600&id=136566846837683', target="_blank",title='FB立刻按讚留言') FB立刻按讚留言
 </template>
 
 <script>
