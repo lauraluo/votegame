@@ -8,7 +8,7 @@ div
                     li
                         label(for='name') 你的名字 (必填)
                         div.vote-froms__input-wrap
-                            input#name.pure-input-1(type='text', placeholder='請輸入你的暱稱', v-model="name.value", name="name")
+                            input#name.pure-input-1(type='text', placeholder='請輸入你的姓名', v-model="name.value", name="name")
                         span.pure-form-message.pure-form-message--error(v-show="name.isError") 這是必填欄位
                     li
                         label(for='phone') 手機號碼 (必填)

@@ -1,4 +1,4 @@
-/*
+
 var gulp       = require('gulp')
 var browserify = require('gulp-browserify')
 
@@ -8,7 +8,7 @@ gulp.task('default', function () {
     .pipe(browserify({ transform: ['vueify', 'babelify', 'aliasify'] }))
     .pipe(gulp.dest('./wwwroot'))
 })
-*/
+
 
 // Read the launchSettings.json file into the launch variable.
 var launch = require('./Properties/launchSettings.json');

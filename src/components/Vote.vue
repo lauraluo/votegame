@@ -18,7 +18,7 @@
                                         img(:src="gamer.imgUrl")
                                     div.vote__item__content.clearfix
                                         div.vote__item__text
-                                            div.name 姓名/暱稱：{{ gamer.name }}
+                                            div.name 姓名：{{ gamer.name }}
                                             div.count 票數： {{ counts[gamer.key] ? counts[gamer.key] : 0 }}
                                         div.vote__item__ctrl
                                             a.vote__btn.pure-button.pure-button-primary(href="#", title="", v-on:click="handleClickVoteBtn($event, gamer.key)", v-bind:class="{ 'pure-button-disabled': !isVoteBtnActive(gamer.key) || isPaused }") {{gamer.ui ? gamer.ui : voteBtnStatusList[0]}}
@@ -66,14 +66,14 @@
                 _this.isPaused = /true/i.test(snapshot.child('isPaused').val());
 
 
-                Firebase_gameStatisticsRef.on('value', function(snapshot) {
+                Firebase_gameOrderlistRef.on('value', function(snapshot) {
                     var token = _this.getToken();
 
                     //紀錄按鈕裝態
                     snapshot.forEach(function(snap) {
-                        var timestampString = _this.member.timestamps[snap.key] || '0';
+                        var timestampString = _this.member.timestamps[snap.key] || 0;
 
-                        Vue.set(_this.counts, snap.key, snap.numChildren());
+                        Vue.set(_this.counts, snap.key, snap.child('totalVotesCount').val());
                         Vue.set(_this.member.timesExpired, snap.key, (_this.getNowDate() > new Date(timestampString)))
                     });
 
@@ -90,8 +90,8 @@
         },
         data: function() {
             return {
-                startDate: '0',
-                endDate: '0',
+                startDate: 0,
+                endDate: 0,
                 isPaused: false,
                 voteBtnStatusList: {
                     "0": "投我一票",
@@ -193,6 +193,12 @@
 
 
                 _this.gamersSort = arr;
+
+                Firebase_gameStatisticsRef.on('value', function(snapshot) {
+                    snapshot.forEach(function(snap) {
+                        Firebase_gameOrderlistRef.child(snap.key).update( { totalVotesCount: snap.numChildren() });
+                    });
+                });
 
 
             },

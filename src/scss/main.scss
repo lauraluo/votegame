@@ -75,6 +75,9 @@ a.pure-button-primary {
     //         @extend .pure-button-disable;
     //     }
     // }
+    div {
+        box-sizing: content-box;
+    }
     &__ft {
         background: #555;
         color: #fff;

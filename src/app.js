@@ -19,7 +19,7 @@ var initFBConfig = {
     storageBucket: "voteconfig.appspot.com",
     messagingSenderId: "585262339108"
 };
-
+//正式機
 var initFBGame = {
     apiKey: "AIzaSyBZAcj5qF4NqnN7BOEcbnqNGIh6lJsQPT8",
     authDomain: "voterdemo-7aee9.firebaseapp.com",
@@ -28,9 +28,19 @@ var initFBGame = {
     messagingSenderId: "164280679850"
 };
 
+//test data base
+// var initFBGame = {
+//     apiKey: "AIzaSyDr2KVsxSxxYkpO0-VqNV9bzUuXFJNz0Mg",
+//     authDomain: "lalasproject-90237.firebaseapp.com",
+//     databaseURL: "https://lalasproject-90237.firebaseio.com",
+//     storageBucket: "lalasproject-90237.appspot.com",
+//     messagingSenderId: "50410735864"
+// };
+
 window.Firebase_config = firebase.initializeApp(initFBConfig, 'Firebase_config');
 window.Firebase_game = firebase.initializeApp(initFBGame, 'Firebase_game');
 window.Firebase_gameStatisticsRef = Firebase_game.database().ref('statistics');
+window.Firebase_gameOrderlistRef = Firebase_game.database().ref('orderlist');
 window.Firebase_gameVotersRef = Firebase_game.database().ref('voters');
 
 //====================
@@ -96,6 +106,8 @@ Vue.mixin({
                 result = result.replace(/\$/g, "＄");
                 result = result.replace(/\[/g, "〔");
                 result = result.replace(/\]/g, "〕");
+                result = result.replace(/\//g, "／");
+
 
                 return encodeURI(result);
             };
@@ -113,6 +125,8 @@ Vue.mixin({
                 source = source.replace(/\＄/g, "$");
                 source = source.replace(/\〔/g, "[");
                 source = source.replace(/\〕/g, "]");
+                source = source.replace(/\／/g, "/");
+
 
                 var toDecryptSource = utilityJS.stringToBinaryArray(source);
                 toDecryptSource = mgr.getCustomHash(false, toDecryptSource);
