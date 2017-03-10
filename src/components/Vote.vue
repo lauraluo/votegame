@@ -194,11 +194,11 @@
 
                 _this.gamersSort = arr;
 
-                Firebase_gameStatisticsRef.on('value', function(snapshot) {
-                    snapshot.forEach(function(snap) {
-                        Firebase_gameOrderlistRef.child(snap.key).update( { totalVotesCount: snap.numChildren() });
-                    });
-                });
+                // Firebase_gameStatisticsRef.on('value', function(snapshot) {
+                //     snapshot.forEach(function(snap) {
+                //         Firebase_gameOrderlistRef.child(snap.key).update( { totalVotesCount: snap.numChildren() });
+                //     });
+                // });
 
 
             },
