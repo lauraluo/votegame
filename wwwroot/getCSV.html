@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/Article" ng-app="markup" debug="false">
+  <!--page default Information-->
+  <!--html body-->
+  <body>
+    <div id="getCSV">
+      <style>
+        #getCSV {
+            padding:30px;
+            width:500px;
+            margin:20px auto;
+        }
+        
+        .csvViewer {
+            margin: 0 20px;
+            position: relative;
+        }
+        textarea {
+            display:block;
+            height:200px;
+            overflow:auto;
+            padding:20px;
+            margin:20px 0;
+            width:100%;
+            background:#ededed;
+            border:#777 solid 1px;
+        }
+        .ctrlBtn {
+            display: none;
+            position: absolute;
+            top:10px;
+            right:0px;
+        }
+      </style>
+      <div class="csvViewer">
+        <h1>投票結果統計</h1>
+        <textarea id="csv"></textarea>
+        <p><a id="download" class="ctrlBtn">下載投票結果統計</a>
+        </p>
+      </div>
+      <div class="csvViewer">
+        <h1>投票參與名單取得</h1>
+        <textarea id="csv2"></textarea>
+        <p><a id="download2" class="ctrlBtn">下載會員名單</a>
+        </p>
+      </div>
+    </div>
+    <script src="js/all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/datas/papaparse.min.js"></script>
+    <script src="js/getCSV.js"></script>
+  </body>
+</html>

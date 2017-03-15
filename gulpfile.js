@@ -195,8 +195,8 @@ gulp.task('reset', function() {
 gulp.task('open', function() {
     gulp.src(__filename)
         .pipe(open({
-            uri: 'http://localhost:3001',
-            app: 'google chrome'
+            uri: 'http://localhost:3001'
+            // app: 'google chrome'
         }));
 });
 
