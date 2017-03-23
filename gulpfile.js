@@ -168,8 +168,7 @@ gulp.task('js', function() {
             transform: ['vueify', 'babelify', 'aliasify'],
             debug: false
         }))
-        .pipe(gulp.dest('./' + distPath + 'js/'))
-        .pipe(connect.reload());
+        .pipe(gulp.dest('./' + distPath + 'js/'));
 })
 
 gulp.task('copyImg', function() {
@@ -204,13 +203,12 @@ gulp.task('open', function() {
 gulp.task('watch', function() {
     gulp.watch(['src/**/*.jade'], ['jade']);
     gulp.watch('src/scss/**/**.scss', ['sass']);
-    gulp.watch(['src/app.js'], ['js']);
-    gulp.watch(['src/components/**/*.vue'], ['js']);
+    gulp.watch(['src/app.js'], ['js','jsConcatAll']);
+    gulp.watch(['src/components/**/*.vue'], ['js','jsConcatAll']);
     gulp.watch(['src/images/*'], ['copyImg']);
     gulp.watch(['src/images/sprites/*'], ['sprite']);
     gulp.watch([distPath + '*.html'], ['html']);
     gulp.watch('src/js/**/*.js', ['copyJS']);
-    gulp.watch('wwwroot/js/app.js', ['jsConcatAll']);
 });
 
 
@@ -219,14 +217,15 @@ gulp.task('jsConcatApp', function() {
     return gulp.src(['src/js/utility.js', 'wwwroot/js/app.js'])
         .pipe(concat('concatApp.js'))
         // .pipe(minify())
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest('wwwroot/js/'));
 });
 
 gulp.task('jsConcatAll', ['jsConcatApp'], function() {
     return gulp.src(['src/js/jquery-3.1.1.min.js', 'src/js/firebase.js', 'src/js/vue.min.js', 'wwwroot/js/concatApp.js'])
         .pipe(concat('all.js'))
-        .pipe(gulp.dest('wwwroot/js/'));
+        .pipe(gulp.dest('wwwroot/js/'))
+        .pipe(connect.reload());
 });
 
 

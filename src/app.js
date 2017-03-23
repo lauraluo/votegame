@@ -20,22 +20,22 @@ var initFBConfig = {
     messagingSenderId: "585262339108"
 };
 //正式機
-var initFBGame = {
-    apiKey: "AIzaSyBZAcj5qF4NqnN7BOEcbnqNGIh6lJsQPT8",
-    authDomain: "voterdemo-7aee9.firebaseapp.com",
-    databaseURL: "https://voterdemo-7aee9.firebaseio.com",
-    storageBucket: "voterdemo-7aee9.appspot.com",
-    messagingSenderId: "164280679850"
-};
+// var initFBGame = {
+//     apiKey: "AIzaSyBZAcj5qF4NqnN7BOEcbnqNGIh6lJsQPT8",
+//     authDomain: "voterdemo-7aee9.firebaseapp.com",
+//     databaseURL: "https://voterdemo-7aee9.firebaseio.com",
+//     storageBucket: "voterdemo-7aee9.appspot.com",
+//     messagingSenderId: "164280679850"
+// };
 
 //test data base
-// var initFBGame = {
-//     apiKey: "AIzaSyDr2KVsxSxxYkpO0-VqNV9bzUuXFJNz0Mg",
-//     authDomain: "lalasproject-90237.firebaseapp.com",
-//     databaseURL: "https://lalasproject-90237.firebaseio.com",
-//     storageBucket: "lalasproject-90237.appspot.com",
-//     messagingSenderId: "50410735864"
-// };
+var initFBGame = {
+    apiKey: "AIzaSyDr2KVsxSxxYkpO0-VqNV9bzUuXFJNz0Mg",
+    authDomain: "lalasproject-90237.firebaseapp.com",
+    databaseURL: "https://lalasproject-90237.firebaseio.com",
+    storageBucket: "lalasproject-90237.appspot.com",
+    messagingSenderId: "50410735864"
+};
 
 window.Firebase_config = firebase.initializeApp(initFBConfig, 'Firebase_config');
 window.Firebase_game = firebase.initializeApp(initFBGame, 'Firebase_game');
@@ -162,8 +162,19 @@ Vue.component('trems', require('./components/trems.vue'));
 Vue.component('forms', require('./components/forms.vue'));
 Vue.component('success', require('./components/Success.vue'));
 Vue.component('vote', require('./components/Vote.vue'));
+Vue.component('subApp', require('./components/SubApp.vue'));
 
-const app = new Vue({
-    el: '#rootApp',
-    template: '<vote></vote>'
-});
+if($('#rootApp').length > 0){
+    const app = new Vue({
+        el: '#rootApp',
+        template: '<vote></vote>'
+    });
+}
+
+
+if($('#subApp').length > 0){
+    const subapp = new Vue({
+        el: '#subApp',
+        template: '<subApp></subApp>'
+    });
+}
