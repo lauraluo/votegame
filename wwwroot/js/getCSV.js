@@ -90,7 +90,7 @@ var getNowFormatString = function () {
     return (new Date).format('YYYY-MM-DD');
 }
 
-$.getJSON("../datas/0315.json", function (datas) {
+$.getJSON("../datas/0322.json", function (datas) {
     var JsonObject = datas;
 
     function getGamersStates() {
@@ -118,6 +118,7 @@ $.getJSON("../datas/0315.json", function (datas) {
                         }
                     }
                     convertString += escape('\r\n') + row;
+                    // convertString += '\r\n' + row;
                 }
             });
 
