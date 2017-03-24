@@ -9,35 +9,52 @@ div.container-fluid
                         .form-group
                             label.col-md-3.control-label(for='selectbasic') 選擇選手
                             .col-md-9
-                                select#selectbasic.form-control(name='selectbasic' v-model="voteID")
-                                    option(value='g1' v-for="(gamer,key) in gamers" v-bind:value="key" v-show="gamer.stage == 2" readyonly='{{isProcessing}}') {{key}} {{gamer.name}}
+                                select#selectbasic.form-control(name='selectbasic' v-model="voteID" v-bind:disabled='isProcessing')
+                                    option(value='g1' v-for="(gamer,key) in gamers" v-bind:value="key" v-show="gamer.stage == 2") {{key}} {{gamer.name}}
                         .form-group.range
                             label.col-md-3.control-label(for='textinput') 名單數量
                             .col-md-9
-                                input#textinput.form-control.input-md(name='textinput' type='range' placeholder='請填入整數 1~1000' min="1" max="1000" step="1" v-model.number="voteAmount" readyonly='{{isProcessing}}')
+                                input#textinput.form-control.input-md(name='textinput' type='range' placeholder='請填入整數 1~1000' min="1" max="1000" step="1" v-model.number="voteAmount" v-bind:readonly='isProcessing')
                                 span.block-help {{voteAmount}}
                         .form-group.range
                             label.col-md-3.control-label(for='textinput') 投票的區間秒數
                             .col-md-9
-                                input#textinput.form-control.input-md(name='textinput', type='range', placeholder='請填入整數 3~100' min="3" max="100" step="1" v-model.number="voteTime" readyonly='{{isProcessing}}')
+                                input#textinput.form-control.input-md(name='textinput', type='range', placeholder='請填入整數 3~100' min="3" max="100" step="1" v-model.number="voteTime" v-bind:readonly='isProcessing')
                                 span.block-help {{voteTime}}
                         .form-group.range
                             label.col-md-3.control-label(for='textinput') 手機號碼的啟始值
                             .col-md-9
-                                input#textinput.form-control.input-md(name='textinput' type='range' placeholder='輸入啟始號碼的跳號' min="0" max="9000000" step="10000"  v-model.number="phomeRandomBaseAdjustment" readyonly='{{isProcessing}}')
+                                input#textinput.form-control.input-md(name='textinput' type='range' placeholder='輸入啟始號碼的跳號' min="0" max="9000000" step="10000"  v-model.number="phomeRandomBaseAdjustment" v-bind:readonly='isProcessing')
                                 span.block-help  號碼由 {{displayPhomeStartBy}}  ~  {{displayPhomeEndBy}} 流水號產生
                         .form-group.ctrls
-                                button.btn.btn-info(type='button' @click="getMemberList") 產生名單
-                                button.btn.btn-primary(type='button' @click="batchProcessing") 開始發送
-                                button.btn.btn-danger(type='button' @click="cancleProcessing") 取消發送
+                                button.btn.btn-info(type='button' @click="getMemberList" v-show="isProcessing == false && memberList.length == 0 ") 產生名單
+                                button.btn.btn-primary(type='button' @click="batchProcessing" v-show="isProcessing == false && memberList.length > 0 ") 開始發送
+                                button.btn.btn-danger(type='button' @click="cancleProcessing" v-show="isProcessing == true") 取消發送
+                h4 注意事項
+                ul
+                    li 請注意重複的手機號碼不會增加投票數量，票數增加的結果請以最後投票畫面的票數為主
+                    li 本應用僅支援新版的chrome瀏覽器
+
+                h4 操作說明
+                ol
+                    li 請先設定投票需求
+                        ul
+                            li 選擇選手：選擇欲投票的選手
+                            li 名單數量：選擇批次投票的數量
+                            li 投票的區間秒數：投票的間隔
+                            li 手機號碼的啟始值：手機流水號的區間(注意重複的手機不會增加票數)
+                    li 點選產生名單，在右邊可以預覽名單列表
+                    li 點選開始發送，可在右邊觀看發送狀態
+                    li 點選取消發送，系統會停止投票的發送 
 
         div.row.col-md-6
             div.subapp-list.row
                 h2 發送紀錄
+                    span.list-counter {{requestIndex}} / {{memberList.length}}
                 table.table.table-striped
                     tbody
                         tr(v-for="(member,index) in memberList")
-                            td {{ member.name }}
+                            td # {{index}} {{ member.name }}
                             td {{ member.phone }}
                             td 
                                 span.text-info(v-if="member.state == 0") Wating...
@@ -51,15 +68,19 @@ div.container-fluid
             var _this = this;
             //random的base從cookie讀，如果有則取cookie
 
+
             Firebase_config.database().ref().on('value', function(snapshot) {
                 _this.stage = snapshot.child('stage').val();
                 _this.gamers = snapshot.child('gamers').val();
+                _this.isPaused = /true/i.test(snapshot.child('isPaused').val());
+                
             });
 
             _this.phomeRandomBaseLog = _this.phomeRandomBase;            
         },
         data: function () {
             return {
+                isPaused: false,
                 gamers: {},
                 stage: 2,
                 active: null,
@@ -125,23 +146,36 @@ div.container-fluid
                 var _this = this;
                 clearInterval(_this.setInterval);
                 _this.memberList = [];
+                _this.voteID = "";
                 _this.isProcessing = false;
             },
             batchProcessing: function(){
                 var _this = this;
+
+                if(_this.isPaused) {
+                    alert("活動目前暫停中");
+                    return;
+                }
+
+
+                if( !_this.voteID || _this.voteID == "") {
+                    alert("請先選擇選手");
+                    return;
+                }
+
                 _this.requestIndex= 0;
                 _this.isProcessing = true;
+
                 _this.setInterval = setInterval(function () {
                     if (_this.requestIndex >= _this.memberList.length) {
                         clearInterval(_this.setInterval);
                         _this.isProcessing = false;
                     }
                     else {
-                        console.log(_this.requestIndex);
                         _this.submitMember(_this.memberList[_this.requestIndex],_this.requestIndex);
                         _this.requestIndex++;
                     }
-                }, 3000);
+                }, _this.voteTime * 1000);
             },
             submitMember: function(member,requestIndex){
                 var _this = this;
@@ -157,26 +191,20 @@ div.container-fluid
                     timestamp: _this.getNowFormatString()
                 };
 
-
                 $.when( seekingRequest[0],seekingRequest[1]).done(function(task1, task2) {
-                    //_this.submitSuccess();
                     _this.memberList[requestIndex].state = 1;
+                    console.log(requestIndex + '......OK');
                 });
 
 
                 //雙主key
                 Firebase_gameStatisticsRef.child(voteID + '/' + (memberKey+_this.timestamp)).update(pushResultObject, function(error) {
                     seekingRequest[0].resolve(error);
-                    console.log("ok");
                 });
 
                 Firebase_gameVotersRef.child(memberKey).update(pushMemberObject, function(error) {
                     seekingRequest[1].resolve(error);
-                    console.log("ok");                    
                 });
-                console.log("submitMember==================");
-                console.log(member);
-                console.log(requestIndex);
             }
         }
     }
@@ -223,6 +251,9 @@ h2 {
     box-sizing: border-box;
     // height: 100vh;
     position: relative;
+    .list-counter  {
+        float: right;
+    }
     h2 {
         position: absolute;
         z-index: 2;

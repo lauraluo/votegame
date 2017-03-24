@@ -217,7 +217,7 @@ gulp.task('jsConcatApp', function() {
     return gulp.src(['src/js/utility.js', 'wwwroot/js/app.js'])
         .pipe(concat('concatApp.js'))
         // .pipe(minify())
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest('wwwroot/js/'));
 });
 

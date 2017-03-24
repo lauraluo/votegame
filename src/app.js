@@ -11,7 +11,6 @@
 //====================
 
 // var Firebase = firebase;
-
 var initFBConfig = {
     apiKey: "AIzaSyDMY4iAWlqS5Qv1UklqR5b3nxYKdiISMgo",
     authDomain: "voteconfig.firebaseapp.com",
@@ -19,23 +18,24 @@ var initFBConfig = {
     storageBucket: "voteconfig.appspot.com",
     messagingSenderId: "585262339108"
 };
+
 //正式機
-// var initFBGame = {
-//     apiKey: "AIzaSyBZAcj5qF4NqnN7BOEcbnqNGIh6lJsQPT8",
-//     authDomain: "voterdemo-7aee9.firebaseapp.com",
-//     databaseURL: "https://voterdemo-7aee9.firebaseio.com",
-//     storageBucket: "voterdemo-7aee9.appspot.com",
-//     messagingSenderId: "164280679850"
-// };
+var initFBGame = {
+    apiKey: "AIzaSyBZAcj5qF4NqnN7BOEcbnqNGIh6lJsQPT8",
+    authDomain: "voterdemo-7aee9.firebaseapp.com",
+    databaseURL: "https://voterdemo-7aee9.firebaseio.com",
+    storageBucket: "voterdemo-7aee9.appspot.com",
+    messagingSenderId: "164280679850"
+};
 
 //test data base
-var initFBGame = {
-    apiKey: "AIzaSyDr2KVsxSxxYkpO0-VqNV9bzUuXFJNz0Mg",
-    authDomain: "lalasproject-90237.firebaseapp.com",
-    databaseURL: "https://lalasproject-90237.firebaseio.com",
-    storageBucket: "lalasproject-90237.appspot.com",
-    messagingSenderId: "50410735864"
-};
+// var initFBGame = {
+//     apiKey: "AIzaSyDr2KVsxSxxYkpO0-VqNV9bzUuXFJNz0Mg",
+//     authDomain: "lalasproject-90237.firebaseapp.com",
+//     databaseURL: "https://lalasproject-90237.firebaseio.com",
+//     storageBucket: "lalasproject-90237.appspot.com",
+//     messagingSenderId: "50410735864"
+// };
 
 window.Firebase_config = firebase.initializeApp(initFBConfig, 'Firebase_config');
 window.Firebase_game = firebase.initializeApp(initFBGame, 'Firebase_game');
