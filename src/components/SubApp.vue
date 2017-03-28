@@ -27,13 +27,14 @@ div.container-fluid
                                 input#textinput.form-control.input-md(name='textinput' type='range' placeholder='輸入啟始號碼的跳號' min="0" max="9000000" step="10000"  v-model.number="phomeRandomBaseAdjustment" v-bind:readonly='isProcessing')
                                 span.block-help  號碼由 {{displayPhomeStartBy}}  ~  {{displayPhomeEndBy}} 流水號產生
                         .form-group.ctrls
-                                button.btn.btn-info(type='button' @click="getMemberList" v-show="isProcessing == false && memberList.length == 0 ") 產生名單
+                                button.btn.btn-info(type='button' @click="getMemberList" v-show="isProcessing == false") 產生名單
                                 button.btn.btn-primary(type='button' @click="batchProcessing" v-show="isProcessing == false && memberList.length > 0 ") 開始發送
                                 button.btn.btn-danger(type='button' @click="cancleProcessing" v-show="isProcessing == true") 取消發送
                 h4 注意事項
                 ul
                     li 請注意重複的手機號碼不會增加投票數量，票數增加的結果請以最後投票畫面的票數為主
                     li 本應用僅支援新版的chrome瀏覽器
+                    li 程式運行中請保持本網頁開啟，關閉電腦休眠設置
 
                 h4 操作說明
                 ol
@@ -54,7 +55,7 @@ div.container-fluid
                 table.table.table-striped
                     tbody
                         tr(v-for="(member,index) in memberList")
-                            td # {{index}} {{ member.name }}
+                            td # {{index+1}} {{ member.name }}
                             td {{ member.phone }}
                             td 
                                 span.text-info(v-if="member.state == 0") Wating...
@@ -125,13 +126,14 @@ div.container-fluid
                 //格式化手機號碼
                 var _this = this;
                 var phone = "";
+            
                 phone = '0' + (_this.phomeRandomBaseLog++).toString();
                 return phone;
             },
             getMemberList: function () {
                 var _this = this;
                 var templist =[];
-
+                _this.phomeRandomBaseLog = this.phomeRandomBase + this.phomeRandomBaseAdjustment;
                 for (i = 0; i < _this.voteAmount; i++) {
                     var member = {
                         name: _this.getRandomName(),
